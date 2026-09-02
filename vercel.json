@@ -3,5 +3,11 @@
   "buildCommand": "npm run build:client",
   "outputDirectory": "dist",
   "framework": "vite",
-  "installCommand": "npm ci"
+  "installCommand": "npm ci",
+  "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
 }

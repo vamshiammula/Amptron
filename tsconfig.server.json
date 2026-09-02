@@ -23,6 +23,6 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true
   },
-  "include": ["server/src", "shared"],
+  "include": ["server/src", "shared", "api/index.ts"],
   "exclude": ["server/**/*.test.ts"]
 }

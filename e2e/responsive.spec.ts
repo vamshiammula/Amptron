@@ -13,10 +13,12 @@ test.describe('responsive type', () => {
       const styles = getComputedStyle(el)
       const section = el.closest('.hero')
       const title = document.querySelector('.section-title')
+      const media = section?.querySelector('.hero-media video, .hero-media img')
       return {
         fontSize: parseFloat(styles.fontSize),
         titleSize: title ? parseFloat(getComputedStyle(title).fontSize) : 0,
         heroHeight: section?.getBoundingClientRect().height ?? 0,
+        mediaHeight: media?.getBoundingClientRect().height ?? 0,
         viewportHeight: window.innerHeight,
       }
     })
@@ -25,7 +27,8 @@ test.describe('responsive type', () => {
       expect(metrics.fontSize).toBeLessThan(32)
       expect(metrics.fontSize).toBeGreaterThan(24)
       expect(metrics.titleSize).toBeLessThan(28)
-      expect(metrics.heroHeight).toBeLessThan(metrics.viewportHeight)
+      expect(metrics.mediaHeight).toBeGreaterThan(300)
+      expect(metrics.heroHeight).toBeLessThan(metrics.viewportHeight * 1.45)
     } else {
       expect(metrics.fontSize).toBeGreaterThanOrEqual(48)
       expect(metrics.titleSize).toBeGreaterThanOrEqual(32)

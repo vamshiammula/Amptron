@@ -36,9 +36,6 @@
   --section-gap: 24px;
   --hero-y: 24px;
   --hero-gap: 20px;
-  --media-hero: 168px;
-  --media-product: 148px;
-  --media-tech: 180px;
   --card-pad: 16px;
   --quote-pad: 20px;
   --stats-y: 32px;
@@ -126,8 +123,6 @@ a {
     --pad: 20px;
     --section-y: 40px;
     --hero-y: 32px;
-    --media-hero: 200px;
-    --media-product: 168px;
     --stats-y: 40px;
   }
 }
@@ -139,9 +134,6 @@ a {
     --section-gap: 32px;
     --hero-y: 48px;
     --hero-gap: 24px;
-    --media-hero: 220px;
-    --media-product: 150px;
-    --media-tech: 260px;
     --quote-pad: 28px;
     --stats-y: 48px;
   }
@@ -154,9 +146,6 @@ a {
     --section-gap: 64px;
     --hero-y: 80px;
     --hero-gap: 48px;
-    --media-hero: 440px;
-    --media-product: 260px;
-    --media-tech: 480px;
     --card-pad: 28px;
     --quote-pad: 36px;
     --stats-y: 64px;

@@ -1,0 +1,11 @@
+dist
+dist-server
+coverage
+playwright-report
+test-results
+node_modules
+package-lock.json
+reference
+src/assets
+public
+.cursor

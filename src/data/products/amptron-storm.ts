@@ -1,0 +1,306 @@
+import type { ProductViewerConfig } from './types'
+
+const BASE = '/products/amptron-storm'
+const SIZE = { width: 1024, height: 1024 }
+
+export const stormViewerConfig: ProductViewerConfig = {
+  brand: 'Amptron',
+  modelSlug: 'amptron-storm',
+  modelName: 'Amptron Storm',
+  color: {
+    name: 'Midnight Navy',
+    swatch: '#0A1F44',
+  },
+  colorways: [
+    { id: 'midnight-navy', name: 'Midnight Navy', swatch: '#0A1F44' },
+    {
+      id: 'crimson-red',
+      name: 'Crimson Red',
+      swatch: '#8E2434',
+      filter: 'hue-rotate(140deg) saturate(1.4) brightness(1.03)',
+    },
+    {
+      id: 'forest-green',
+      name: 'Forest Green',
+      swatch: '#1F5C46',
+      filter: 'hue-rotate(-105deg) saturate(1.3)',
+    },
+    {
+      id: 'graphite-grey',
+      name: 'Graphite Grey',
+      swatch: '#3A3F47',
+      filter: 'saturate(0.2) brightness(0.92)',
+    },
+  ],
+  experiences: [
+    {
+      id: 'exterior',
+      label: 'Exterior',
+      kind: 'angles',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Drag to rotate · Double-click to zoom',
+      instructionMobile: 'Swipe to rotate · Double-tap to zoom',
+      startKey: 'front-left',
+      assets: [
+        {
+          src: `${BASE}/exterior/angle-front.jpg`,
+          stateKey: 'front',
+          alt: 'Amptron Storm from the front, Midnight Navy',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/exterior/angle-front-right.jpg`,
+          stateKey: 'front-right',
+          alt: 'Amptron Storm from the front right, Midnight Navy',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/exterior/angle-rear.jpg`,
+          stateKey: 'rear',
+          alt: 'Amptron Storm from the rear, Midnight Navy',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/exterior/angle-front-left.jpg`,
+          stateKey: 'front-left',
+          alt: 'Amptron Storm from the front left, Midnight Navy',
+          ...SIZE,
+          hotspots: [
+            {
+              id: 'front-suspension',
+              x: 24,
+              y: 62,
+              title: 'Front suspension',
+              description:
+                'Telescopic fork, as published on the Storm specification sheet.',
+              specLabel: 'Front Suspension',
+              imageSrc: `${BASE}/details/front-suspension.jpg`,
+            },
+            {
+              id: 'seat',
+              x: 52,
+              y: 36,
+              title: 'Seat',
+              description:
+                'Open the Seat experience to view the under-seat compartment.',
+            },
+            {
+              id: 'battery',
+              x: 58,
+              y: 44,
+              title: 'Battery',
+              description:
+                'Removable pack. Capacity and charge time are listed in specifications.',
+              specLabel: 'Battery Capacity',
+            },
+            {
+              id: 'motor',
+              x: 78,
+              y: 60,
+              title: 'Motor',
+              description: 'Rear hub motor. Output is listed in specifications.',
+              specLabel: 'Motor Output',
+              imageSrc: `${BASE}/details/rear-suspension.jpg`,
+            },
+            {
+              id: 'charging-port',
+              x: 36,
+              y: 48,
+              title: 'Charging port',
+              description:
+                'Charge time is listed in specifications. Open Charging to see the port.',
+              specLabel: 'Charging Time',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'seat',
+      label: 'Seat',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Open or close the seat',
+      instructionMobile: 'Open or close the seat',
+      startKey: 'closed',
+      assets: [
+        {
+          src: `${BASE}/exterior/angle-front-left.jpg`,
+          stateKey: 'closed',
+          alt: 'Amptron Storm with the seat closed',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/seat/seat-open-front-left.jpg`,
+          stateKey: 'open',
+          alt: 'Amptron Storm with the seat open',
+          ...SIZE,
+        },
+      ],
+      actions: [
+        { id: 'open-seat', label: 'Open seat', targetKey: 'open' },
+        { id: 'close-seat', label: 'Close seat', targetKey: 'closed' },
+        { id: 'explore-storage', label: 'Explore storage', targetKey: 'storage' },
+      ],
+    },
+    {
+      id: 'storage',
+      label: 'Storage',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Under-seat storage',
+      instructionMobile: 'Under-seat storage',
+      startKey: 'top',
+      infoTitle: 'Under-seat storage',
+      specLabels: [],
+      assets: [
+        {
+          src: `${BASE}/storage/storage-top.jpg`,
+          stateKey: 'top',
+          alt: 'Amptron Storm under-seat storage seen from above',
+          ...SIZE,
+        },
+      ],
+      actions: [{ id: 'back-to-seat', label: 'Back to seat', targetKey: 'seat' }],
+    },
+    {
+      id: 'battery',
+      label: 'Battery',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Show or reseat the battery',
+      instructionMobile: 'Show or reseat the battery',
+      startKey: 'installed',
+      infoTitle: 'Battery',
+      specLabels: [
+        'Battery Type',
+        'Battery Capacity',
+        'System Voltage',
+        'Charging Time',
+        'Range Per Charge',
+      ],
+      assets: [
+        {
+          src: `${BASE}/exterior/angle-front-left.jpg`,
+          stateKey: 'installed',
+          alt: 'Amptron Storm with the battery installed under a closed seat',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/battery/battery-visible-front-left.jpg`,
+          stateKey: 'visible',
+          alt: 'Amptron Storm battery seated in the open well',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/battery/battery-removing-front-left.jpg`,
+          stateKey: 'removing',
+          alt: 'Amptron Storm battery being lifted from the well',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/battery/battery-lifted-front-left.jpg`,
+          stateKey: 'removed',
+          alt: 'Amptron Storm battery lifted clear of the well',
+          ...SIZE,
+        },
+      ],
+      actions: [
+        { id: 'show-battery', label: 'Show battery', targetKey: 'visible' },
+        { id: 'lift-battery', label: 'Lift battery', targetKey: 'removing' },
+        { id: 'remove-battery', label: 'Remove battery', targetKey: 'removed' },
+        { id: 'install-battery', label: 'Install battery', targetKey: 'installed' },
+      ],
+    },
+    {
+      id: 'charging',
+      label: 'Charging',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Inspect the charging port',
+      instructionMobile: 'Inspect the charging port',
+      startKey: 'closed',
+      infoTitle: 'Charging port',
+      specLabels: ['Charger Input', 'Charger Output', 'Charging Time'],
+      assets: [
+        {
+          src: `${BASE}/charging/charging-port-closed.jpg`,
+          stateKey: 'closed',
+          alt: 'Amptron Storm charging port closed',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/charging/charging-port-open.jpg`,
+          stateKey: 'open',
+          alt: 'Amptron Storm charging port open',
+          ...SIZE,
+        },
+        {
+          src: `${BASE}/charging/charging-port-connected.jpg`,
+          stateKey: 'connected',
+          alt: 'Amptron Storm charging port with the charger connected',
+          ...SIZE,
+        },
+      ],
+      actions: [
+        { id: 'open-port', label: 'Open port', targetKey: 'open' },
+        { id: 'connect-charger', label: 'Connect charger', targetKey: 'connected' },
+        { id: 'close-port', label: 'Close port', targetKey: 'closed' },
+      ],
+    },
+    {
+      id: 'features',
+      label: 'Features',
+      kind: 'angles',
+      renderer: 'angles',
+      enabled: true,
+      instructionDesktop: 'Select a marker for published specifications',
+      instructionMobile: 'Select a marker for published specifications',
+      startKey: 'front-left',
+      assets: [],
+    },
+    {
+      id: 'lights',
+      label: 'Lights',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: false,
+      instructionDesktop: '',
+      instructionMobile: '',
+      startKey: 'on-rear-left',
+      assets: [],
+    },
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      kind: 'states',
+      renderer: 'angles',
+      enabled: false,
+      instructionDesktop: '',
+      instructionMobile: '',
+      startKey: 'off',
+      assets: [],
+    },
+    {
+      id: '360',
+      label: '360°',
+      kind: 'angles',
+      renderer: 'sequence',
+      enabled: false,
+      instructionDesktop: '',
+      instructionMobile: '',
+      startKey: 'frame-001',
+      assets: [],
+    },
+  ],
+}
+
+export function getProductViewerConfig(slug: string): ProductViewerConfig | null {
+  if (slug === stormViewerConfig.modelSlug) return stormViewerConfig
+  return null
+}

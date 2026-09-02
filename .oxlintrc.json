@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "oxc", "jsx-a11y"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  },
+  "env": {
+    "browser": true,
+    "es2024": true
+  },
+  "ignorePatterns": ["dist", "dist-server", "coverage", "playwright-report"],
+  "overrides": [
+    {
+      "files": ["server/**/*.ts", "scripts/**/*.mjs", "*.config.ts"],
+      "env": { "browser": false, "node": true }
+    }
+  ]
+}

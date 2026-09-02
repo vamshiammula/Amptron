@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Amptron Electric Mobility</title>
+  <desc id="desc">Amptron dealer-ready electric scooters for India.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#061430" />
+      <stop offset="100%" stop-color="#0a1f44" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1030" cy="110" r="230" fill="#00c896" fill-opacity="0.1" />
+  <circle cx="200" cy="560" r="190" fill="#00c896" fill-opacity="0.12" />
+  <text x="90" y="270" fill="#ffffff" font-family="Outfit, Arial, sans-serif" font-size="86" font-weight="800">AMPTRON</text>
+  <text x="92" y="332" fill="#00c896" font-family="Outfit, Arial, sans-serif" font-size="34" font-weight="700">Powering India&apos;s Electric Future</text>
+  <text x="92" y="390" fill="#d7e1f0" font-family="Geist, Arial, sans-serif" font-size="30">Dealer-ready EV scooters. Built for scale.</text>
+</svg>

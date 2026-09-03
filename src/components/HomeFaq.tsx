@@ -5,12 +5,16 @@ import SectionHeader from './ui/SectionHeader'
 const HOME_FAQ_SLUGS = [
   'what-is-amptron',
   'which-models',
+  'which-model-to-choose',
+  'model-pricing',
   'how-to-buy',
+  'direct-vs-showroom',
   'test-ride',
   'find-showroom',
-  'stock-amptron',
+  'running-cost-savings',
+  'service-locations',
   'warranty',
-  'storm-overview',
+  'stock-amptron',
 ]
 
 export default function HomeFaq() {

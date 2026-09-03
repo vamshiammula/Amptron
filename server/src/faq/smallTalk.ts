@@ -37,6 +37,10 @@ const PHRASES: Phrase[] = [
     'salaam',
     'yo',
     'hai',
+    'hallo',
+    'hola',
+    'helo',
+    'hiya',
   ].map((value) => ({
     intent: 'greeting' as const,
     value,
@@ -84,10 +88,41 @@ const PHRASES: Phrase[] = [
     'bagunnara',
     'how do you do',
   ].map((value) => ({ intent: 'how_are_you' as const, value, fuzzy: true })),
+  // Assistant capabilities
+  ...[
+    'who are you',
+    'what are you',
+    'how can you help me',
+    'how can you help',
+    'what can you do for me',
+    'what can you do',
+    'what do you do',
+    'how do you help',
+    'what can i ask',
+    'what questions can you answer',
+    'how does this work',
+    'how does this chat work',
+    'aap kya kar sakte ho',
+    'aap kya help kar sakte ho',
+  ].map((value) => ({ intent: 'capabilities' as const, value, fuzzy: true })),
+  // Frustration / unhelpful feedback
+  ...[
+    'i dont like this',
+    'not helpful',
+    'useless',
+    'bad answer',
+    'wrong answer',
+    'this is wrong',
+    'that is wrong',
+    'did not help',
+  ].map((value) => ({ intent: 'unhelpful' as const, value, fuzzy: true })),
 ]
 
 export function normalizeSmallTalk(input: string): string {
   return input
+    .normalize('NFKC')
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
     .normalize('NFKC')
     .toLowerCase()
     .replace(/[\u{1F300}-\u{1FAFF}]/gu, ' ')
@@ -96,7 +131,42 @@ export function normalizeSmallTalk(input: string): string {
     .trim()
 }
 
-function levenshtein(a: string, b: string): number {
+/** Catches stretched or accented greetings that fuzzy match would miss. */
+function matchGreetingHeuristic(normalized: string): boolean {
+  if (!normalized) return false
+  const compact = normalized.replace(/\s+/g, '')
+  if (/^h+i+!*\.?$/.test(compact)) return true
+  if (/^hallo+$/.test(compact)) return true
+  if (
+    ['hallo', 'hola', 'helo', 'hiya', 'hello', 'hey', 'yo', 'sup', 'hai', 'namaste'].includes(
+      normalized,
+    )
+  ) {
+    return true
+  }
+  return false
+}
+
+/** Meta questions about what the assistant can answer. */
+function matchCapabilitiesHeuristic(normalized: string): boolean {
+  const signals = [
+    'who are you',
+    'what are you',
+    'how can you help',
+    'what can you do',
+    'what do you do',
+    'how do you help',
+    'what can i ask',
+    'what questions can you',
+    'how does this work',
+    'how does this chat work',
+    'kya kar sakte ho',
+    'kya help kar sakte ho',
+  ]
+  return signals.some((signal) => normalized.includes(signal))
+}
+
+export function levenshtein(a: string, b: string): number {
   if (a === b) return 0
   if (a.length === 0) return b.length
   if (b.length === 0) return a.length
@@ -128,6 +198,11 @@ export function matchSmallTalk(query: string): SmallTalkIntent | null {
   if (!normalized) return null
   if (normalized.length > MAX_CHARS) return null
   if (normalized.split(' ').length > MAX_WORDS) return null
+
+  if (matchGreetingHeuristic(normalized)) return 'greeting'
+
+  if (matchCapabilitiesHeuristic(normalized)) return 'capabilities'
+
   if (PRODUCT_KEYWORDS.test(normalized)) return null
 
   let best: { intent: SmallTalkIntent; score: number } | null = null
@@ -138,7 +213,7 @@ export function matchSmallTalk(query: string): SmallTalkIntent | null {
     if (!phrase.fuzzy) continue
     if (Math.abs(normalized.length - phrase.value.length) > 6) continue
     const score = similarity(normalized, phrase.value)
-    const threshold = phrase.value.length <= 5 ? 0.86 : 0.8
+    const threshold = phrase.value.length <= 5 ? 0.75 : 0.8
     if (score >= threshold && (!best || score > best.score)) {
       best = { intent: phrase.intent, score }
     }

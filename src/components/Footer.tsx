@@ -1,50 +1,20 @@
+import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo-light.svg'
 import linkedin from '../assets/icons/linkedin.svg'
 import twitter from '../assets/icons/twitter.svg'
 import instagram from '../assets/icons/instagram.svg'
 import facebook from '../assets/icons/facebook.svg'
-
-const columns = [
-  {
-    title: 'Products',
-    links: [
-      ['Amptron Volt', '/models/amptron-volt'],
-      ['Amptron Storm', '/models/amptron-storm'],
-      ['Amptron Cruise', '/models/amptron-cruise'],
-      ['Compare Fleet', '/models'],
-    ],
-  },
-  {
-    title: 'Ride',
-    links: [
-      ['Buy Amptron', '/#buy'],
-      ['Book a Test Ride', '/#buy'],
-      ['Find a Showroom', '/dealers/locate'],
-      ['Warranty Policy', '/warranty'],
-    ],
-  },
-  {
-    title: 'Dealers',
-    links: [
-      ['Stock Amptron', '/#contact'],
-      ['Dealer Login', '/portal/login'],
-      ['Dealer Support Portal', '/portal'],
-    ],
-  },
-  {
-    title: 'Legal',
-    links: [
-      ['Privacy Policy', '/privacy'],
-      ['Terms of Service', '/terms'],
-      ['Contact Support', '/#buy'],
-    ],
-  },
-]
+import { HEADQUARTERS } from '../data/headquarters'
+import { formatInr } from '../data/pricing'
+import { useSiteContent } from '../lib/siteContent'
 
 export default function Footer() {
+  const { models } = useSiteContent()
+  const year = new Date().getFullYear()
+
   return (
     <footer className="footer">
-      <div className="footer-top">
+      <div className="wrap footer-top">
         <div className="footer-brand">
           <img src={logo} alt="Amptron" width={400} height={80} loading="lazy" />
           <p>
@@ -53,22 +23,46 @@ export default function Footer() {
           </p>
         </div>
         <div className="footer-cols">
-          {columns.map((column) => (
-            <div className="footer-col" key={column.title}>
-              <h4>{column.title}</h4>
-              {column.links.map(([label, href]) => (
-                <a key={label} href={href}>
-                  {label}
-                </a>
-              ))}
-            </div>
-          ))}
+          <div className="footer-col">
+            <h4>Scooters</h4>
+            {models.map((model) => (
+              <span key={model.slug}>
+                <Link to={`/models/${model.slug}`}>{model.name}</Link>
+                {model.pricing ? (
+                  <small>
+                    Starting at {formatInr(model.pricing.exShowroomInr)}
+                  </small>
+                ) : null}
+              </span>
+            ))}
+            <Link to="/models">Compare Fleet</Link>
+          </div>
+          <div className="footer-col">
+            <h4>Ride</h4>
+            <a href="/#buy">Buy Amptron</a>
+            <Link to="/book-test-ride">Book a Test Ride</Link>
+            <Link to="/dealers/locate">Find a Showroom</Link>
+            <Link to="/warranty">Warranty Policy</Link>
+          </div>
+          <div className="footer-col">
+            <h4>Dealers</h4>
+            <a href="/#contact">Stock Amptron</a>
+            <Link to="/portal/login">Dealer Login</Link>
+            <Link to="/portal">Dealer Support Portal</Link>
+          </div>
+          <div className="footer-col">
+            <h4>Company</h4>
+            <Link to="/about">About Amptron</Link>
+            <Link to="/blog">Blog</Link>
+            <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/terms">Terms of Service</Link>
+            <a href="/#buy">Contact Support</a>
+          </div>
         </div>
       </div>
-      <div className="footer-bottom">
+      <div className="wrap footer-bottom">
         <p>
-          © {new Date().getFullYear()} Amptron Manufacturing Pvt. Ltd. All rights
-          reserved.
+          © {year} {HEADQUARTERS.legalName} {HEADQUARTERS.street}
         </p>
         <div className="socials">
           <a href="https://www.linkedin.com/company/amptron" aria-label="LinkedIn">

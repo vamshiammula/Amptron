@@ -14,6 +14,7 @@ import {
   type SupportLanguage,
   type SupportReason,
 } from '@shared/faqConstants'
+import { OPEN_CHAT_EVENT } from '../lib/openChat'
 import './ChatWidget.css'
 
 type MatchResponse =
@@ -44,7 +45,7 @@ const SUGGESTIONS_FALLBACK = [
 
 const CTA_COPY: Record<FaqCta, { label: string; to: string }> = {
   buy: { label: 'Buy Amptron', to: '/#buy' },
-  test_ride: { label: 'Book a Test Ride', to: '/#buy' },
+  test_ride: { label: 'Book a Test Ride', to: '/book-test-ride' },
   showroom: { label: 'Find a Showroom', to: '/dealers/locate' },
   stock: { label: 'Stock Amptron', to: '/#contact' },
 }
@@ -126,6 +127,12 @@ export default function ChatWidget() {
   const [contact, setContact] = useState(EMPTY_CONTACT)
   const [contactError, setContactError] = useState<string | null>(null)
   const [contactSent, setContactSent] = useState(false)
+
+  useEffect(() => {
+    const onOpen = () => setOpen(true)
+    window.addEventListener(OPEN_CHAT_EVENT, onOpen)
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen)
+  }, [])
 
   const hidden = HIDDEN_PREFIXES.some((prefix) =>
     location.pathname.startsWith(prefix),

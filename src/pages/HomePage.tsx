@@ -1,12 +1,14 @@
 import Contact from '../components/Contact'
 import Dealers from '../components/Dealers'
 import Hero from '../components/Hero'
+import HomeFaq from '../components/HomeFaq'
+import ModelRail from '../components/ModelRail'
 import Numbers from '../components/Numbers'
-import Products from '../components/Products'
+import Ownership from '../components/Ownership'
+import SavingsCalculator from '../components/SavingsCalculator'
 import Seo from '../components/Seo'
 import Technology from '../components/Technology'
 import Testimonials from '../components/Testimonials'
-import WhyAmptron from '../components/WhyAmptron'
 
 export default function HomePage() {
   return (
@@ -18,12 +20,14 @@ export default function HomePage() {
       />
       <main id="main">
         <Hero />
-        <Products />
-        <WhyAmptron />
+        <ModelRail />
         <Technology />
-        <Dealers />
         <Numbers />
+        <SavingsCalculator />
+        <Ownership />
+        <Dealers />
         <Testimonials />
+        <HomeFaq />
         <Contact />
       </main>
     </>

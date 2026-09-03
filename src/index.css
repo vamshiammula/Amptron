@@ -21,6 +21,7 @@
   --max: 1440px;
 
   /* Compact on a 360px phone, brand sizes by 1100px. */
+  --fs-display: clamp(2rem, 0.55rem + 6.4vw, 5rem);
   --fs-hero: clamp(1.625rem, 0.71rem + 4.05vw, 3.5rem);
   --fs-title: clamp(1.375rem, 0.83rem + 2.43vw, 2.5rem);
   --fs-card: clamp(1.0625rem, 0.85rem + 0.95vw, 1.5rem);
@@ -31,6 +32,34 @@
   --fs-stat: clamp(1.5rem, 0.77rem + 3.24vw, 3rem);
   --fs-eyebrow: clamp(0.75rem, 0.68rem + 0.3vw, 0.875rem);
 
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+
+  --radius-control: 8px;
+  --radius-chip: 12px;
+  --radius-card: 16px;
+  --radius-pill: 100px;
+
+  --shadow-navy: 0 12px 32px rgba(10, 31, 68, 0.08);
+  --hero-overlay: linear-gradient(
+    180deg,
+    rgba(6, 20, 48, 0.28) 0%,
+    rgba(10, 31, 68, 0.72) 55%,
+    rgba(6, 20, 48, 0.92) 100%
+  );
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur-med: 400ms;
+  --dur-slow: 700ms;
+
   --pad: 16px;
   --section-y: 32px;
   --section-gap: 24px;
@@ -39,6 +68,7 @@
   --card-pad: 16px;
   --quote-pad: 20px;
   --stats-y: 32px;
+  --nav-h: 72px;
 }
 
 *,
@@ -71,6 +101,7 @@ img {
 
 button,
 input,
+select,
 textarea,
 a {
   font-family: inherit;
@@ -136,6 +167,7 @@ a {
     --hero-gap: 24px;
     --quote-pad: 28px;
     --stats-y: 48px;
+    --nav-h: 80px;
   }
 }
 
@@ -149,5 +181,6 @@ a {
     --card-pad: 28px;
     --quote-pad: 36px;
     --stats-y: 64px;
+    --nav-h: 88px;
   }
 }

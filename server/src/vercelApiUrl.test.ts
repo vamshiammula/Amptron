@@ -8,7 +8,9 @@ describe('restoreVercelApiUrl', () => {
 
   it('rebuilds the path from the rewrite query', () => {
     expect(restoreVercelApiUrl('/api?__orig=faq/match')).toBe('/api/faq/match')
-    expect(restoreVercelApiUrl('/api?__orig=health/ready')).toBe('/api/health/ready')
+    expect(restoreVercelApiUrl('/api?__orig=health/ready')).toBe(
+      '/api/health/ready',
+    )
   })
 
   it('prefixes a stripped path so Express still sees /api', () => {

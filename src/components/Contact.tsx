@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import {
   APPLICATION_LIMITS,
   applicationSchema,
@@ -24,9 +24,10 @@ const EMPTY_FORM: ApplicationInput = {
 }
 
 const BUY_PROFILE_PREFIX = 'Direct purchase or test-ride. '
+const RIDE_PROFILE_PREFIX = 'Test ride request. '
 
 type Status = 'idle' | 'submitting' | 'success'
-type InquiryKind = 'buy' | 'stock'
+export type InquiryKind = 'buy' | 'testRide' | 'stock'
 type FieldElement = HTMLInputElement | HTMLTextAreaElement
 
 const COPY: Record<
@@ -82,16 +83,41 @@ const COPY: Record<
     sending: 'Sending your application…',
     reset: 'Submit another application',
   },
+  testRide: {
+    headingId: 'ride-heading',
+    title: 'Book a Test Ride',
+    lead: 'Tell us the model (Volt, Storm, or Cruise) and your city. We will confirm a slot, or point you to a partner showroom.',
+    emailLabel: 'Email',
+    emailPlaceholder: 'you@email.com',
+    nameLabel: 'Your Name',
+    phoneLabel: 'Mobile Number',
+    cityLabel: 'City',
+    cityPlaceholder: 'e.g. Pune, Maharashtra',
+    profileLabel: 'Which model, and when can you ride?',
+    profilePlaceholder: 'Amptron Storm this Saturday morning, around Sector 18...',
+    submit: 'Book a Test Ride',
+    sending: 'Sending your request…',
+    reset: 'Send another request',
+  },
 }
 
-function describedBy(fieldId: string, error?: string): string | undefined {
-  return error ? `${fieldId}-error` : undefined
+function describedBy(inputId: string, error?: string): string | undefined {
+  return error ? `${inputId}-error` : undefined
 }
 
-function InquiryForm({ kind }: Readonly<{ kind: InquiryKind }>) {
+function fieldId(kind: InquiryKind, field: ApplicationField): string {
+  if (kind === 'stock') return field
+  if (kind === 'testRide') return `ride-${field}`
+  return `buy-${field}`
+}
+
+export function InquiryForm({
+  kind,
+  headingLevel = 'h2',
+}: Readonly<{ kind: InquiryKind; headingLevel?: 'h2' | 'h3' }>) {
   const copy = COPY[kind]
-  const id = (field: ApplicationField) =>
-    kind === 'stock' ? field : `buy-${field}`
+  const id = (field: ApplicationField) => fieldId(kind, field)
+  const Heading = headingLevel
 
   const [values, setValues] = useState<ApplicationInput>(EMPTY_FORM)
   const [errors, setErrors] = useState<FieldErrors>({})
@@ -132,16 +158,21 @@ function InquiryForm({ kind }: Readonly<{ kind: InquiryKind }>) {
       return
     }
 
-    const payload: ApplicationInput =
+    const prefix =
       kind === 'buy'
-        ? {
-            ...parsed.data,
-            profile: `${BUY_PROFILE_PREFIX}${parsed.data.profile}`.slice(
-              0,
-              APPLICATION_LIMITS.profile.max,
-            ),
-          }
-        : parsed.data
+        ? BUY_PROFILE_PREFIX
+        : kind === 'testRide'
+          ? RIDE_PROFILE_PREFIX
+          : ''
+    const payload: ApplicationInput = prefix
+      ? {
+          ...parsed.data,
+          profile: `${prefix}${parsed.data.profile}`.slice(
+            0,
+            APPLICATION_LIMITS.profile.max,
+          ),
+        }
+      : parsed.data
 
     setErrors({})
     setStatus('submitting')
@@ -175,7 +206,7 @@ function InquiryForm({ kind }: Readonly<{ kind: InquiryKind }>) {
 
   return (
     <div className="contact-form">
-      <h2 id={copy.headingId}>{copy.title}</h2>
+      <Heading id={copy.headingId}>{copy.title}</Heading>
       <p className="contact-lead">{copy.lead}</p>
 
       {status === 'success' ? (
@@ -345,16 +376,61 @@ function InquiryForm({ kind }: Readonly<{ kind: InquiryKind }>) {
   )
 }
 
+const TABS: Array<{ kind: InquiryKind; hash: string; label: string }> = [
+  { kind: 'buy', hash: 'buy', label: 'Buy Amptron' },
+  { kind: 'testRide', hash: 'test-ride', label: 'Book a Test Ride' },
+  { kind: 'stock', hash: 'contact', label: 'Stock Amptron' },
+]
+
+function tabFromHash(hash: string): InquiryKind {
+  const match = TABS.find((tab) => `#${tab.hash}` === hash)
+  return match?.kind ?? 'buy'
+}
+
 export default function Contact() {
+  const [tab, setTab] = useState<InquiryKind>(() =>
+    tabFromHash(window.location.hash),
+  )
+
+  useEffect(() => {
+    const onHash = () => setTab(tabFromHash(window.location.hash))
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  const selectTab = (kind: InquiryKind) => {
+    setTab(kind)
+    const next = TABS.find((item) => item.kind === kind)
+    if (next) window.history.replaceState(null, '', `#${next.hash}`)
+  }
+
   return (
     <section className="contact">
       <div className="contact-forms">
-        <section id="buy" aria-labelledby="buy-heading">
-          <InquiryForm kind="buy" />
-        </section>
-        <section id="contact" aria-labelledby="stock-heading">
-          <InquiryForm kind="stock" />
-        </section>
+        <div className="contact-tabs" role="tablist" aria-label="Enquiry type">
+          {TABS.map((item) => (
+            <button
+              key={item.kind}
+              type="button"
+              role="tab"
+              aria-selected={tab === item.kind}
+              onClick={() => selectTab(item.kind)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        {TABS.map((item) => (
+          <section
+            key={item.kind}
+            id={item.hash}
+            role="tabpanel"
+            hidden={tab !== item.kind}
+            aria-labelledby={COPY[item.kind].headingId}
+          >
+            {tab === item.kind ? <InquiryForm kind={item.kind} /> : null}
+          </section>
+        ))}
       </div>
 
       <aside className="hq">

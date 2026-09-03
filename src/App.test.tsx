@@ -20,13 +20,14 @@ describe('App', () => {
       .map((heading) => heading.textContent)
 
     expect(headings).toEqual([
-      'Our Electric Scooter Range',
-      'Built to Ride. Backed to Sell.',
-      'Engineering Excellence',
+      'Choose your Amptron',
+      'Built around what you actually need',
+      'Plan your monthly cost',
+      'Service, warranty, and spares',
       'Partner With Amptron',
-      'What Our Dealers Say',
+      'What our dealers say',
+      'Frequently asked questions',
       'Buy Amptron',
-      'Stock Amptron',
     ])
   })
 

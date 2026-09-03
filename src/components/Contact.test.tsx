@@ -20,7 +20,12 @@ function jsonResponse(status: number, body: unknown): Response {
   } as Response
 }
 
+async function showStockTab(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('tab', { name: 'Stock Amptron' }))
+}
+
 async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
+  await showStockTab(user)
   for (const [label, value] of Object.entries(validEntries)) {
     await user.type(screen.getByLabelText(label), value)
   }
@@ -68,8 +73,14 @@ describe('Contact form', () => {
     )
   })
 
-  it('renders every application field', () => {
+  it('renders every application field', async () => {
+    const user = userEvent.setup()
     render(<Contact />)
+
+    expect(screen.getByRole('heading', { name: 'Buy Amptron' })).toBeVisible()
+    expect(screen.getByRole('button', { name: /request to buy/i })).toBeEnabled()
+
+    await showStockTab(user)
 
     for (const label of Object.keys(validEntries)) {
       expect(screen.getByLabelText(label)).toBeInTheDocument()
@@ -77,8 +88,6 @@ describe('Contact form', () => {
     expect(
       screen.getByRole('button', { name: /submit b2b application/i }),
     ).toBeEnabled()
-    expect(screen.getByRole('heading', { name: 'Buy Amptron' })).toBeVisible()
-    expect(screen.getByRole('button', { name: /request to buy/i })).toBeEnabled()
   })
 
   it('shows validation messages without calling the API', async () => {
@@ -86,6 +95,7 @@ describe('Contact form', () => {
     const fetchMock = mockFetch(async () => jsonResponse(201, {}))
     render(<Contact />)
 
+    await showStockTab(user)
     await user.click(
       screen.getByRole('button', { name: /submit b2b application/i }),
     )
@@ -100,6 +110,7 @@ describe('Contact form', () => {
     mockFetch(async () => jsonResponse(201, {}))
     render(<Contact />)
 
+    await showStockTab(user)
     await user.click(
       screen.getByRole('button', { name: /submit b2b application/i }),
     )
@@ -115,6 +126,7 @@ describe('Contact form', () => {
     mockFetch(async () => jsonResponse(201, {}))
     render(<Contact />)
 
+    await showStockTab(user)
     await user.click(
       screen.getByRole('button', { name: /submit b2b application/i }),
     )
@@ -280,6 +292,7 @@ describe('Contact form', () => {
     const user = userEvent.setup()
     render(<Contact />)
 
+    await showStockTab(user)
     await user.type(
       screen.getByLabelText('Brief Showroom Experience & Profile'),
       'Hello',

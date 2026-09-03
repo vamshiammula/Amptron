@@ -32,7 +32,7 @@ test.describe('dealer application', () => {
       page.getByRole('heading', { level: 1, name: /powering india's/i }),
     ).toBeVisible()
     await expect(
-      page.getByRole('heading', { name: 'Our Electric Scooter Range' }),
+      page.getByRole('heading', { name: 'Choose your Amptron' }),
     ).toBeVisible()
     await expect(
       page.getByLabel('Amptron electric scooter product showcase'),

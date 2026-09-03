@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
+import PageHero from '../components/ui/PageHero'
 import { mapsSearchUrl } from '../lib/maps'
 
 interface DealerRecord {
@@ -70,81 +72,130 @@ export default function DealerLocatorPage() {
         description="Find an Amptron showroom, or buy from us directly. Search partners by state, city, and area."
         path="/dealers/locate"
       />
-      <main id="main" className="content-page">
-        <section className="content-hero">
-          <p className="content-eyebrow">Dealer Network</p>
-          <h1>Find an Amptron Showroom</h1>
-          <p>
-            Search by state and city for authorized sales and service partners. You
-            can also buy from Amptron directly.
-          </p>
-        </section>
+      <main id="main" className="site-page">
+        <PageHero
+          eyebrow="Dealer network"
+          title="Find an Amptron Showroom"
+          lede="Search by state and city for authorized sales and service partners. Prefer to skip the trip? You can also buy from Amptron directly."
+        >
+          <a className="btn btn-primary" href="/#buy">
+            Buy Amptron
+          </a>
+          <Link className="btn btn-ghost-dark" to="/book-test-ride">
+            Book a Test Ride
+          </Link>
+        </PageHero>
 
-        <section className="locator-filters">
-          <label>
-            State
-            <select
-              value={stateFilter}
-              onChange={(event) => {
-                setStateFilter(event.target.value)
-                setCityFilter('')
-              }}
-            >
-              <option value="">All States</option>
-              {states.map((state) => (
-                <option value={state} key={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            City
-            <select
-              value={cityFilter}
-              onChange={(event) => setCityFilter(event.target.value)}
-            >
-              <option value="">All Cities</option>
-              {cities.map((city) => (
-                <option value={city} key={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </label>
-        </section>
-
-        {loading ? <p className="content-note">Loading dealer network...</p> : null}
-        {error ? <p className="content-note content-error">{error}</p> : null}
-
-        <section className="dealer-results">
-          {filteredDealers.map((dealer) => (
-            <article className="dealer-card" key={dealer.id}>
-              <h2>{dealer.name}</h2>
-              <p>
-                {dealer.area}, {dealer.city}, {dealer.state}
-              </p>
-              <div className="dealer-card-actions">
-                <a href={`tel:${dealer.phone}`}>{dealer.phone}</a>
-                <a
-                  href={mapsSearchUrl(
-                    `${dealer.name}, ${dealer.area}, ${dealer.city}, ${dealer.state}`,
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Open in Maps
-                </a>
+        <section className="page-section page-section--fog">
+          <div className="wrap">
+            <div className="locator-panel">
+              <div className="locator-filters">
+                <label>
+                  State
+                  <select
+                    value={stateFilter}
+                    onChange={(event) => {
+                      setStateFilter(event.target.value)
+                      setCityFilter('')
+                    }}
+                  >
+                    <option value="">All States</option>
+                    {states.map((state) => (
+                      <option value={state} key={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  City
+                  <select
+                    value={cityFilter}
+                    onChange={(event) => setCityFilter(event.target.value)}
+                  >
+                    <option value="">All Cities</option>
+                    {cities.map((city) => (
+                      <option value={city} key={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               </div>
-            </article>
-          ))}
-          {!loading && !error && filteredDealers.length === 0 ? (
-            <p className="content-note">
-              No showrooms found for this filter.{' '}
-              <a href="/#buy">Buy from Amptron directly</a>, or contact us to find a
-              partner in your region.
-            </p>
-          ) : null}
+              <p className="content-note" aria-live="polite">
+                {loading
+                  ? 'Loading dealer network...'
+                  : error
+                    ? error
+                    : `${filteredDealers.length} showroom${filteredDealers.length === 1 ? '' : 's'}${stateFilter ? ` in ${cityFilter || stateFilter}` : ' across India'}`}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="page-section">
+          <div className="wrap">
+            {!loading && !error && filteredDealers.length === 0 ? (
+              <div className="locator-empty">
+                <h2>No showrooms for this filter yet.</h2>
+                <p>
+                  Amptron ships direct anywhere we can service. Buy from us, or tell
+                  us your city and we will point you to the nearest partner.
+                </p>
+                <div className="model-actions">
+                  <a className="btn btn-primary" href="/#buy">
+                    Buy Amptron
+                  </a>
+                  <a className="btn btn-ghost-dark" href="/#contact">
+                    Contact Amptron
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <div className="dealer-results">
+                {filteredDealers.map((dealer) => (
+                  <article className="dealer-card" key={dealer.id}>
+                    <h2>{dealer.name}</h2>
+                    <p>
+                      {dealer.area}, {dealer.city}, {dealer.state}
+                    </p>
+                    <div className="dealer-card-actions">
+                      <a href={`tel:${dealer.phone}`}>{dealer.phone}</a>
+                      <a
+                        href={mapsSearchUrl(
+                          `${dealer.name}, ${dealer.area}, ${dealer.city}, ${dealer.state}`,
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Open in Maps
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="cta-band">
+          <div className="wrap cta-band-inner">
+            <div>
+              <h2>Run an EV showroom? Stock Amptron.</h2>
+              <p>
+                No exclusive dealership required. Put Amptron next to the brands you
+                already sell, with spares and a relationship manager behind it.
+              </p>
+            </div>
+            <div className="cta-band-actions">
+              <a className="btn btn-primary" href="/#contact">
+                Stock Amptron
+              </a>
+              <Link className="btn btn-ghost" to="/portal/login">
+                Dealer Login
+              </Link>
+            </div>
+          </div>
         </section>
       </main>
     </>

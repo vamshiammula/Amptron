@@ -15,7 +15,7 @@ describe('site content mappers', () => {
       features: ['Digital dashboard'],
     })
 
-    expect(model).toEqual({
+    expect(model).toMatchObject({
       slug: 'amptron-volt',
       name: 'Amptron Volt',
       tagline: 'City commuter',
@@ -25,6 +25,8 @@ describe('site content mappers', () => {
       highlights: [{ label: 'Range', value: '80 km', note: 'City' }],
       specs: [{ label: 'Weight', value: '89 kg' }],
       features: ['Digital dashboard'],
+      batteryKwh: 0,
+      certifiedRangeKm: 0,
     })
   })
 

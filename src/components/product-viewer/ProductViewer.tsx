@@ -57,9 +57,17 @@ function resolveExperiences(config: ProductViewerConfig): ProductExperience[] {
 export default function ProductViewer({
   model,
   config,
+  colorwayId: controlledColorwayId,
+  onColorwayChange,
+  embedded = false,
 }: Readonly<{
   model: ScooterModel
   config: ProductViewerConfig
+  /** Controlled colorway; when set, the page owns the colour picker. */
+  colorwayId?: string
+  onColorwayChange?: (id: string) => void
+  /** Hide the masthead when the surrounding page already shows name and colours. */
+  embedded?: boolean
 }>) {
   const modes = useMemo(() => resolveExperiences(config), [config])
   const colorways = useMemo(
@@ -69,7 +77,12 @@ export default function ProductViewer({
         : [{ id: 'base', name: config.color.name, swatch: config.color.swatch }],
     [config],
   )
-  const [colorwayId, setColorwayId] = useState(colorways[0].id)
+  const [internalColorwayId, setInternalColorwayId] = useState(colorways[0].id)
+  const colorwayId = controlledColorwayId ?? internalColorwayId
+  const setColorwayId = (id: string) => {
+    setInternalColorwayId(id)
+    onColorwayChange?.(id)
+  }
   const colorway = colorways.find((item) => item.id === colorwayId) ?? colorways[0]
   const [modeId, setModeId] = useState<ProductViewerMode>(
     modes[0]?.id ?? 'exterior',
@@ -302,7 +315,7 @@ export default function ProductViewer({
             </button>
           </div>
         ) : null}
-        <header className="product-viewer-masthead">
+        <header className="product-viewer-masthead" hidden={embedded}>
           <h2>{model.name}</h2>
           <p className="product-viewer-color">
             <span

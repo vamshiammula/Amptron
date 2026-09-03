@@ -3,8 +3,10 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import ScrollToHash from './components/ScrollToHash'
+import AboutPage from './pages/AboutPage'
 import AdminPage from './pages/AdminPage'
 import BlogPage from './pages/BlogPage'
+import BookTestRidePage from './pages/BookTestRidePage'
 import DealerLocatorPage from './pages/DealerLocatorPage'
 import HomePage from './pages/HomePage'
 import ModelDetailPage from './pages/ModelDetailPage'
@@ -16,6 +18,7 @@ import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import WarrantyPage from './pages/WarrantyPage'
 import './App.css'
+import './styles/public.css'
 
 const ChatWidget = lazy(() => import('./components/ChatWidget'))
 
@@ -31,6 +34,8 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/models" element={<ModelsPage />} />
         <Route path="/models/:slug" element={<ModelDetailPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/book-test-ride" element={<BookTestRidePage />} />
         <Route path="/dealers/locate" element={<DealerLocatorPage />} />
         <Route path="/partner" element={<Navigate to="/" replace />} />
         <Route path="/portal/login" element={<PortalLoginPage />} />

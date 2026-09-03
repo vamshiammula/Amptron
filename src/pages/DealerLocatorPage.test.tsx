@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { HelmetProvider } from 'react-helmet-async'
+import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import DealerLocatorPage from './DealerLocatorPage'
 
@@ -38,7 +39,9 @@ describe('Dealer locator', () => {
   it('opens a showroom in Maps from the listing card', async () => {
     render(
       <HelmetProvider>
-        <DealerLocatorPage />
+        <MemoryRouter>
+          <DealerLocatorPage />
+        </MemoryRouter>
       </HelmetProvider>,
     )
 
@@ -48,5 +51,27 @@ describe('Dealer locator', () => {
       /google\.com\/maps|maps\.apple\.com/,
     )
     expect(mapsLink.getAttribute('href')).toMatch(/Thaltej/)
+    expect(await screen.findByText('1 showroom across India')).toBeInTheDocument()
+  })
+
+  it('offers direct purchase when no showroom matches', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => jsonResponse({ dealers: [] })),
+    )
+    render(
+      <HelmetProvider>
+        <MemoryRouter>
+          <DealerLocatorPage />
+        </MemoryRouter>
+      </HelmetProvider>,
+    )
+
+    expect(
+      await screen.findByText('No showrooms for this filter yet.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getAllByRole('link', { name: 'Buy Amptron' }).length,
+    ).toBeGreaterThan(0)
   })
 })

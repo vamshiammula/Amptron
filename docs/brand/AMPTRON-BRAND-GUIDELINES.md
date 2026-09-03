@@ -8,10 +8,10 @@ This is the source of truth for how Amptron looks, sounds, and behaves. Use it f
 
 **How this book is organised**
 
-| Part | Sections | Who owns it |
-| ---- | -------- | ----------- |
-| **I. Brand Platform** | §§1–25 | Founders and leadership. This is what Amptron stands for. Agencies and product teams execute it; they do not rewrite it. |
-| **II. Visual system** | §§26–34 | Design and product. Logo, colour, type, graphic tools, and channel tactics that express the platform. |
+| Part                  | Sections | Who owns it                                                                                                              |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **I. Brand Platform** | §§1–25   | Founders and leadership. This is what Amptron stands for. Agencies and product teams execute it; they do not rewrite it. |
+| **II. Visual system** | §§26–34  | Design and product. Logo, colour, type, graphic tools, and channel tactics that express the platform.                    |
 
 If a choice is not specified here, default to **dependable simplicity**, **one brand for riders and dealers**, and the tokens already in `src/index.css`.
 
@@ -259,10 +259,10 @@ Amptron is against technology without sufficient customer value.
 
 Technology that protects the battery, improves safety, assists diagnostics, improves efficiency, or meaningfully simplifies ownership is valuable.
 
-| Verdict | Include |
-| ------- | ------- |
-| **Yes** | Quality BMS, battery protection, clear battery percentage, useful range information, essential vehicle diagnostics, safety systems, reliable controllers |
-| **Question carefully** | Connectivity, GPS, apps, keyless systems, advanced displays. Include them only when customer value justifies cost and complexity |
+| Verdict                      | Include                                                                                                                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Yes**                      | Quality BMS, battery protection, clear battery percentage, useful range information, essential vehicle diagnostics, safety systems, reliable controllers                |
+| **Question carefully**       | Connectivity, GPS, apps, keyless systems, advanced displays. Include them only when customer value justifies cost and complexity                                        |
 | **Generally not a priority** | Entertainment features, oversized touchscreens, elaborate animations, unnecessary connected functionality, and technology added primarily to increase the feature count |
 
 **Principle:** Technology must earn its place on an Amptron.
@@ -343,22 +343,22 @@ Do not turn specific claims about range, service turnaround, battery life, or wa
 
 This table is an internal decision framework for employees and product managers.
 
-| Amptron is            | Amptron is not              |
-| --------------------- | --------------------------- |
-| Affordable            | Cheaply built               |
-| Simple                | Primitive                   |
-| Practical             | Boring                      |
-| Reliable              | Overengineered              |
-| Modern                | Technology obsessed         |
-| Electric              | Gadget-first                |
-| Customer-focused      | Feature-count focused       |
-| Serviceable           | Disposable                  |
-| Transparent           | Marketing-hype driven       |
-| Value-conscious       | Lowest-cost-at-any-cost     |
+| Amptron is                            | Amptron is not                                          |
+| ------------------------------------- | ------------------------------------------------------- |
+| Affordable                            | Cheaply built                                           |
+| Simple                                | Primitive                                               |
+| Practical                             | Boring                                                  |
+| Reliable                              | Overengineered                                          |
+| Modern                                | Technology obsessed                                     |
+| Electric                              | Gadget-first                                            |
+| Customer-focused                      | Feature-count focused                                   |
+| Serviceable                           | Disposable                                              |
+| Transparent                           | Marketing-hype driven                                   |
+| Value-conscious                       | Lowest-cost-at-any-cost                                 |
 | Direct-to-rider _and_ dealer-supplied | Dealer-only, or D2C that pretends partners do not exist |
-| Multi-brand friendly  | An exclusive franchise scheme |
-| Spec-led and certified | A lifestyle / “revolutionary” scooter fashion brand |
-| Navy, teal, product-forward | Neon, chrome, racing-stripe theatre |
+| Multi-brand friendly                  | An exclusive franchise scheme                           |
+| Spec-led and certified                | A lifestyle / “revolutionary” scooter fashion brand     |
+| Navy, teal, product-forward           | Neon, chrome, racing-stripe theatre                     |
 
 ---
 
@@ -366,16 +366,16 @@ This table is an internal decision framework for employees and product managers.
 
 Amptron should feel:
 
-| Trait               | Means                                              | Does not mean                                      |
-| ------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| **Dependable**      | Customers trust us to start, last, and stand behind the scooter | Dull, or promising what we have not proven         |
-| **Straightforward** | We do not complicate simple things                 | Blunt, or hiding limitations                       |
-| **Practical**       | Real-world usefulness comes first                  | Unimaginative, or cheap-looking                    |
-| **Approachable**    | Customers do not need technical knowledge to understand us | Dumbing down safety, specs, or warranty            |
-| **Confident**       | We know what our product is designed to do         | Boastful or comparative trash-talk                 |
-| **Responsible**     | We stand behind what we sell                       | Paternal, or shifting blame to the rider           |
-| **Value-conscious** | We respect customers’ money                        | Bargain-bin, or “cheapest on the market”           |
-| **Open**            | Buy from us _or_ from a partner                    | Cutting dealers out, or hiding direct sales        |
+| Trait               | Means                                                           | Does not mean                               |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------- |
+| **Dependable**      | Customers trust us to start, last, and stand behind the scooter | Dull, or promising what we have not proven  |
+| **Straightforward** | We do not complicate simple things                              | Blunt, or hiding limitations                |
+| **Practical**       | Real-world usefulness comes first                               | Unimaginative, or cheap-looking             |
+| **Approachable**    | Customers do not need technical knowledge to understand us      | Dumbing down safety, specs, or warranty     |
+| **Confident**       | We know what our product is designed to do                      | Boastful or comparative trash-talk          |
+| **Responsible**     | We stand behind what we sell                                    | Paternal, or shifting blame to the rider    |
+| **Value-conscious** | We respect customers’ money                                     | Bargain-bin, or “cheapest on the market”    |
+| **Open**            | Buy from us _or_ from a partner                                 | Cutting dealers out, or hiding direct sales |
 
 Deliberately avoid making the brand overly futuristic, rebellious, flashy, or technology-obsessed.
 
@@ -413,17 +413,17 @@ That language does not match the customer or the philosophy.
 
 ### Register by channel
 
-| Channel                   | Register                                | Example                                           |
-| ------------------------- | --------------------------------------- | ------------------------------------------------- |
+| Channel                   | Register                               | Example                                           |
+| ------------------------- | -------------------------------------- | ------------------------------------------------- |
 | Website hero              | Confident, short, national, both paths | Powering India's Electric Future                  |
-| Product / buy             | Rider-direct, spec-true, ownership-led  | Buy Amptron Storm. Certified range 120 km.        |
-| Dealer CTA                | Direct, commercial                      | Stock Amptron                                     |
-| Portal / admin            | Calm, operational                       | We reply within 2 business days.                  |
-| Warranty / legal          | Plain, exact                            | Battery claims require charge-cycle diagnostics.  |
-| Social (riders)           | Useful commute and ownership            | How Storm’s 4-hour charge fits a workday.         |
-| Social (LinkedIn / trade) | Professional, partner-useful            | How to run a high-conversion test-ride Saturday.  |
-| WhatsApp (rider support)  | Warm, brief                             | Your Volt booking is confirmed. Delivery window…  |
-| WhatsApp (dealers)        | Warm, brief, no slang fire              | Parts for Storm CBS kits ship tomorrow. Ticket #… |
+| Product / buy             | Rider-direct, spec-true, ownership-led | Buy Amptron Storm. Certified range 120 km.        |
+| Dealer CTA                | Direct, commercial                     | Stock Amptron                                     |
+| Portal / admin            | Calm, operational                      | We reply within 2 business days.                  |
+| Warranty / legal          | Plain, exact                           | Battery claims require charge-cycle diagnostics.  |
+| Social (riders)           | Useful commute and ownership           | How Storm’s 4-hour charge fits a workday.         |
+| Social (LinkedIn / trade) | Professional, partner-useful           | How to run a high-conversion test-ride Saturday.  |
+| WhatsApp (rider support)  | Warm, brief                            | Your Volt booking is confirmed. Delivery window…  |
+| WhatsApp (dealers)        | Warm, brief, no slang fire             | Parts for Storm CBS kits ship tomorrow. Ticket #… |
 
 ### Words we use / avoid
 
@@ -459,16 +459,16 @@ That language does not match the customer or the philosophy.
 
 ### Rewrite examples
 
-| Off-brand | On-brand |
-| --------- | -------- |
-| Revolutionizing India's EV dreams | Certified, precision-assembled scooters. Buy from Amptron or a partner showroom |
-| Revolutionary AI-powered hyper-connected mobility | A scooter built to start every morning, with range you can plan around |
-| Experience the future of intelligent mobility | Dependable electric mobility without unnecessary complexity |
-| Become an exclusive Amptron franchisee | Stock Amptron next to the EV brands you already sell |
-| You can only buy through dealers | Buy Amptron from us, or find a showroom near you |
-| Unleash next-gen performance | Amptron Storm: 120 km certified range, 65 km/h |
-| Our ecosystem empowers stakeholders | Parts, warranty, and a relationship manager as you scale |
-| We’re the cheapest EV in the category | You shouldn’t have to pay for things you don’t need |
+| Off-brand                                         | On-brand                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Revolutionizing India's EV dreams                 | Certified, precision-assembled scooters. Buy from Amptron or a partner showroom |
+| Revolutionary AI-powered hyper-connected mobility | A scooter built to start every morning, with range you can plan around          |
+| Experience the future of intelligent mobility     | Dependable electric mobility without unnecessary complexity                     |
+| Become an exclusive Amptron franchisee            | Stock Amptron next to the EV brands you already sell                            |
+| You can only buy through dealers                  | Buy Amptron from us, or find a showroom near you                                |
+| Unleash next-gen performance                      | Amptron Storm: 120 km certified range, 65 km/h                                  |
+| Our ecosystem empowers stakeholders               | Parts, warranty, and a relationship manager as you scale                        |
+| We’re the cheapest EV in the category             | You shouldn’t have to pay for things you don’t need                             |
 
 ---
 
@@ -508,15 +508,15 @@ Every Amptron employee should understand this:
 
 **We’re not competing to put the most features on a scooter. We’re competing to create one of the best ownership experiences for the money.**
 
-| Function | Asks |
-| -------- | ---- |
-| Engineering | Will it last? |
-| Procurement | Are we buying quality where it matters? |
-| Assembly | Was it built correctly? |
-| Quality | Would we confidently give this scooter to our own family? |
-| Sales | Are we promising only what the product can deliver? |
-| Service | How quickly can we get this customer riding again? |
-| Management | Does this decision create long-term customer value? |
+| Function    | Asks                                                      |
+| ----------- | --------------------------------------------------------- |
+| Engineering | Will it last?                                             |
+| Procurement | Are we buying quality where it matters?                   |
+| Assembly    | Was it built correctly?                                   |
+| Quality     | Would we confidently give this scooter to our own family? |
+| Sales       | Are we promising only what the product can deliver?       |
+| Service     | How quickly can we get this customer riding again?        |
+| Management  | Does this decision create long-term customer value?       |
 
 That is how the philosophy becomes company culture rather than marketing language.
 

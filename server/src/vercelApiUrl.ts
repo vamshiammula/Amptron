@@ -21,7 +21,7 @@ export function restoreVercelApiUrl(
   const suffix = search ? `?${search}` : ''
 
   const restored =
-    toSafeApiPath(orig) ??
+    toSafeApiPath(orig ?? undefined) ??
     (parsed.pathname === '/api' || parsed.pathname === '/api/'
       ? toSafeApiPath(apiPrefixed(forwarded))
       : null) ??

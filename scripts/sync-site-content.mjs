@@ -59,6 +59,12 @@ const MODELS = [
     image_path: 'models/volt.webp',
     featured: false,
     sort_order: 1,
+    price_inr: 79990,
+    price_placeholder: true,
+    colours: [
+      { name: 'Glacier White', hex: '#E8EEF4' },
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -113,6 +119,14 @@ const MODELS = [
     image_path: 'models/storm.webp',
     featured: true,
     sort_order: 2,
+    price_inr: 109990,
+    price_placeholder: true,
+    colours: [
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+      { name: 'Crimson Red', hex: '#8E2434' },
+      { name: 'Forest Green', hex: '#1F5C46' },
+      { name: 'Graphite Grey', hex: '#3A3F47' },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -167,6 +181,12 @@ const MODELS = [
     image_path: 'models/cruise.webp',
     featured: false,
     sort_order: 3,
+    price_inr: 134990,
+    price_placeholder: true,
+    colours: [
+      { name: 'Graphite Grey', hex: '#3A3F47' },
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -289,6 +309,9 @@ async function main() {
       featured: model.featured,
       published: true,
       sort_order: model.sort_order,
+      price_inr: model.price_inr,
+      price_placeholder: model.price_placeholder,
+      colours: model.colours,
       highlights: model.highlights,
       specs: model.specs,
       features: model.features,

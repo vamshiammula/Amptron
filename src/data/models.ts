@@ -7,6 +7,32 @@ export interface ModelSpec {
   value: string
 }
 
+export interface ModelHighlight {
+  label: string
+  value: string
+  note: string
+}
+
+export interface ModelPricing {
+  exShowroomInr: number
+  note?: string
+  placeholder?: boolean
+}
+
+export interface ModelColour {
+  name: string
+  hex: string
+  image?: string
+}
+
+export interface ModelStory {
+  eyebrow: string
+  title: string
+  body: string
+  image?: string
+  imageAlt?: string
+}
+
 export interface ScooterModel {
   slug: string
   name: string
@@ -14,9 +40,15 @@ export interface ScooterModel {
   description: string
   image: string
   featured: boolean
-  highlights: Array<{ label: string; value: string; note: string }>
+  highlights: ModelHighlight[]
   specs: ModelSpec[]
   features: string[]
+  pricing?: ModelPricing
+  colours?: ModelColour[]
+  story?: ModelStory[]
+  video?: string
+  batteryKwh: number
+  certifiedRangeKm: number
 }
 
 export const scooterModels: ScooterModel[] = [
@@ -28,6 +60,35 @@ export const scooterModels: ScooterModel[] = [
       'Agile, cost-efficient city commuter: easy to own, easy to service, built for short urban hops and high-frequency use.',
     image: volt,
     featured: false,
+    batteryKwh: 2.0,
+    certifiedRangeKm: 80,
+    pricing: { exShowroomInr: 79990, placeholder: true },
+    colours: [
+      { name: 'Glacier White', hex: '#E8EEF4' },
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+    ],
+    story: [
+      {
+        eyebrow: 'Range',
+        title: '80 km certified range',
+        body: 'Single-charge city coverage for short urban hops and high-frequency use. A number you can plan a day around.',
+      },
+      {
+        eyebrow: 'Charging',
+        title: '3.5 hours on a household socket',
+        body: 'Fast turnaround between shifts. Plug in at home. No special charger required to own Volt.',
+      },
+      {
+        eyebrow: 'Category',
+        title: '25 km/h low-speed compliance',
+        body: 'Built for dense city routes where registration and everyday usefulness matter more than top speed.',
+      },
+      {
+        eyebrow: 'Ownership',
+        title: 'Easy to own, easy to service',
+        body: 'Digital dashboard, reverse assist, remote lock, and regenerative braking support. Parts and warranty stay behind the machine.',
+      },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -81,6 +142,37 @@ export const scooterModels: ScooterModel[] = [
       'High-torque acceleration, rugged suspension, and practical range, built for mixed-terrain commutes and confident test rides.',
     image: storm,
     featured: true,
+    batteryKwh: 2.65,
+    certifiedRangeKm: 120,
+    pricing: { exShowroomInr: 109990, placeholder: true },
+    colours: [
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+      { name: 'Crimson Red', hex: '#8E2434' },
+      { name: 'Forest Green', hex: '#1F5C46' },
+      { name: 'Graphite Grey', hex: '#3A3F47' },
+    ],
+    story: [
+      {
+        eyebrow: 'Range',
+        title: '120 km certified range',
+        body: 'Balanced for a full day of mixed-terrain commuting. The Most Popular Amptron, with range you can plan around.',
+      },
+      {
+        eyebrow: 'Speed',
+        title: '65 km/h city to suburban',
+        body: 'Comfortable travel beyond dense streets, without adding complexity you will not use.',
+      },
+      {
+        eyebrow: 'Ride',
+        title: 'Eco, City, and Power modes',
+        body: 'Choose the day you are having. Keyless start, a digital TFT console, and regenerative braking are on the machine, not in a brochure.',
+      },
+      {
+        eyebrow: 'Charging',
+        title: '4.0 hours to a full pack',
+        body: 'Optimized for daytime recharge cycles. Charge at home on a household socket.',
+      },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -134,6 +226,35 @@ export const scooterModels: ScooterModel[] = [
       'A comfort-focused long-range scooter for extended commutes, road presence, and confident highway stretches.',
     image: cruise,
     featured: false,
+    batteryKwh: 3.4,
+    certifiedRangeKm: 150,
+    pricing: { exShowroomInr: 134990, placeholder: true },
+    colours: [
+      { name: 'Graphite Grey', hex: '#3A3F47' },
+      { name: 'Midnight Navy', hex: '#0A1F44' },
+    ],
+    story: [
+      {
+        eyebrow: 'Range',
+        title: '150 km certified range',
+        body: 'Extended touring capability for all-day rides. The flagship Amptron, built around range and comfort.',
+      },
+      {
+        eyebrow: 'Speed',
+        title: '80 km/h regional mobility',
+        body: 'Comfortable highway stretches without turning the scooter into a gadget showcase.',
+      },
+      {
+        eyebrow: 'Comfort',
+        title: 'Wide floorboard and pillion kit',
+        body: 'Cruise control, reverse mode, and keyless proximity unlock. Space and ride quality first.',
+      },
+      {
+        eyebrow: 'Charging',
+        title: '4.5 hours for the high-capacity pack',
+        body: 'Charge at home. The 3.4 kWh pack is sized for the day, not for a spec sheet.',
+      },
+    ],
     highlights: [
       {
         label: 'Certified Range',
@@ -180,3 +301,20 @@ export const scooterModels: ScooterModel[] = [
 export function getModelBySlug(slug: string): ScooterModel | undefined {
   return scooterModels.find((model) => model.slug === slug)
 }
+
+export function specValue(model: ScooterModel, label: string): string {
+  const spec = model.specs.find((item) => item.label === label)
+  if (spec) return spec.value
+  const highlight = model.highlights.find((item) => item.label === label)
+  return highlight?.value ?? 'n/a'
+}
+
+export const COMPARE_ROWS: Array<{ label: string; specLabel?: string }> = [
+  { label: 'Certified Range', specLabel: 'Certified Range' },
+  { label: 'Top Speed', specLabel: 'Top Speed' },
+  { label: 'Charge Time', specLabel: 'Charge Time' },
+  { label: 'Battery Capacity' },
+  { label: 'Motor Output' },
+  { label: 'Brakes' },
+  { label: 'Kerb Weight' },
+]

@@ -1,19 +1,20 @@
-const stats = [
-  { value: '10,000+', label: 'Scooters Assembled' },
-  { value: '150+', label: 'Dealer Partners' },
-  { value: '22', label: 'States & UTs Covered' },
-  { value: '99.2%', label: 'Quality Pass Rate' },
-]
+import { companyStats } from '../data/companyFacts'
+import StatCounter from './ui/StatCounter'
 
 export default function Numbers() {
   return (
     <section className="numbers" aria-label="Amptron at a glance">
-      {stats.map((stat) => (
-        <div key={stat.label}>
-          <strong>{stat.value}</strong>
-          <span>{stat.label}</span>
-        </div>
-      ))}
+      <div className="wrap numbers-grid">
+        {companyStats.map((stat) => (
+          <StatCounter
+            key={stat.id}
+            value={stat.value}
+            suffix={stat.suffix}
+            label={stat.label}
+            decimals={stat.suffix === '%' ? 1 : 0}
+          />
+        ))}
+      </div>
     </section>
   )
 }

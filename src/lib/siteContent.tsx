@@ -13,6 +13,7 @@ import {
   mapBlogPost,
   mapScooterModel,
   mapSiteMedia,
+  mergeLocalModel,
   type SiteContentValue,
   type SiteMediaMap,
 } from './siteContentMap'
@@ -53,7 +54,7 @@ async function fetchSiteContent(): Promise<SiteContentValue | null> {
     supabase
       .from('scooter_models')
       .select(
-        'slug, name, tagline, description, image_url, featured, highlights, specs, features',
+        'slug, name, tagline, description, image_url, featured, highlights, specs, features, price_inr, price_placeholder, colours, story, video_url',
       )
       .eq('published', true)
       .order('sort_order', { ascending: true }),
@@ -71,9 +72,13 @@ async function fetchSiteContent(): Promise<SiteContentValue | null> {
       .eq('lifecycle', 'published'),
   ])
 
+  const localBySlug = new Map(
+    LOCAL_CONTENT.models.map((model) => [model.slug, model]),
+  )
   const models = (modelsResult.data ?? [])
     .map((row) => mapScooterModel(row))
     .filter((row): row is ScooterModel => row !== null)
+    .map((model) => mergeLocalModel(model, localBySlug.get(model.slug)))
   const posts = (postsResult.data ?? [])
     .map((row) => mapBlogPost(row))
     .filter((row): row is BlogPost => row !== null)

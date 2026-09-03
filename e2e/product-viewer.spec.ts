@@ -21,7 +21,13 @@ test.describe('Storm product explorer', () => {
 
       const viewer = page.getByLabel('Amptron Storm product viewer')
       await expect(viewer).toBeVisible()
-      await expect(page.getByText(/color · midnight navy/i)).toBeVisible()
+      // Colour is picked once, in the hero, and drives the viewer.
+      const picker = page.getByRole('group', { name: 'Colour' })
+      await expect(
+        picker.getByRole('button', { name: 'Midnight Navy' }),
+      ).toHaveAttribute('aria-pressed', 'true')
+      await picker.getByRole('button', { name: 'Crimson Red' }).click()
+      await expect(page.getByText('Crimson Red', { exact: true })).toBeVisible()
       await expect(page.getByRole('tab', { name: 'Exterior' })).toBeVisible()
       await expect(page.getByRole('tab', { name: '360°' })).toHaveCount(0)
       await expect(page.getByRole('button', { name: 'Fullscreen' })).toBeVisible()
@@ -79,7 +85,9 @@ test.describe('Storm product explorer', () => {
   test('keeps Volt on the static catalog image', async ({ page }) => {
     await page.goto('/models/amptron-volt')
     await expect(page.getByLabel('Amptron Volt product viewer')).toHaveCount(0)
-    await expect(page.getByRole('heading', { name: 'Amptron Volt' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'Amptron Volt', exact: true }),
+    ).toBeVisible()
   })
 
   test('keeps feature details below the image on a phone', async ({ page }) => {

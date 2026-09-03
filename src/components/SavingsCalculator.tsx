@@ -88,7 +88,6 @@ export default function SavingsCalculator({
         <SectionHeader
           eyebrow="Ownership"
           title="Plan your monthly cost"
-          sub="Ask how far they ride and what they pay for petrol. The formula uses those figures, plus this model's certified battery and range."
         />
         <div className="savings-panel">
           <div className="savings-controls">

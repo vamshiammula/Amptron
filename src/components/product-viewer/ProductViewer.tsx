@@ -328,7 +328,7 @@ export default function ProductViewer({
           ) : null}
           {colorway.filter ? (
             <p className="product-viewer-color-note">
-              Digital colour preview — photographed in {config.color.name}.
+              Digital colour preview, photographed in {config.color.name}.
             </p>
           ) : null}
         </header>

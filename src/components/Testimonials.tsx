@@ -45,7 +45,7 @@ export default function Testimonials() {
             <footer>
               <cite>{item.name}</cite>
               <small>
-                {item.company} — <b>{item.place}</b>
+                {item.company}, <b>{item.place}</b>
               </small>
             </footer>
           </blockquote>

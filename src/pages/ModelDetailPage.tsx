@@ -22,8 +22,8 @@ export default function ModelDetailPage() {
   return (
     <>
       <Seo
-        title={`${model.name} — Specifications and Features`}
-        description={`${model.name}: ${model.tagline} Certified specs, charging profile, and features — buy from Amptron or find a showroom.`}
+        title={`${model.name}: Specifications and Features`}
+        description={`${model.name}: ${model.tagline} Certified specs, charging profile, and features. Buy from Amptron or find a showroom.`}
         path={`/models/${model.slug}`}
       />
       <main id="main" className="content-page">

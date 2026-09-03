@@ -13,7 +13,7 @@ export default function WarrantyPage() {
           <h1>Warranty Policy</h1>
           <p>
             Amptron supports owner and dealer warranty workflows through a
-            structured claims and replacement process — whether you bought from us
+            structured claims and replacement process, whether you bought from us
             or from a partner showroom.
           </p>
         </section>

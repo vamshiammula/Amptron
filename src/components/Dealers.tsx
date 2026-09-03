@@ -6,7 +6,7 @@ const steps = [
   {
     num: '01',
     title: 'Apply',
-    copy: 'Share your existing EV retail footprint — brands you already sell, cities you cover, and service capacity.',
+    copy: 'Share your existing EV retail footprint: brands you already sell, cities you cover, and service capacity.',
   },
   {
     num: '02',
@@ -35,7 +35,7 @@ export default function Dealers() {
         </div>
         <h2 className="section-title">Partner With Amptron</h2>
         <p className="section-sub">
-          We supply Amptron scooters to established EV dealers — no exclusive
+          We supply Amptron scooters to established EV dealers. No exclusive
           dealership required. Stock Amptron next to the other brands you already
           sell. Riders can also buy from us directly.
         </p>

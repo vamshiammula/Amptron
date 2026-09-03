@@ -16,7 +16,7 @@ export default function Hero() {
           Electric Future
         </h1>
         <p className="hero-lead">
-          Certified electric scooters — buy from Amptron directly, or from a partner
+          Certified electric scooters. Buy from Amptron directly, or from a partner
           showroom. Precision-assembled in India, built for the road ahead.
         </p>
         <div className="hero-actions">

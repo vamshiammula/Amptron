@@ -8,7 +8,7 @@ export default function ModelsPage() {
   return (
     <>
       <Seo
-        title="Amptron Models — Electric Scooter Range"
+        title="Amptron Models: Electric Scooter Range"
         description="Compare Amptron Volt, Storm, and Cruise with certified range, speed, charging time, and full technical specifications."
         path="/models"
       />

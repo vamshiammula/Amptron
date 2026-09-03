@@ -17,7 +17,7 @@ const advantages = [
   {
     icon: settings,
     title: 'Precision Assembly',
-    copy: 'Robotic assembly and multi-stage QA deliver a defect-free machine — to your door or to the showroom floor.',
+    copy: 'Robotic assembly and multi-stage QA deliver a defect-free machine to your door or to the showroom floor.',
   },
   {
     icon: trendingUp,

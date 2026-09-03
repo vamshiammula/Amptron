@@ -215,7 +215,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'test-ride',
     question: 'Can I book a test ride?',
     answer:
-      'Yes. Book a test ride with Amptron, or visit a partner showroom. Tell us the model — Volt, Storm, or Cruise — and your city.',
+      'Yes. Book a test ride with Amptron, or visit a partner showroom. Tell us the model (Volt, Storm, or Cruise) and your city.',
     audience: 'rider',
     category: 'buying',
     aliases: ['test drive', 'trial ride', 'book a ride'],
@@ -304,7 +304,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'most-popular',
     question: 'Which Amptron scooter is most popular?',
     answer:
-      'Amptron Storm is the Most Popular model — 120 km certified range and 65 km/h, built for mixed-terrain city and peri-urban commutes.',
+      'Amptron Storm is the Most Popular model: 120 km certified range and 65 km/h, built for mixed-terrain city and peri-urban commutes.',
     audience: 'rider',
     category: 'models',
     aliases: ['best selling', 'recommended model', 'which scooter should I buy'],

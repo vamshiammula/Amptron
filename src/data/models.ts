@@ -25,7 +25,7 @@ export const scooterModels: ScooterModel[] = [
     name: 'Amptron Volt',
     tagline: 'Smart low-speed commuter for dense city routes.',
     description:
-      'Agile, cost-efficient city commuter — easy to own, easy to service, built for short urban hops and high-frequency use.',
+      'Agile, cost-efficient city commuter: easy to own, easy to service, built for short urban hops and high-frequency use.',
     image: volt,
     featured: false,
     highlights: [
@@ -78,7 +78,7 @@ export const scooterModels: ScooterModel[] = [
     name: 'Amptron Storm',
     tagline: 'Performance-first city and peri-urban scooter.',
     description:
-      'High-torque acceleration, rugged suspension, and practical range — built for mixed-terrain commutes and confident test rides.',
+      'High-torque acceleration, rugged suspension, and practical range, built for mixed-terrain commutes and confident test rides.',
     image: storm,
     featured: true,
     highlights: [

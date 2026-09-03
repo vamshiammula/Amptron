@@ -22,7 +22,7 @@ describe('ChatWidget', () => {
                 matched: true,
                 source: 'smalltalk',
                 answer:
-                  'Hello. Ask about Amptron Volt, Storm, or Cruise — range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
+                  'Hello. Ask about Amptron Volt, Storm, or Cruise: range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
               }),
               { status: 200 },
             )

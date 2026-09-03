@@ -126,9 +126,9 @@ function EmptyState({
 }
 
 function formatDate(value?: string) {
-  if (!value) return '—'
+  if (!value) return '-'
   const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return '—'
+  if (Number.isNaN(date.getTime())) return '-'
   return dateFormatter.format(date)
 }
 
@@ -984,7 +984,7 @@ export default function AdminPage() {
                           <td>
                             <StatusBadge status={account.role} />
                           </td>
-                          <td>{account.territory ?? '—'}</td>
+                          <td>{account.territory ?? '-'}</td>
                         </tr>
                       ))}
                     </tbody>

@@ -1,36 +1,39 @@
 # Amptron Corporate Brand Guidelines
 
-**Version 1.1 — September 2026**
+**Version 2.0, September 2026**
 **Owner:** Amptron Manufacturing Pvt. Ltd.
 **Canonical files:** `src/assets/images/logo.svg`, `src/assets/images/logo-light.svg`, `src/index.css`
 
 This is the source of truth for how Amptron looks, sounds, and behaves. Use it for the website, direct-buy flows, dealer portal, showroom kits, social, decks, packaging, vehicle graphics, and any partner co-branding.
 
-If a choice is not specified here, default to **precision over decoration**, **one brand for riders and dealers**, and the tokens already in `src/index.css`.
+**How this book is organised**
+
+| Part | Sections | Who owns it |
+| ---- | -------- | ----------- |
+| **I. Brand Platform** | §§1–25 | Founders and leadership. This is what Amptron stands for. Agencies and product teams execute it; they do not rewrite it. |
+| **II. Visual system** | §§26–34 | Design and product. Logo, colour, type, graphic tools, and channel tactics that express the platform. |
+
+If a choice is not specified here, default to **dependable simplicity**, **one brand for riders and dealers**, and the tokens already in `src/index.css`.
 
 ---
 
-## 1. Purpose of these guidelines
+# Part I: Brand Platform
 
-Amptron manufactures certified electric scooters in India and sells them **two ways: direct to riders, and through multi-brand dealers.** Agencies, engineers, and this product team all ship work under the same name. These guidelines exist so that a Gurugram product page, a Chennai showroom board, a warranty SMS, and a LinkedIn post all feel like one company.
-
-**Use this document to:**
-
-- Keep the logo, colour, and type locked to production files — not approximations.
-- Write in one voice: confident, specific, useful to a rider _and_ a dealer.
-- Brief agencies and printers without reinventing the brand.
-- Say no, quickly, when a layout, slogan, or colour drifts.
-
-**Do not use this document to:**
-
-- Invent exclusive-dealership language. Partners stock Amptron _alongside_ other EV brands.
-- Pit channels against each other. Direct buy does not mean “cut out the dealer.” Dealer stock does not mean “riders cannot buy from us.”
-- Overclaim range, speed, or subsidies. Specs on the site are the ceiling.
-- Drift into lifestyle-startup hype. Direct-to-customer still means certified, serviceable, spec-true machines — not a fashion brand.
+This is the foundation. Designers, engineers, agencies, and marketing translate it into logos, type, colour, websites, brochures, dealerships, and advertising. They should not decide what Amptron fundamentally stands for.
 
 ---
 
-## 2. Who we are
+## 1. About this guide
+
+Amptron’s brand guidelines define what the company stands for, who it serves, what it promises, and how it should behave toward customers, dealers, employees, service partners, suppliers, and communities.
+
+Amptron is built around a simple belief:
+
+**Electric mobility should make everyday transportation simpler, not more complicated.**
+
+Every product, service, partnership, communication, and business decision should reinforce that principle.
+
+### Company facts
 
 |                  |                                                          |
 | ---------------- | -------------------------------------------------------- |
@@ -42,7 +45,9 @@ Amptron manufactures certified electric scooters in India and sells them **two w
 | **Dealer email** | dealer-relations@amptron.co.in                           |
 | **Phone**        | +91 124 556 7890 / 1800-EV-AMPTRON                       |
 
-**In one sentence:** Amptron manufactures certified, precision-assembled electric scooters that riders can buy from us directly — or from a local partner showroom, with no exclusive dealership required.
+The tagline refers to making electric mobility a trusted everyday choice in India. It is not a licence for gadget futurism.
+
+**In one sentence:** Amptron manufactures certified electric scooters for everyday transportation: dependable, practical, and free of unnecessary complexity. Riders can buy from us directly or from a local partner showroom.
 
 **Proof points already in market (do not inflate):**
 
@@ -53,127 +58,365 @@ Amptron manufactures certified electric scooters in India and sells them **two w
 - 98% dealer satisfaction
 - iCAT & ARAI certified models; AIS 156 Phase 2 battery packs
 
+**Use this document to:**
+
+- Decide what Amptron will and will not do, in product, service, pricing, partnerships, and communication.
+- Keep the logo, colour, and type locked to production files, not approximations.
+- Write in one voice: plain, specific, useful to a rider _and_ a dealer.
+- Brief agencies and printers without reinventing the brand.
+- Say no, quickly, when a layout, slogan, feature, or colour drifts.
+
+**Do not use this document to:**
+
+- Invent exclusive-dealership language. Partners stock Amptron _alongside_ other EV brands.
+- Pit channels against each other. Direct buy does not mean “cut out the dealer.” Dealer stock does not mean “riders cannot buy from us.”
+- Overclaim range, speed, subsidies, service times, or battery life. Specs on the site are the ceiling. Unvalidated numbers are not promises.
+- Drift into lifestyle-startup or Silicon Valley hype. Direct-to-customer still means certified, serviceable, spec-true machines, not a fashion brand and not a gadget brand.
+
 ---
 
-## 3. Vision, purpose, values
+## 2. Brand platform
+
+### Brand purpose: why Amptron exists
+
+**To make dependable electric mobility accessible to everyday people.**
+
+Amptron exists for people who need a scooter primarily as transportation, not as a technology showcase.
+
+Customers should not have to pay for unnecessary complexity to get a well-built, reliable electric scooter.
+
+We want their money going toward what matters: safety, battery quality, usable range, build quality, comfort, charging, serviceability, and spare-parts availability.
 
 ### Vision
 
-Electric two-wheelers on every Indian street that a rider can buy with confidence — from Amptron or from a partner showroom — and that a dealer can sell, service, and stand behind without locking the floor to a single brand.
+**To make dependable electric mobility an affordable and trusted choice for everyday transportation.**
 
-### Purpose
+Long term, Amptron should become a brand people associate with straightforward, reliable electric mobility, not merely inexpensive scooters.
 
-Build certified EVs people can purchase directly from Amptron, and that dealers can stock, service, and grow beside the other brands already on their floor.
+The ambition is for someone to say:
+
+> “I want something simple and reliable. Get an Amptron.”
 
 ### Mission
 
-Manufacture precision-assembled scooters in India, certify them to national standards, sell them to riders who want to buy from us, and support dealers with training, parts, warranty, and a named relationship manager so Amptron is easy to own and easy to retail.
+**To build affordable electric vehicles around the things customers actually need:** reliability, strong build quality, dependable batteries, practical range, comfortable everyday use, simple charging, easy maintenance, and readily available spare parts.
 
-### Values
+We simplify where complexity provides little customer value and invest where quality directly affects ownership.
 
-1. **Precision over hype.** Robotic assembly, multi-stage QA, published specs. We do not “disrupt.” We deliver.
-2. **Two doors, one machine.** Riders buy from Amptron or from a partner. Dealers are not a waiting room for D2C, and D2C is not a slight to the showroom.
-3. **Certified by default.** iCAT, ARAI, AIS 156. Registration and subsidy pass-through are part of the product, not an afterthought.
-4. **Assembled in India, built for Indian roads.** Dense cities, heat, mixed terrain, commuting and commercial use.
-5. **Commercial honesty.** Range, charge time, price, margins, and warranty windows are stated as they are. No vanity numbers.
-6. **Stand behind the ride.** Parts, service, warranty, workshop training, and a relationship for whoever sold or bought the scooter.
+How we sell does not change the mission. Riders buy from Amptron directly or from a multi-brand partner showroom. Dealers stock Amptron beside the other EV brands they already sell. Same machine. Same backing. Same philosophy.
 
 ---
 
-## 4. Brand essence
+## 3. The problem we exist to solve
 
-**Essence (internal):** _Electric you can own — and stand behind._
+The EV industry can easily fall into a feature race.
 
-**Promise (external):** _Buy Amptron from us, or from a partner. Same machine. Same backing._
+More screens. More connectivity. More software. More apps. More animations. More electronics. More features to advertise.
 
-**Positioning:** Amptron is the Indian manufacturer of certified electric scooters. Riders buy direct from Amptron or from a local multi-brand dealer. Dealers stock Amptron beside the other EV brands they already sell — factory pricing, parts, and a relationship manager, with no exclusive lock-in.
+Amptron asks a different question:
 
-**What we are not**
+**Does the customer actually need it?**
 
-| We are                                | We are not                                              |
-| ------------------------------------- | ------------------------------------------------------- |
-| Direct-to-rider _and_ dealer-supplied | Dealer-only, or D2C that pretends partners do not exist |
-| Multi-brand friendly                  | An exclusive franchise scheme                           |
-| Spec-led and certified                | A lifestyle / “revolutionary” scooter fashion brand     |
-| Service, parts, and warranty          | A white-label import with no aftersales                 |
-| Navy, teal, product-forward           | Neon, chrome, racing-stripe theatre                     |
+Every additional feature has a cost, not only when purchasing the vehicle, but potentially in maintenance, repair, replacement, training, and long-term ownership.
 
-**Brand idea in the mark:** The name fuses **amp** (current) with a manufactured, electronic suffix. The green slash through the **A** is current in motion — energy with a path, not a lightning-bolt cliché glued on the side.
+Meanwhile, customers still care deeply about fundamental questions:
+
+- Will it start every morning?
+- How far will it actually go?
+- How long will the battery last?
+- Is it comfortable?
+- Is it safe?
+- Can I charge it easily?
+- Can somebody repair it?
+- Will spare parts be available?
+- How much will maintaining it cost?
+
+Amptron is built around answering those questions first.
 
 ---
 
-## 5. Audience
+## 4. Target customer
 
-Amptron has **two primary audiences**. Public surfaces should make both paths obvious: **Buy from Amptron** and **Find a showroom / Stock Amptron**. Do not hide one behind the other.
+Amptron’s core customer is **the practical, value-conscious everyday rider.**
 
-### Primary — riders (direct customers)
+Our products particularly serve customers who prioritize transportation utility over technology-heavy features. This can include working professionals, shopkeepers, small-business owners, families, parents, older riders, daily commuters, and other customers looking for economical personal transportation.
 
-Urban and peri-urban two-wheeler buyers who want a certified electric scooter from the manufacturer. They care about:
+Riders 35+ may be an especially important segment. Amptron should not define itself exclusively by age.
 
-- Which model fits their commute (Volt / Storm / Cruise)
-- Certified range, charge time, speed — not slogan range
-- Price, booking, delivery, registration, subsidy
-- Test ride, service, warranty as an owner
-- Buying from Amptron.co.in _or_ picking up at a nearby dealer
+The deeper customer characteristic is:
 
-**Geography:** Tier-1 and Tier-2 cities first. Copy should feel at home in Ahmedabad, Chennai, Bengaluru, Pune, and Gurugram — not Silicon Valley.
+**They value usefulness over novelty.**
 
-### Primary — EV dealers (trade partners)
+They are not necessarily anti-technology. They simply do not want to pay for technology that does not meaningfully improve their ownership experience.
 
-Showroom principals and sales heads who already retail electric scooters. They care about:
+**Geography:** Tier-1 and Tier-2 cities first. Copy should feel at home in Ahmedabad, Chennai, Bengaluru, Pune, and Gurugram, not Silicon Valley.
 
-- Floor fit (will this sit next to existing brands?)
-- Margin and volume bonuses
-- ARAI / registration / subsidy smoothness
-- Spare availability and warranty turnaround
-- Training for sales and workshop staff
-- That Amptron’s direct channel does not strand their customers — service and parts still flow through the network
+### Channel audiences (how we reach them)
 
-### Secondary — operations
+Amptron has **two commercial paths**. Public surfaces should make both obvious: **Buy from Amptron** and **Find a showroom / Stock Amptron**. Do not hide one behind the other.
 
-Workshop leads, spare managers, relationship managers, and rider-support staff. Language: procedural, calm, specific (bookings, tickets, claims, SKUs).
+**Riders (direct customers)** care about which model fits their commute (Volt / Storm / Cruise), certified range, charge time, speed, price, booking, delivery, registration, subsidy, test ride, service, and warranty, buying from Amptron.co.in _or_ picking up at a nearby dealer.
+
+**EV dealers (trade partners)** already retail electric scooters. They care about floor fit, margin, volume bonuses, ARAI / registration / subsidy smoothness, spare availability, warranty turnaround, training, and that Amptron’s direct channel does not strand their customers. Service and parts still flow through the network.
+
+**Operations (secondary):** workshop leads, spare managers, relationship managers, and rider-support staff. Language: procedural, calm, specific (bookings, tickets, claims, SKUs).
 
 ### Anti-audience
 
+- Buyers shopping for the most technologically advanced scooter
 - Exclusive-dealership hunters expecting territory lock-in
 - Speculative “EV startup” press that wants disruption narratives
 - Luxury performance positioning (we are real-road, not superbike)
-- Bargain hunters for uncertified imports
+- Bargain hunters for uncertified imports or lowest-cost-at-any-cost machines
 
 ---
 
-## 6. Personality
+## 5. Core customer insight
 
-Amptron is the factory engineer who also understands the showroom — and the rider who wants to buy without a runaround.
+Our customer is not waking up thinking:
 
-| Trait           | Means                                         | Does not mean                                        |
-| --------------- | --------------------------------------------- | ---------------------------------------------------- |
-| **Precise**     | Named certifications, exact km, hours, watts  | Cold or bureaucratic                                 |
-| **Assured**     | Short claims we can defend                    | Boastful or comparative trash-talk                   |
-| **Open**        | Buy from us _or_ from a partner               | Cutting dealers out, or hiding direct sales          |
-| **Industrious** | Assembly, QA, BMS, IP67, regenerative braking | Jargon dumped on riders or dealers                   |
-| **India-built** | Cities, heat, subsidies, service reality      | Folklore, flag-waving, or “Atmanirbhar” sloganeering |
+> “I need the most technologically advanced electric scooter.”
 
-**If Amptron were a person:** late thirties, steel-toed shoes in the plant, clear on price and specs with a rider, pressed shirt in the dealer meeting. Speaks in numbers. Remembers your spare-parts lead time _and_ your booking status. Does not perform.
+They are thinking:
+
+> “I need a good scooter.”
+
+It should get them to work. It should take them to the market. It should carry everyday necessities. It should be comfortable. It should have enough range. It should charge reliably. It should not frequently break. And when something eventually does need repair, getting it fixed should not become a major problem.
+
+That is the product Amptron exists to provide.
 
 ---
 
-## 7. Tone of voice
+## 6. Core value proposition
+
+**Dependable electric mobility without unnecessary complexity.**
+
+Amptron gives customers the essential qualities of a good everyday electric scooter (reliability, build quality, practical range, comfort, simple charging, serviceability, and affordable ownership) without making them pay for unnecessary features.
+
+---
+
+## 7. Brand positioning
+
+### Market position
+
+Amptron occupies **Affordable + Dependable + Practical**, not **Cheap + Basic**.
+
+That distinction is extremely important.
+
+We are not trying to build the cheapest scooter possible. We are trying to provide **the most value where it matters.**
+
+Removing unnecessary features allows Amptron to concentrate resources on fundamental vehicle quality while maintaining accessible pricing and sustainable business economics.
+
+### Go-to-market (not the brand idea)
+
+Amptron is an Indian manufacturer of certified electric scooters. Riders buy direct from Amptron or from a local multi-brand dealer. Dealers stock Amptron beside the other EV brands they already sell: factory pricing, parts, and a relationship manager, with no exclusive lock-in.
+
+Two doors. One machine. One philosophy.
+
+---
+
+## 8. Product philosophy
+
+This is one of Amptron’s most important internal principles:
+
+**Everything you need. Nothing you don’t.**
+
+Every proposed feature should answer three questions:
+
+1. Does it improve safety?
+2. Does it improve reliability, usability, comfort, or ownership?
+3. Does the customer value it enough to justify its cost and complexity?
+
+If the answer to all three is no, Amptron should question why it exists on the vehicle.
+
+---
+
+## 9. Product priority hierarchy
+
+Every Amptron product decision should follow this hierarchy. Features lower on the list should never significantly compromise something above them.
+
+1. Safety
+2. Reliability
+3. Battery quality
+4. Real-world range
+5. Build quality
+6. Comfort
+7. Charging
+8. Serviceability
+9. Spare-parts availability
+10. Affordable ownership
+11. Useful technology
+12. Convenience features
+13. Entertainment / novelty features
+
+---
+
+## 10. Technology philosophy
+
+Amptron is not anti-technology.
+
+Amptron is against technology without sufficient customer value.
+
+Technology that protects the battery, improves safety, assists diagnostics, improves efficiency, or meaningfully simplifies ownership is valuable.
+
+| Verdict | Include |
+| ------- | ------- |
+| **Yes** | Quality BMS, battery protection, clear battery percentage, useful range information, essential vehicle diagnostics, safety systems, reliable controllers |
+| **Question carefully** | Connectivity, GPS, apps, keyless systems, advanced displays. Include them only when customer value justifies cost and complexity |
+| **Generally not a priority** | Entertainment features, oversized touchscreens, elaborate animations, unnecessary connected functionality, and technology added primarily to increase the feature count |
+
+**Principle:** Technology must earn its place on an Amptron.
+
+---
+
+## 11. Brand pillars
+
+### 01 Dependable
+
+The scooter should work when the customer needs it. Reliability takes priority over novelty.
+
+### 02 Practical
+
+Products are designed around real daily transportation needs. Range, storage, comfort, charging, and usability matter more than specification-sheet gimmicks.
+
+### 03 Simple
+
+Buying, riding, charging, servicing, and understanding an Amptron should be straightforward. Complexity should never become the customer’s burden.
+
+### 04 Accessible
+
+Electric mobility should be financially accessible to ordinary households. Affordable does not mean disposable.
+
+### 05 Supported
+
+Selling the scooter is not the end of our responsibility. Spare parts, technicians, warranty support, and service are part of the product.
+
+Amptron should not consider a scooter complete until it can also support that scooter.
+
+---
+
+## 12. Core values
+
+1. **Customer value first.** Spend the customer’s money where it creates meaningful value.
+2. **Reliability before novelty.** A feature is worthless if the underlying vehicle is not dependable.
+3. **Simplicity with purpose.** Remove unnecessary complexity without compromising safety or quality.
+4. **Quality where it matters.** Invest disproportionately in components affecting reliability, safety, and ownership.
+5. **Transparency.** Be clear about range, charging, warranty, maintenance, replacement costs, and product limitations.
+6. **Ownership responsibility.** We remain responsible for the customer experience after the sale.
+7. **Continuous improvement.** Failures should become engineering information. Warranty claims, service records, and customer feedback should continuously improve the product.
+
+**Operating commitments that sit beside the values (do not replace them):**
+
+- **Two doors, one machine.** Riders buy from Amptron or from a partner. Dealers are not a waiting room for D2C, and D2C is not a slight to the showroom.
+- **Certified by default.** iCAT, ARAI, AIS 156. Registration and subsidy pass-through are part of the product, not an afterthought.
+- **Assembled in India, built for Indian roads.** Dense cities, heat, mixed terrain, commuting and commercial use.
+
+---
+
+## 13. Brand essence
+
+If Amptron had to be reduced to three words:
+
+**Simple. Dependable. Electric.**
+
+If reduced to one idea:
+
+**Dependable simplicity.**
+
+**Brand idea in the mark:** The name fuses **amp** (current) with a manufactured, electronic suffix. The green slash through the **A** is current in motion: energy with a path, not a lightning-bolt cliché glued on the side.
+
+---
+
+## 14. Customer promise
+
+**Amptron will never add unnecessary complexity at the expense of affordability, reliability, or serviceability.**
+
+A second operational promise, for internal and customer-facing use when it is earned:
+
+**We put your money into the parts of the scooter that matter most.**
+
+Do not turn specific claims about range, service turnaround, battery life, or warranty into formal promises until they have been validated through pilot testing. Published specs remain the ceiling.
+
+---
+
+## 15. What Amptron is / isn’t
+
+This table is an internal decision framework for employees and product managers.
+
+| Amptron is            | Amptron is not              |
+| --------------------- | --------------------------- |
+| Affordable            | Cheaply built               |
+| Simple                | Primitive                   |
+| Practical             | Boring                      |
+| Reliable              | Overengineered              |
+| Modern                | Technology obsessed         |
+| Electric              | Gadget-first                |
+| Customer-focused      | Feature-count focused       |
+| Serviceable           | Disposable                  |
+| Transparent           | Marketing-hype driven       |
+| Value-conscious       | Lowest-cost-at-any-cost     |
+| Direct-to-rider _and_ dealer-supplied | Dealer-only, or D2C that pretends partners do not exist |
+| Multi-brand friendly  | An exclusive franchise scheme |
+| Spec-led and certified | A lifestyle / “revolutionary” scooter fashion brand |
+| Navy, teal, product-forward | Neon, chrome, racing-stripe theatre |
+
+---
+
+## 16. Brand personality
+
+Amptron should feel:
+
+| Trait               | Means                                              | Does not mean                                      |
+| ------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| **Dependable**      | Customers trust us to start, last, and stand behind the scooter | Dull, or promising what we have not proven         |
+| **Straightforward** | We do not complicate simple things                 | Blunt, or hiding limitations                       |
+| **Practical**       | Real-world usefulness comes first                  | Unimaginative, or cheap-looking                    |
+| **Approachable**    | Customers do not need technical knowledge to understand us | Dumbing down safety, specs, or warranty            |
+| **Confident**       | We know what our product is designed to do         | Boastful or comparative trash-talk                 |
+| **Responsible**     | We stand behind what we sell                       | Paternal, or shifting blame to the rider           |
+| **Value-conscious** | We respect customers’ money                        | Bargain-bin, or “cheapest on the market”           |
+| **Open**            | Buy from us _or_ from a partner                    | Cutting dealers out, or hiding direct sales        |
+
+Deliberately avoid making the brand overly futuristic, rebellious, flashy, or technology-obsessed.
+
+**If Amptron were a person:** a knowledgeable person customers can trust. Clear on price and specs. Remembers your spare-parts lead time _and_ your booking status. Speaks in numbers when numbers help, and in plain language when they do not. Does not perform.
+
+---
+
+## 17. Tone of voice
+
+Amptron should communicate like a knowledgeable person customers can trust, not like a Silicon Valley technology company. Amptron should communicate in plain language.
 
 ### Principles
 
 1. **Lead with the fact, then the benefit.** “AIS 156 Phase 2 cells with redundant BMS” → rider: “so registration is not a surprise.” → dealer: “so the pack you sell is registration-ready.”
 2. **Match _you_ to the surface.** On product and buy flows, _you_ is the rider. On partner and portal flows, _you_ is the dealer. Amptron is always _we_ / _our_. Public homepage may speak to both in one breath: buy from us, or find a showroom.
 3. **Prefer verbs people actually use.** Riders: buy, book, test-ride, register, service. Dealers: stock, service, claim, train, scale.
-4. **Uppercase is for UI chrome, not shouting.** Buttons and eyebrows can be uppercase. Headlines are title or sentence case — never all-caps paragraphs.
-5. **No empty superlatives.** Do not write _best_, _world-class_, _revolutionary_, _game-changing_, _unleash_, _disrupt_, _next-gen_ unless a proof point sits next to it. Prefer _certified_, _precision-assembled_, _dealer-ready_, _buy from Amptron_.
+4. **Uppercase is for UI chrome, not shouting.** Buttons and eyebrows can be uppercase. Headlines are title or sentence case, never all-caps paragraphs.
+5. **No empty superlatives.** Do not write _best_, _world-class_, _revolutionary_, _game-changing_, _unleash_, _disrupt_, _next-gen_ unless a proof point sits next to it. Prefer _certified_, _dependable_, _practical_, _precision-assembled_, _buy from Amptron_.
+6. **Be specific about ownership.** When you mention range, say what the rider can reasonably expect. When you mention parts or warranty, name the price, the cover, or the process, not a slogan.
+
+### Use
+
+- “Up to 80 km certified range. Here is what you can reasonably expect in everyday city riding.”
+- “Need a replacement part? Here’s the price.”
+- “Here’s what’s covered by your battery warranty.”
+- “Here’s how long charging takes.”
+
+### Avoid
+
+- “Revolutionary AI-powered hyper-connected mobility ecosystem.”
+- “Experience the future of intelligent mobility.”
+- “Disrupting transportation through next-generation digital innovation.”
+
+That language does not match the customer or the philosophy.
 
 ### Register by channel
 
 | Channel                   | Register                                | Example                                           |
 | ------------------------- | --------------------------------------- | ------------------------------------------------- |
-| Website hero              | Confident, short, national — both paths | Powering India's Electric Future                  |
-| Product / buy             | Rider-direct, spec-true                 | Buy Amptron Storm. Certified range 120 km.        |
+| Website hero              | Confident, short, national, both paths | Powering India's Electric Future                  |
+| Product / buy             | Rider-direct, spec-true, ownership-led  | Buy Amptron Storm. Certified range 120 km.        |
 | Dealer CTA                | Direct, commercial                      | Stock Amptron                                     |
 | Portal / admin            | Calm, operational                       | We reply within 2 business days.                  |
 | Warranty / legal          | Plain, exact                            | Battery claims require charge-cycle diagnostics.  |
@@ -184,16 +427,21 @@ Amptron is the factory engineer who also understands the showroom — and the ri
 
 ### Words we use / avoid
 
-**Use:** Amptron, buy, book, test ride, rider, dealer, showroom, stock, certified, assembled, range, charge time, warranty, spare, factory pricing, multi-brand, buy from Amptron.
+**Use:** Amptron, buy, book, test ride, rider, dealer, showroom, stock, certified, assembled, range, charge time, warranty, spare, serviceable, dependable, practical, simple, everyday, ownership, factory pricing, multi-brand, buy from Amptron.
 
-**Avoid:** Amtron, AmpTron, AMPTRON (in sentences), franchisee lock-in, exclusive territory (unless a real contract says so), “only through dealers,” “cut out the middleman,” “ecosystem play,” “revolutionizing mobility,” emoji-heavy hype, slang, filler (_leverage_, _synergy_, _holistic_).
+**Avoid:** Amtron, AmpTron, AMPTRON (in sentences), franchisee lock-in, exclusive territory (unless a real contract says so), “only through dealers,” “cut out the middleman,” “ecosystem play,” “revolutionizing mobility,” “AI-powered,” “hyper-connected,” “experience the future,” cheapest, bargain, disposable, emoji-heavy hype, slang, filler (_leverage_, _synergy_, _holistic_), em dashes (—).
+
+**Punctuation:** Do not use the em dash (—). Break the thought with a period, comma, colon, or parentheses. Hyphens are for compound words (multi-brand, peri-urban). Numeric ranges in tables may use an en dash (13–15px) or a hyphen (13-15px).
 
 ### Signature lines (approved)
 
 - Powering India's Electric Future
-- India's trusted EV scooter manufacturer — precision-assembled, built for the road ahead. Buy from Amptron or from a partner showroom.
+- Simple. Dependable. Electric.
+- Everything you need. Nothing you don’t.
+- Dependable electric mobility without unnecessary complexity.
+- India's trusted EV scooter manufacturer. Precision-assembled, built for the road ahead. Buy from Amptron or from a partner showroom.
 - Assembled in India. Certified. Yours to ride.
-- We supply Amptron scooters to established EV dealers — no exclusive dealership required. Riders can also buy from us directly.
+- We supply Amptron scooters to established EV dealers. No exclusive dealership required. Riders can also buy from us directly.
 - Ready to ride? Buy Amptron. Ready to retail? Stock Amptron.
 - Buy Amptron
 - Book a Test Ride
@@ -205,31 +453,186 @@ Amptron is the factory engineer who also understands the showroom — and the ri
 
 **Eyebrow** (uppercase, teal): `OUR FLEET` / `BUY AMPTRON` / `DEALER ADVANTAGES` / `ENGINEERING` / `JOIN US`
 
-**Headline** (Outfit ExtraBold): concrete noun + outcome. _Explore Our Electric Fleet. Why Dealers Choose Amptron. Engineering Excellence._
+**Headline** (Outfit ExtraBold): concrete noun + outcome. _Explore Our Electric Fleet. Why Dealers Choose Amptron._ Prefer usefulness over spectacle.
 
 **Support** (Geist, slate): one sentence, 16–18px equivalent, no stacking of slogans. On mixed pages, name both paths in the support line, not in two competing headlines.
 
+### Rewrite examples
+
+| Off-brand | On-brand |
+| --------- | -------- |
+| Revolutionizing India's EV dreams | Certified, precision-assembled scooters. Buy from Amptron or a partner showroom |
+| Revolutionary AI-powered hyper-connected mobility | A scooter built to start every morning, with range you can plan around |
+| Experience the future of intelligent mobility | Dependable electric mobility without unnecessary complexity |
+| Become an exclusive Amptron franchisee | Stock Amptron next to the EV brands you already sell |
+| You can only buy through dealers | Buy Amptron from us, or find a showroom near you |
+| Unleash next-gen performance | Amptron Storm: 120 km certified range, 65 km/h |
+| Our ecosystem empowers stakeholders | Parts, warranty, and a relationship manager as you scale |
+| We’re the cheapest EV in the category | You shouldn’t have to pay for things you don’t need |
+
 ---
 
-## 8. Brand manifesto
+## 18. Brand manifesto
 
-India will not electrify on slogans.
+Transportation doesn’t need to be complicated.
 
-It will electrify when a rider can buy a certified scooter without a maze — from Amptron, or from a showroom down the road — and when a dealer in a real city can put that same scooter on the floor, register it without a fight, service it in the heat, and still make a margin.
+We believe a good electric scooter should do the important things exceptionally well.
 
-That is the work.
+It should be built well.
+It should be comfortable.
+Its battery should be dependable.
+Its range should work for everyday life.
+Charging should be simple.
+Spare parts should be available.
+And when something needs attention, getting it fixed shouldn’t become another problem.
 
-We assemble in India. We certify to the letter. We sell to riders who want us direct. We price for the trade. We train the workshop. We send the spare. We do not ask a partner to bet the showroom on a single badge, and we do not ask a rider to wait for permission to own one.
+We don’t believe customers should pay more simply because more technology can be added.
 
-Amptron is electric you can buy from us, stock beside the brands you already sell, and stand behind when the road asks questions.
+We believe technology should serve the rider, not complicate the ride.
 
-Precision on the line. Open on the floor. Power on the road.
+That’s why we focus our resources on the things customers depend on every day.
+
+Riders can buy from Amptron or from a partner showroom. Dealers stock Amptron beside the brands they already sell. Same machine. Same backing.
+
+Simple. Dependable. Electric.
+
+Amptron.
 
 **Powering India's Electric Future.**
 
 ---
 
-## 9. Naming system
+## 19. Internal story
+
+Every Amptron employee should understand this:
+
+**We’re not competing to put the most features on a scooter. We’re competing to create one of the best ownership experiences for the money.**
+
+| Function | Asks |
+| -------- | ---- |
+| Engineering | Will it last? |
+| Procurement | Are we buying quality where it matters? |
+| Assembly | Was it built correctly? |
+| Quality | Would we confidently give this scooter to our own family? |
+| Sales | Are we promising only what the product can deliver? |
+| Service | How quickly can we get this customer riding again? |
+| Management | Does this decision create long-term customer value? |
+
+That is how the philosophy becomes company culture rather than marketing language.
+
+Print the Decision Filter (§24) in the office and the assembly facility.
+
+---
+
+## 20. Dealer philosophy
+
+Dealers should understand one thing immediately:
+
+**Amptron isn’t looking for places that merely sell scooters. We’re building places customers can return to when they need help.**
+
+Dealer success is not just units sold. It is:
+
+**Sales + customer satisfaction + service capability + spare-parts availability + repeat business + reputation.**
+
+A dealer that sells 100 scooters and abandons customers afterward is worse for Amptron than a dealer selling 50 and supporting them properly.
+
+Partners stock Amptron _alongside_ other EV brands. No exclusive lock-in. Amptron’s direct channel does not strand dealer customers. Service and parts still flow through the network.
+
+---
+
+## 21. Service philosophy
+
+**Service is part of the product.**
+
+This can become one of Amptron’s biggest competitive advantages.
+
+The scooter, charger, battery, warranty, spare parts, technician, and customer support collectively form the Amptron ownership experience.
+
+Long-term goals:
+
+- Fast diagnosis
+- Common spare parts readily available
+- Transparent parts pricing
+- Technician training
+- Simple repair procedures
+- Clear warranty decisions
+- Minimal unnecessary component replacement
+- Repair rather than replace where safe and economically sensible
+
+Do not publish specific turnaround times as promises until they are validated in the network.
+
+---
+
+## 22. Pricing philosophy
+
+Amptron should not communicate:
+
+> “We’re cheap.”
+
+Amptron should communicate:
+
+> “You shouldn’t have to pay for things you don’t need.”
+
+There is a massive psychological difference. Price should result from engineering discipline, not poor quality.
+
+If removing unnecessary technology saves money, Amptron should strategically divide that benefit among better components, a lower customer price, dealer economics, company margin, and after-sales support.
+
+That creates a sustainable business rather than a race to the bottom.
+
+---
+
+## 23. Competitive philosophy
+
+**Internal: do not use competitor names in advertising.**
+
+Amptron does not need to attack technology-focused manufacturers. They serve customers who may value sophisticated technology. Amptron serves another need.
+
+The message is not:
+
+> “Their features are useless.”
+
+It is:
+
+> “Not everyone needs them.”
+
+That is a more mature and defensible brand position. Compete on ownership, not on feature count.
+
+---
+
+## 24. The Amptron Decision Filter
+
+Before approving a feature, supplier, component, advertisement, dealer, policy, or business decision, ask:
+
+1. Does it make Amptron safer?
+2. Does it make Amptron more dependable?
+3. Does it improve everyday usefulness?
+4. Does it simplify ownership?
+5. Does it improve serviceability?
+6. Does it provide enough customer value for what it costs?
+
+If not:
+
+**Why are we doing it?**
+
+---
+
+## 25. Strategic north star
+
+The company should work toward one simple customer reaction:
+
+> “Amptron? It’s simple, reliable, affordable, and easy to maintain.”
+
+If customers organically start describing the company that way, the brand strategy is working.
+
+---
+
+# Part II: Visual system
+
+Logo, colour, type, graphic tools, and channel tactics. These express Part I. They do not replace it.
+
+---
+
+## 26. Naming system
 
 | Asset                   | Rule                                        | Example                                      |
 | ----------------------- | ------------------------------------------- | -------------------------------------------- |
@@ -244,22 +647,22 @@ Precision on the line. Open on the floor. Power on the road.
 
 **Fleet roles (keep consistent in catalogs):**
 
-- **Amptron Volt** — smart low-speed commuter; dense city; 80 km / 25 km/h.
-- **Amptron Storm** — performance city and peri-urban; **Most Popular**; 120 km / 65 km/h.
-- **Amptron Cruise** — long-range flagship; 150 km / 80 km/h.
+- **Amptron Volt:** smart low-speed commuter; dense city; 80 km / 25 km/h.
+- **Amptron Storm:** performance city and peri-urban; **Most Popular**; 120 km / 65 km/h.
+- **Amptron Cruise:** long-range flagship; 150 km / 80 km/h.
 
-Never rename models for campaigns (_Storm X Pro Ultra_). Sub-trims, if added later, append after the model: `Amptron Storm — Power`.
+Never rename models for campaigns (_Storm X Pro Ultra_). Sub-trims, if added later, append after the model: `Amptron Storm Power`.
 
 ---
 
-## 10. Brand toolkit — logo
+## 27. Brand toolkit: logo
 
-### 10.1 The system
+### 27.1 The system
 
 Two official marks:
 
-1. **Wordmark** — `AMPTRON` with the distinctive **A**. The green slash is part of the letter, not a separate icon sitting beside it.
-2. **A-mark** (app icon / favicon) — the A plus slash, cropped as a square symbol. Use when the full wordmark cannot hold: favicon, app icon, social avatar, vehicle badge at small size.
+1. **Wordmark:** `AMPTRON` with the distinctive **A**. The green slash is part of the letter, not a separate icon sitting beside it.
+2. **A-mark** (app icon / favicon): the A plus slash, cropped as a square symbol. Use when the full wordmark cannot hold: favicon, app icon, social avatar, vehicle badge at small size.
 
 **Files (do not redraw):**
 
@@ -271,21 +674,21 @@ Two official marks:
 
 The slash uses a second path at ~60% opacity on the wordmark. **Do not flatten, recolour, or delete it.**
 
-### 10.2 Clear space and size
+### 27.2 Clear space and size
 
 - Clear space: at least the height of the **A**’s crossbar on all four sides.
-- Website: 36px tall in the mobile nav, 48px at 1100px+; footer 44px. Width follows aspect ratio — never stretch.
+- Website: 36px tall in the mobile nav, 48px at 1100px+; footer 44px. Width follows aspect ratio. Never stretch.
 - Minimum digital wordmark: **24px** height.
 - Minimum print wordmark: **12 mm** height.
 - Minimum A-mark: **32px** digital / **8 mm** print.
 
-### 10.3 Placement
+### 27.3 Placement
 
 - Primary: top-left, on white, navy wordmark.
 - Dark sections: light wordmark, no extra plate or glow.
 - Partner lockups: Amptron wordmark left; partner mark right; a 1px Line divider; equal optical height.
 
-### 10.4 Logo don’ts
+### 27.4 Logo don’ts
 
 - Do not typeset “Amptron” in Outfit (or any font) as a fake logo.
 - Do not recolour the slash to teal `#00C896`, gold, red, or navy.
@@ -293,13 +696,13 @@ The slash uses a second path at ~60% opacity on the wordmark. **Do not flatten, 
 - Do not outline, bevel, drop-shadow, rotate, or add a holding shape unless the A-mark is in a required app-icon mask.
 - Do not separate the slash from the A or use the slash alone as a brand.
 - Do not translate or letterspace the wordmark.
-- Do not use low-resolution PNG exports for print — supply SVG or a 2× PNG from the SVG.
+- Do not use low-resolution PNG exports for print. Supply SVG or a 2× PNG from the SVG.
 
 ---
 
-## 11. Brand toolkit — colour
+## 28. Brand toolkit: colour
 
-### 11.1 Core palette
+### 28.1 Core palette
 
 Digital product tokens live in `src/index.css`. **These hex values are canonical.**
 
@@ -323,7 +726,7 @@ Digital product tokens live in `src/index.css`. **These hex values are canonical
 
 Do not “fix” Logo Green by swapping it for Signal Teal, or vice versa. **Teal is interactive. Logo Green is the mark.**
 
-### 11.2 Semantic colours (product UI only)
+### 28.2 Semantic colours (product UI only)
 
 Use for status, never for decoration or marketing fills.
 
@@ -338,7 +741,7 @@ Use for status, never for decoration or marketing fills.
 | Success      | `--success`      | `#047857` | Success text (not teal) |
 | Success soft | `--success-soft` | `#D1FAE5` | Success wells           |
 
-### 11.3 Colour combinations (approved)
+### 28.3 Colour combinations (approved)
 
 | Foreground   | Background               | Use                                               |
 | ------------ | ------------------------ | ------------------------------------------------- |
@@ -358,17 +761,17 @@ Use for status, never for decoration or marketing fills.
 
 **Featured product card:** 1.5px Amptron Navy border (not teal glow).
 
-### 11.4 Combinations to refuse
+### 28.4 Combinations to refuse
 
 - Signal Teal text on Soft Teal (contrast failure).
-- Slate text on Navy (too weak — use Mist or White).
+- Slate text on Navy (too weak; use Mist or White).
 - White text on Signal Teal for long copy (buttons only, and prefer Navy Deep type).
 - Teal fill large backgrounds except the **numbers/stats band** and primary buttons.
 - Rainbow, gold, orange, or purple as brand accents.
 - Black `#000000` instead of navy for body or fills.
 - Pure grey instead of Slate / Line.
 
-### 11.5 Colour tips
+### 28.5 Colour tips
 
 1. **Navy carries the brand. Teal punctuates.** If a layout is more than ~8% teal fill, it is too loud.
 2. **One teal action per view.** Primary button = Signal Teal. Secondary = ghost (white on navy, or navy outline on white).
@@ -378,7 +781,7 @@ Use for status, never for decoration or marketing fills.
 6. **Accessibility:** focus ring is 2px Signal Teal, 2px offset (already in `src/index.css`). Keep button type Navy Deep on Teal.
 7. **Dark UI** (portal tables, HQ card): Navy or Navy Deep, teal hairlines, white type. Do not invent a third navy.
 
-### 11.6 CSS mapping (do not introduce parallel tokens)
+### 28.6 CSS mapping (do not introduce parallel tokens)
 
 ```css
 --navy: #0a1f44;
@@ -398,9 +801,9 @@ Hard-coded hex in new CSS is a smell unless it is a one-off hairline already in 
 
 ---
 
-## 12. Brand toolkit — type
+## 29. Brand toolkit: type
 
-### 12.1 Families
+### 29.1 Families
 
 | Role    | Family     | Weights we load    | CSS              |
 | ------- | ---------- | ------------------ | ---------------- |
@@ -411,7 +814,7 @@ Loaded in `index.html` from Google Fonts. Do not substitute Inter, Poppins, Mont
 
 **Fallbacks:** `sans-serif` only. Never serif.
 
-### 12.2 Font usage
+### 29.2 Font usage
 
 | Element              | Font   | Weight | Size (phone → desktop) | Tracking | Colour               | Notes                                  |
 | -------------------- | ------ | ------ | ---------------------- | -------- | -------------------- | -------------------------------------- |
@@ -428,22 +831,22 @@ Loaded in `index.html` from Google Fonts. Do not substitute Inter, Poppins, Mont
 | Captions / legal     | Geist  | 400    | 13px                   | none     | Slate                |                                        |
 | Footer column heads  | Outfit | 700    | 15px                   | 0.04em   | White                | Uppercase                              |
 
-### 12.3 Type tips
+### 29.3 Type tips
 
-- Headlines can break for rhythm (`Powering India's / Electric Future`) — keep the thought complete.
+- Headlines can break for rhythm (`Powering India's / Electric Future`). Keep the thought complete.
 - Type is fluid: `--fs-*` tokens in `src/index.css` start compact on a phone so more of the page fits, then ease to the desktop sizes by 1100px. Do not hard-code laptop heading sizes as the mobile default.
 - Do not mix italic display. Geist italic is unnecessary; emphasis via weight or teal, not italics.
-- Numerals in specs stay tabular in feel: `80 km`, `3.5 hrs`, `2500W` — value then unit, with a space.
-- Indian English is correct: _tyres_, _showroom_, _programme_ only if we already used it; the site currently uses _program_ in blog titles — stay consistent with the surrounding piece.
+- Numerals in specs stay tabular in feel: `80 km`, `3.5 hrs`, `2500W`. Value then unit, with a space.
+- Indian English is correct: _tyres_, _showroom_, _programme_ only if we already used it; the site currently uses _program_ in blog titles. Stay consistent with the surrounding piece.
 - Never mock the logo with outlined Outfit letters.
 
 ---
 
-## 13. Graphic tools
+## 30. Graphic tools
 
 These are the repeating parts of the visual language. Reuse them; do not invent a second kit.
 
-### 13.1 Shape and radius
+### 30.1 Shape and radius
 
 | Element                     | Radius           |
 | --------------------------- | ---------------- |
@@ -453,29 +856,29 @@ These are the repeating parts of the visual language. Reuse them; do not invent 
 | Badges, hero pill           | **100px** (pill) |
 | Social icon buttons         | **6px**          |
 
-### 13.2 Eyebrow
+### 30.2 Eyebrow
 
 A 12×4px Signal Teal bar (2px radius) + uppercase Outfit label in teal. This is the section identifier. Do not replace it with a circle, a lightning bolt, or a numbered badge unless the section is already a numbered process (Apply / Onboard / Stock / Grow).
 
-### 13.3 Numbering
+### 30.3 Numbering
 
 Process and engineering lists use **01, 02, 03, 04** in Outfit, Signal Teal. Always two digits. Never 1. 2. 3. in brand diagrams.
 
-### 13.4 Icons
+### 30.4 Icons
 
 - Stroke icons, **2px**, round caps, Signal Teal `#00C896`.
 - Typical sizes: 16px inline, 20px trust row, 28px feature wells.
 - Sit on Soft Teal wells when on white; sit without wells on navy.
 - Do not fill icons solid, do not use coloured emoji, do not mix filled Material icons with this stroke set.
 
-### 13.5 Buttons
+### 30.5 Buttons
 
 - **Primary:** Teal fill, Navy Deep type, Outfit 700, uppercase, 14×28px padding, 8px radius. Hover: slight brightness drop + 1px lift.
 - **Ghost on navy:** transparent, 1.5px white border, white type.
 - **Ghost on light:** navy border / navy type (see `btn-ghost-dark` pattern).
 - One primary per cluster. Pair rider and trade CTAs when the page serves both: _Buy Amptron_ or _Book a Test Ride_ + _Stock Amptron_ or _Find a Showroom_. Other owned lines: _Explore Our Scooters_, _Submit B2B Application_, _Enquire to Stock Amptron_.
 
-### 13.6 Surfaces and rhythm
+### 30.6 Surfaces and rhythm
 
 - Page max **1440px**. Side padding `--pad`: 16px / 20px / 40px / 80px at 0 / 480 / 768 / 1100.
 - Nav 72px mobile, 88px desktop; bottom border Line.
@@ -483,61 +886,62 @@ Process and engineering lists use **01, 02, 03, 04** in Outfit, Signal Teal. Alw
 - Dividers: 1px Line on light; 1px Navy on dark teal/navy panels.
 - Elevation: rare. If needed, `0 12px 32px rgba(10, 31, 68, 0.08)` (navy-tinted, never black).
 
-### 13.7 Photography and motion
+### 30.7 Photography and motion
 
-- Product: three-quarter scooter, clean ground. Rider-in-city is allowed when the machine stays the hero — no cluttered “startup lifestyle” sets. Files: Volt, Storm, Cruise, technical cutaway, hero film.
+- Product: three-quarter scooter, clean ground. Rider-in-city is allowed when the machine stays the hero. No cluttered “startup lifestyle” sets. Files: Volt, Storm, Cruise, technical cutaway, hero film.
 - Hero motion: muted looping product film is on-brand; respect `prefers-reduced-motion`.
 - Direct-buy pages may show a rider, hands on the tiller, city asphalt. Still navy/teal chrome, still specs on the card.
 - Do not overlay heavy teal gradients on photos.
 - Cutaway / engineering imagery belongs on Navy, not on Fog.
+- Do not stage “future city,” neon, or gadget-theatre photography. Everyday roads, everyday riders.
 
-### 13.8 The slash as a graphic device
+### 30.8 The slash as a graphic device
 
 The green slash may be used **sparingly** as a compositional cut (section break, cover corner) at a shallow angle matching the A. It must remain Logo Green or white, never a random gradient. Do not repeat it as a wallpaper pattern.
 
 ---
 
-## 14. Sample tactics
+## 31. Sample tactics
 
-Use these as the default playbook. Each one should look and sound like Amptron without a new mini-brand.
+Use these as the default playbook. Each one should look and sound like Amptron without a new mini-brand. Tactics express the platform; they do not replace it.
 
-### 14.1 Direct buy (website / booking)
+### 31.1 Direct buy (website / booking)
 
 - Hero can stay national (_Powering India's Electric Future_) with two actions: **Buy Amptron** (primary) and **Find a Showroom** or **Stock Amptron** (ghost).
-- Model pages: rider-facing tagline from `models.ts`, three specs, **Book a Test Ride** / **Buy**. A quiet line: _Also available at partner showrooms._
+- Model pages: rider-facing tagline from `models.ts`, three specs, **Book a Test Ride** / **Buy**. Lead with range, charge, and ownership, not feature count. A quiet line: _Also available at partner showrooms._
 - Checkout and booking: Geist body, Outfit totals, teal confirm. No countdown timers, no fake scarcity.
 
-### 14.2 Showroom kit
+### 31.2 Showroom kit
 
 - Navy fascia board, light wordmark, tagline in Outfit 700 white.
-- Window cling: A-mark + “Buy Amptron here” or “Stock Amptron” + Signal Teal bar — match the location (retail floor vs trade event).
+- Window cling: A-mark + “Buy Amptron here” or “Stock Amptron” + Signal Teal bar. Match the location (retail floor vs trade event).
 - Hangtags: Fog card, navy wordmark, model name in Outfit 800, three specs (range / speed / charge), Geist body, QR to `/models/{slug}`.
 - Test-ride stand: numbered 01–03 steps (Helmet → Route → Debrief).
 
-### 14.3 Dealer onboarding pack (PDF)
+### 31.3 Dealer onboarding pack (PDF)
 
-Cover: navy, light wordmark, _Partner with Amptron_. Inside: Apply → Onboarding → Stock → Grow. State clearly that riders can also buy from Amptron directly, and that partner service/parts remain the local advantage. One teal primary: _Enquire to Stock Amptron_. Specs from `src/data/models.ts`.
+Cover: navy, light wordmark, _Partner with Amptron_. Inside: Apply → Onboarding → Stock → Grow. State clearly that riders can also buy from Amptron directly, and that partner service/parts remain the local advantage. Dealer success is sales **plus** service capability and spare-parts availability. One teal primary: _Enquire to Stock Amptron_. Specs from `src/data/models.ts`.
 
-### 14.4 LinkedIn and Instagram
+### 31.4 LinkedIn and Instagram
 
-- **Trade (LinkedIn):** one partner-useful post per week (test-ride ops, battery safety, tier-2 playbook).
-- **Riders (Instagram / public LinkedIn):** model spec cards, commute proof, ownership/service — not influencer theatre.
+- **Trade (LinkedIn):** one partner-useful post per week (test-ride ops, battery safety, spare-parts discipline, tier-2 playbook).
+- **Riders (Instagram / public LinkedIn):** model spec cards, commute proof, ownership/service, not influencer theatre and not gadget demos.
 - Square crop: navy top band, wordmark, one stat in Outfit 900, teal underline. No carousel of stock “future city” illustrations.
 
-### 14.5 WhatsApp
+### 31.5 WhatsApp
 
 - **Riders:** booking confirmation, delivery window, service reminder. Header: Amptron wordmark. No sticker packs.
 - **Dealers:** model + SKU + date. Sign-off: relationship manager + `dealer-relations@amptron.co.in`.
 
-### 14.6 Test-ride Saturday
+### 31.6 Test-ride Saturday
 
-A-frame: navy, light logo, _Amptron Storm — Most Popular_, three numbers (120 km / 65 km/h / 4.0 hrs). Staff tees: navy, small white wordmark left chest. Script: facts first. Close with **buy here, buy on amptron.co.in, or we will book you a slot** — never “you can only buy from us” and never “switch your showroom exclusively.”
+A-frame: navy, light logo, _Amptron Storm, Most Popular_, three numbers (120 km / 65 km/h / 4.0 hrs). Staff tees: navy, small white wordmark left chest. Script: facts first. Close with **buy here, buy on amptron.co.in, or we will book you a slot**. Never “you can only buy from us” and never “switch your showroom exclusively.”
 
-### 14.7 Spec sheet / one-pager
+### 31.7 Spec sheet / one-pager
 
-Grid on white. Eyebrow `MODEL CATALOG`. Table: labels Slate, values Outfit 700 Navy. Footer: legal name + Manesar address. QR to `/models/{slug}`. Rider version adds price/booking CTA; trade version adds margin/order CTA. Same layout, different last strip.
+Grid on white. Eyebrow `MODEL CATALOG`. Table: labels Slate, values Outfit 700 Navy. Footer: legal name + Manesar address. QR to `/models/{slug}`. Rider version adds price/booking CTA; trade version adds margin/order CTA. Same layout, different last strip. Include parts/warranty in plain language when space allows.
 
-### 14.8 Email signature
+### 31.8 Email signature
 
 ```
 Name
@@ -549,36 +953,36 @@ www.amptron.co.in
 
 Navy name in Outfit-equivalent; rest Geist-equivalent. Tiny navy wordmark, not a scan of a business card.
 
-### 14.9 Vehicle / crate stencils
+### 31.9 Vehicle / crate stencils
 
 A-mark or wordmark in navy or white only. Shipping crates: navy stencil + “AMPTRON” + model + serial. No teal floods on metal.
 
-### 14.10 Portal and owner support UX
+### 31.10 Portal and owner support UX
 
-Same tone as the marketing site, quieter. Buttons sentence-case is acceptable in dense admin tables; marketing pages keep uppercase primary CTAs. Empty states: _New dealer applications will appear here._ / _Your bookings will show up here._ — not “Nothing to see yet ✨”.
+Same tone as the marketing site, quieter. Buttons sentence-case is acceptable in dense admin tables; marketing pages keep uppercase primary CTAs. Empty states: _New dealer applications will appear here._ / _Your bookings will show up here._ Not “Nothing to see yet ✨”.
 
-### 14.11 Launch announcement
+### 31.11 Launch announcement
 
-Headline: _Amptron [Model] is available._ Sub: one-line tagline from `models.ts`. CTAs: _Buy Amptron_ + _View full specifications_ + _Stock Amptron_. Do not announce “dropping soon” or use countdown gimmicks.
+Headline: _Amptron [Model] is available._ Sub: one-line tagline from `models.ts`. CTAs: _Buy Amptron_ + _View full specifications_ + _Stock Amptron_. Do not announce “dropping soon” or use countdown gimmicks. Do not lead with feature-count theatre.
 
 ---
 
-## 15. Channel checklist
+## 32. Channel checklist
 
 | Surface                | Logo                                  | Colour                               | Type                               | Voice                                       |
 | ---------------------- | ------------------------------------- | ------------------------------------ | ---------------------------------- | ------------------------------------------- |
-| amptron.co.in (public) | Navy wordmark on white; light on navy | Tokens only                          | Outfit + Geist                     | Rider + dealer paths, spec-true             |
+| amptron.co.in (public) | Navy wordmark on white; light on navy | Tokens only                          | Outfit + Geist                     | Rider + dealer paths, spec-true, plain      |
 | Direct buy / booking   | Same                                  | Same                                 | Same                               | Rider _you_; Buy Amptron / Book a Test Ride |
 | Dealer portal / admin  | Same                                  | Same + semantic status               | Same                               | Operational, short                          |
 | Print / boards         | SVG → print                           | Navy + Teal, Logo Green on mark only | Outfit + Geist or licensed matches | Tagline + Buy or Stock Amptron              |
-| Social avatar          | A-mark                                | Navy field or transparent            | —                                  | —                                           |
-| Social post            | Wordmark small                        | Navy/teal, not filters               | Outfit for numerals                | Useful, not viral                           |
-| Packaging              | Wordmark or A-mark                    | Navy / white                         | —                                  | Model + serial                              |
-| Co-brand               | Wordmark + divider                    | Do not recolour partner mark         | —                                  | “Available at [Dealer]” / “Buy Amptron”     |
+| Social avatar          | A-mark                                | Navy field or transparent            | n/a                                | n/a                                         |
+| Social post            | Wordmark small                        | Navy/teal, not filters               | Outfit for numerals                | Useful, not viral, not gadget-first         |
+| Packaging              | Wordmark or A-mark                    | Navy / white                         | n/a                                | Model + serial                              |
+| Co-brand               | Wordmark + divider                    | Do not recolour partner mark         | n/a                                | “Available at [Dealer]” / “Buy Amptron”     |
 
 ---
 
-## 16. Writing and design checklist
+## 33. Writing and design checklist
 
 Before anything ships:
 
@@ -591,12 +995,17 @@ Before anything ships:
 - [ ] Copy names the right _you_ (rider on buy flows, dealer on partner flows).
 - [ ] Public pages offer **both** paths: buy from Amptron and find / stock with a dealer.
 - [ ] No exclusive-dealership promise, and no “cut out the dealer” line.
+- [ ] Positioning is **Affordable + Dependable + Practical**, never Cheap + Basic.
+- [ ] Feature, offer, or line passes the Amptron Decision Filter (§24).
+- [ ] No gadget-first, Silicon Valley, or “cheapest EV” language.
+- [ ] No em dashes (—).
+- [ ] Range, service time, battery life, and warranty are not promised beyond validated specs.
 - [ ] Numbers match the site or `src/data/models.ts`.
 - [ ] Dark sections use the light wordmark; light sections use the navy wordmark.
 
 ---
 
-## 17. File index
+## 34. File index
 
 | Need                    | Path                                     |
 | ----------------------- | ---------------------------------------- |
@@ -608,4 +1017,4 @@ Before anything ships:
 | Product names and specs | `src/data/models.ts`                     |
 | This document           | `docs/brand/AMPTRON-BRAND-GUIDELINES.md` |
 
-Questions on usage: treat this file as law until a dated revision replaces it. When the site tokens change, update **§11 and §12 in the same pull request**.
+Questions on usage: treat this file as law until a dated revision replaces it. When the site tokens change, update **§28 and §29 in the same pull request**. When the brand platform changes, only founders and leadership may revise **§§1–25**.

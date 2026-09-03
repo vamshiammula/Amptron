@@ -17,17 +17,17 @@ export const SUPPORT_STATUSES = ['new', 'contacted', 'resolved'] as const
 export const SUPPORT_LANGUAGES = ['english', 'hindi', 'telugu', 'hinglish'] as const
 
 export const QUOTA_UNAVAILABLE_MESSAGE =
-  'Agents are not available right now. Leave your question and contact details — Amptron will follow up.'
+  'Agents are not available right now. Leave your question and contact details. Amptron will follow up.'
 
 export const SMALLTALK_REPLIES = {
   greeting:
-    'Hello. Ask about Amptron Volt, Storm, or Cruise — range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
+    'Hello. Ask about Amptron Volt, Storm, or Cruise: range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
   thanks:
     'You are welcome. Ask another question about Amptron scooters, test rides, or stocking whenever you are ready.',
   goodbye:
     'Goodbye. You can buy Amptron from us or find a partner showroom when you are ready.',
   how_are_you:
-    'Doing well — ready to help with Amptron Volt, Storm, and Cruise. What would you like to know?',
+    'Doing well. Ready to help with Amptron Volt, Storm, and Cruise. What would you like to know?',
 } as const
 
 export type FaqAudience = (typeof FAQ_AUDIENCES)[number]

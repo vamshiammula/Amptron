@@ -116,7 +116,7 @@ export default function ChatWidget() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Amptron agent here. Ask about Volt, Storm, or Cruise — answers come from published FAQs.',
+      text: 'Amptron agent here. Ask about Volt, Storm, or Cruise. Answers come from published FAQs.',
     },
   ])
   const [capture, setCapture] = useState<{

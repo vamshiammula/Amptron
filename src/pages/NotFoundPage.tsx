@@ -5,7 +5,7 @@ export default function NotFoundPage() {
   return (
     <>
       <Seo
-        title="Page Not Found — Amptron"
+        title="Page Not Found: Amptron"
         description="The requested page could not be found."
         path="/404"
       />

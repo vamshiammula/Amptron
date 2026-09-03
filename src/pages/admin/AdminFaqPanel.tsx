@@ -278,7 +278,7 @@ export default function AdminFaqPanel({
                 }))
               }
             />
-            Active — visitors can match this FAQ
+            Active: visitors can match this FAQ
           </label>
           <button
             className="btn btn-primary"

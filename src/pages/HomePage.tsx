@@ -5,7 +5,6 @@ import HomeFaq from '../components/HomeFaq'
 import ModelRail from '../components/ModelRail'
 import Numbers from '../components/Numbers'
 import Ownership from '../components/Ownership'
-import SavingsCalculator from '../components/SavingsCalculator'
 import Seo from '../components/Seo'
 import Technology from '../components/Technology'
 import Testimonials from '../components/Testimonials'
@@ -23,7 +22,6 @@ export default function HomePage() {
         <ModelRail />
         <Technology />
         <Numbers />
-        <SavingsCalculator />
         <Ownership />
         <Dealers />
         <Testimonials />

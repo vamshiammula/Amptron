@@ -657,14 +657,12 @@
   font-family: var(--display);
 }
 
-.locator-filters,
 .simple-form {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
 }
 
-.locator-filters label,
 .simple-form label {
   display: flex;
   flex-direction: column;
@@ -675,14 +673,18 @@
   letter-spacing: 0.04em;
 }
 
-.locator-filters select,
 .simple-form input,
 .simple-form textarea,
 .simple-form select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
+  font-family: var(--body);
   font-size: 14px;
+  color: var(--navy);
+  text-transform: none;
+  letter-spacing: normal;
+  background: var(--white);
 }
 
 .content-note {
@@ -1535,10 +1537,6 @@ button.ops-kpi:hover {
   .model-detail-grid,
   .detail-columns {
     grid-template-columns: 1.1fr 1fr;
-  }
-
-  .locator-filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .portal-toolbar {

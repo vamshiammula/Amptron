@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
+import FilterSelect from '../components/ui/FilterSelect'
 import PageHero from '../components/ui/PageHero'
 import { mapsSearchUrl } from '../lib/maps'
 
@@ -11,6 +12,13 @@ interface DealerRecord {
   state: string
   area: string
   phone: string
+}
+
+function locatorCountCopy(count: number, state: string, city: string): string {
+  const noun = count === 1 ? 'showroom' : 'showrooms'
+  if (city) return `${count} ${noun} in ${city}`
+  if (state) return `${count} ${noun} in ${state}`
+  return `${count} ${noun} across India`
 }
 
 export default function DealerLocatorPage() {
@@ -90,44 +98,33 @@ export default function DealerLocatorPage() {
           <div className="wrap">
             <div className="locator-panel">
               <div className="locator-filters">
-                <label>
-                  State
-                  <select
-                    value={stateFilter}
-                    onChange={(event) => {
-                      setStateFilter(event.target.value)
-                      setCityFilter('')
-                    }}
-                  >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option value={state} key={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  City
-                  <select
-                    value={cityFilter}
-                    onChange={(event) => setCityFilter(event.target.value)}
-                  >
-                    <option value="">All Cities</option>
-                    {cities.map((city) => (
-                      <option value={city} key={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <FilterSelect
+                  label="State"
+                  value={stateFilter}
+                  options={states}
+                  placeholder="All States"
+                  onChange={(next) => {
+                    setStateFilter(next)
+                    setCityFilter('')
+                  }}
+                />
+                <FilterSelect
+                  label="City"
+                  value={cityFilter}
+                  options={cities}
+                  placeholder="All Cities"
+                  onChange={setCityFilter}
+                />
               </div>
               <p className="content-note" aria-live="polite">
                 {loading
                   ? 'Loading dealer network...'
-                  : error
-                    ? error
-                    : `${filteredDealers.length} showroom${filteredDealers.length === 1 ? '' : 's'}${stateFilter ? ` in ${cityFilter || stateFilter}` : ' across India'}`}
+                  : error ??
+                    locatorCountCopy(
+                      filteredDealers.length,
+                      stateFilter,
+                      cityFilter,
+                    )}
               </p>
             </div>
           </div>

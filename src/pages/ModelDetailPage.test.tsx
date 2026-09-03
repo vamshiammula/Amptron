@@ -28,9 +28,7 @@ describe('Model detail subnav', () => {
   it('keeps the sticky Buy Amptron control off the hero', () => {
     renderVolt()
 
-    expect(
-      within(subnav()).queryByRole('link', { name: 'Buy Amptron' }),
-    ).toBeNull()
+    expect(within(subnav()).queryByRole('link', { name: 'Buy Amptron' })).toBeNull()
     expect(
       within(document.getElementById('overview')!).getByRole('link', {
         name: 'Buy Amptron',

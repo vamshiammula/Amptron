@@ -42,6 +42,7 @@ export default function Footer() {
             <a href="/#buy">Buy Amptron</a>
             <Link to="/book-test-ride">Book a Test Ride</Link>
             <Link to="/dealers/locate">Find a Showroom</Link>
+            <Link to="/ownership-calculator">Savings calculator</Link>
             <Link to="/warranty">Warranty Policy</Link>
           </div>
           <div className="footer-col">

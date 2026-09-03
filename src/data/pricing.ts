@@ -12,16 +12,41 @@ export const PRICE_PLACEHOLDER_NOTE =
 export const EMI_FOOTNOTE = `EMI estimate at ${EMI_DEFAULTS.annualRatePct}% for ${EMI_DEFAULTS.tenureMonths} months, ₹${EMI_DEFAULTS.downPaymentInr} down. Lender terms vary.`
 
 export {
+  OWNERSHIP_DEFAULTS,
+  OWNERSHIP_LIMITS,
+  OWNERSHIP_SOURCES,
   SAVINGS_DEFAULTS,
   SAVINGS_LIMITS,
+  batteryRepairInr,
+  batteryReplacementInr,
+  batteryWorkLimits,
+  estimateOwnership,
   estimateSavings,
   kwhPerKm,
   savingsBarPeak,
 } from '@shared/savings'
-export type { SavingsInput, SavingsResult } from '@shared/savings'
+export type {
+  BatteryAction,
+  OwnershipInput,
+  OwnershipResult,
+  SavingsInput,
+  SavingsResult,
+} from '@shared/savings'
+
+export function ownershipCalculatorPath(slug?: string): string {
+  if (!slug) return '/ownership-calculator'
+  return `/ownership-calculator?model=${encodeURIComponent(slug)}`
+}
 
 export function formatInr(amount: number): string {
   return `₹${Math.round(amount).toLocaleString('en-IN')}`
+}
+
+export function formatInrPerKm(amount: number): string {
+  return `₹${amount.toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`
 }
 
 export function monthlyEmi(

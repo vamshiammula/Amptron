@@ -1,12 +1,16 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import SavingsCalculator from '../components/SavingsCalculator'
 import Seo from '../components/Seo'
 import MediaFrame from '../components/ui/MediaFrame'
 import PriceTag from '../components/ui/PriceTag'
 import Reveal from '../components/ui/Reveal'
 import SectionHeader from '../components/ui/SectionHeader'
-import { EMI_DEFAULTS, EMI_FOOTNOTE, formatInr, monthlyEmi } from '../data/pricing'
+import {
+  EMI_DEFAULTS,
+  EMI_FOOTNOTE,
+  formatInr,
+  monthlyEmi,
+} from '../data/pricing'
 import { chapterImages, heroStill } from '../lib/modelMedia'
 import { useScooterModel, useSiteContent } from '../lib/siteContent'
 import { useActiveSection } from '../lib/useActiveSection'
@@ -363,7 +367,6 @@ export default function ModelDetailPage() {
                     warranty, spares, and trained workshops.
                   </p>
                   <p className="emi-card-links">
-                    <a href="#savings">See your monthly saving</a>
                     <Link to="/models#compare">Compare all three</Link>
                   </p>
                 </div>
@@ -390,8 +393,6 @@ export default function ModelDetailPage() {
             </div>
           </section>
         ) : null}
-
-        <SavingsCalculator defaultSlug={model.slug} tone="fog" />
 
         <section className="page-section" id="model-faq">
           <div className="wrap wrap--narrow">

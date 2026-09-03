@@ -88,6 +88,7 @@ export default function Navbar() {
         </div>
         <Link to="/about">About</Link>
         <Link to="/dealers/locate">Find a Showroom</Link>
+        <Link to="/ownership-calculator">Savings calculator</Link>
         <Link to="/blog">Blog</Link>
         <Link to="/portal/login">Dealer Login</Link>
       </nav>
@@ -137,6 +138,9 @@ export default function Navbar() {
         </Link>
         <Link to="/dealers/locate" onClick={close}>
           Find a Showroom
+        </Link>
+        <Link to="/ownership-calculator" onClick={close}>
+          Savings calculator
         </Link>
         <Link to="/blog" onClick={close}>
           Blog

@@ -22,7 +22,6 @@ describe('App', () => {
     expect(headings).toEqual([
       'Choose your Amptron',
       'Built around what you actually need',
-      'Plan your monthly cost',
       'Service, warranty, and spares',
       'Partner With Amptron',
       'What our dealers say',

@@ -11,6 +11,7 @@ import DealerLocatorPage from './pages/DealerLocatorPage'
 import HomePage from './pages/HomePage'
 import ModelDetailPage from './pages/ModelDetailPage'
 import ModelsPage from './pages/ModelsPage'
+import OwnershipCalculatorPage from './pages/OwnershipCalculatorPage'
 import NotFoundPage from './pages/NotFoundPage'
 import PortalLoginPage from './pages/PortalLoginPage'
 import PortalPage from './pages/PortalPage'
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/portal" element={<PortalPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/ownership-calculator" element={<OwnershipCalculatorPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/warranty" element={<WarrantyPage />} />

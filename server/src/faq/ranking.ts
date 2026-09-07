@@ -3,7 +3,7 @@
  *
  * Pipeline (all free):
  *   1. normalizeQuery  – Unicode, stopwords, synonym map, typo-fold
- *   2. detectModel     – volt | storm | cruise | null
+ *   2. detectModel     – nira | cruise | null
  *   3. detectTopic     – range | speed | charge | battery | payload |
  *                        brakes | features | price | colours | null
  *   4. If model + topic both present → resolve slug directly (score 1.0)
@@ -59,7 +59,11 @@ function levenshtein(a: string, b: string): number {
     curr[0] = i
     for (let j = 1; j <= b.length; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1
-      curr[j] = Math.min((prev[j] ?? 0) + 1, (curr[j - 1] ?? 0) + 1, (prev[j - 1] ?? 0) + cost)
+      curr[j] = Math.min(
+        (prev[j] ?? 0) + 1,
+        (curr[j - 1] ?? 0) + 1,
+        (prev[j - 1] ?? 0) + cost,
+      )
     }
     for (let j = 0; j <= b.length; j++) prev[j] = curr[j] ?? 0
   }
@@ -70,7 +74,8 @@ function levenshtein(a: string, b: string): number {
 // Threshold: <= 1 for 5-6 char tokens, <= 2 for 7+ char tokens.
 function tokensMatch(a: string, b: string): boolean {
   if (a === b) return true
-  const lenA = a.length; const lenB = b.length
+  const lenA = a.length
+  const lenB = b.length
   if (lenA < 5 || lenB < 5) return false
   if (Math.abs(lenA - lenB) > 3) return false
   const maxLen = Math.max(lenA, lenB)
@@ -83,22 +88,127 @@ function tokensMatch(a: string, b: string): boolean {
 // ---------------------------------------------------------------------------
 
 const STOPWORDS = new Set([
-  'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
-  'do', 'does', 'did', 'have', 'has', 'had', 'will', 'would', 'can', 'could',
-  'should', 'shall', 'may', 'might', 'must', 'need', 'dare',
-  'what', 'which', 'who', 'whom', 'whose', 'when', 'where', 'why', 'how',
-  'i', 'me', 'my', 'we', 'our', 'you', 'your', 'he', 'she', 'it', 'they',
-  'them', 'their', 'this', 'that', 'these', 'those',
-  'in', 'on', 'at', 'to', 'for', 'of', 'with', 'about', 'from', 'by',
-  'between', 'into', 'through', 'during', 'before', 'after',
-  'and', 'or', 'but', 'not', 'so', 'yet', 'as', 'if', 'than', 'up', 'too',
+  'a',
+  'an',
+  'the',
+  'is',
+  'are',
+  'was',
+  'were',
+  'be',
+  'been',
+  'being',
+  'do',
+  'does',
+  'did',
+  'have',
+  'has',
+  'had',
+  'will',
+  'would',
+  'can',
+  'could',
+  'should',
+  'shall',
+  'may',
+  'might',
+  'must',
+  'need',
+  'dare',
+  'what',
+  'which',
+  'who',
+  'whom',
+  'whose',
+  'when',
+  'where',
+  'why',
+  'how',
+  'i',
+  'me',
+  'my',
+  'we',
+  'our',
+  'you',
+  'your',
+  'he',
+  'she',
+  'it',
+  'they',
+  'them',
+  'their',
+  'this',
+  'that',
+  'these',
+  'those',
+  'in',
+  'on',
+  'at',
+  'to',
+  'for',
+  'of',
+  'with',
+  'about',
+  'from',
+  'by',
+  'between',
+  'into',
+  'through',
+  'during',
+  'before',
+  'after',
+  'and',
+  'or',
+  'but',
+  'not',
+  'so',
+  'yet',
+  'as',
+  'if',
+  'than',
+  'up',
+  'too',
   // Amptron-specific noise
-  'amptron', 'scooter', 'scooters', 'electric', 'ev', 'vehicle',
-  'tell', 'give', 'get', 'take', 'use', 'want', 'know', 'like', 'please',
-  'find', 'show', 'let', 'make', 'put', 'go', 'going', 'much',
+  'amptron',
+  'scooter',
+  'scooters',
+  'electric',
+  'ev',
+  'vehicle',
+  'tell',
+  'give',
+  'get',
+  'take',
+  'use',
+  'want',
+  'know',
+  'like',
+  'please',
+  'find',
+  'show',
+  'let',
+  'make',
+  'put',
+  'go',
+  'going',
+  'much',
   // Hindi/Hinglish filler
-  'mujhe', 'mera', 'kya', 'hai', 'hain', 'ko', 'ki', 'ka', 'ke',
-  'ho', 'jo', 'aur', 'ya', 'nahi', 'bheja', 'please',
+  'mujhe',
+  'mera',
+  'kya',
+  'hai',
+  'hain',
+  'ko',
+  'ki',
+  'ka',
+  'ke',
+  'ho',
+  'jo',
+  'aur',
+  'ya',
+  'nahi',
+  'bheja',
+  'please',
 ])
 
 // ---------------------------------------------------------------------------
@@ -107,57 +217,134 @@ const STOPWORDS = new Set([
 
 const SYNONYMS: Record<string, string> = {
   // Price
-  cost: 'price', pricing: 'price', rate: 'price', rates: 'price',
-  daam: 'price', paisa: 'price', paise: 'price',
-  amount: 'price', bhaav: 'price', bhav: 'price', rupee: 'price', rupees: 'price',
-  exshowroom: 'price', emi: 'emi',
-  loan: 'emi', finance: 'emi', financing: 'emi', installment: 'emi',
-  instalment: 'emi', downpayment: 'emi', monthly: 'emi', kist: 'emi',
+  cost: 'price',
+  pricing: 'price',
+  rate: 'price',
+  rates: 'price',
+  daam: 'price',
+  paisa: 'price',
+  paise: 'price',
+  amount: 'price',
+  bhaav: 'price',
+  bhav: 'price',
+  rupee: 'price',
+  rupees: 'price',
+  exshowroom: 'price',
+  emi: 'emi',
+  loan: 'emi',
+  finance: 'emi',
+  financing: 'emi',
+  installment: 'emi',
+  instalment: 'emi',
+  downpayment: 'emi',
+  monthly: 'emi',
+  kist: 'emi',
   // Range
-  mileage: 'range', distance: 'range', km: 'range', kilometre: 'range',
-  kilometers: 'range', kilometres: 'range',
-  dur: 'range', duri: 'range', far: 'range',
+  mileage: 'range',
+  distance: 'range',
+  km: 'range',
+  kilometre: 'range',
+  kilometers: 'range',
+  kilometres: 'range',
+  dur: 'range',
+  duri: 'range',
+  far: 'range',
   // Charging
-  charging: 'charge', charger: 'charge', recharge: 'charge', recharging: 'charge',
-  plug: 'charge', charged: 'charge', long: 'charge', der: 'charge',
+  charging: 'charge',
+  charger: 'charge',
+  recharge: 'charge',
+  recharging: 'charge',
+  plug: 'charge',
+  charged: 'charge',
+  long: 'charge',
+  der: 'charge',
   // Speed
-  fast: 'speed', fastest: 'speed', velocity: 'speed', kmh: 'speed',
-  topspeed: 'speed', maxspeed: 'speed',
+  fast: 'speed',
+  fastest: 'speed',
+  velocity: 'speed',
+  kmh: 'speed',
+  topspeed: 'speed',
+  maxspeed: 'speed',
   // Battery
-  bat: 'battery', cell: 'battery', cells: 'battery', pack: 'battery',
-  kwh: 'battery', watt: 'battery', lithium: 'battery', bms: 'battery',
+  bat: 'battery',
+  cell: 'battery',
+  cells: 'battery',
+  pack: 'battery',
+  kwh: 'battery',
+  watt: 'battery',
+  lithium: 'battery',
+  bms: 'battery',
   // Showroom / dealer
-  dealer: 'showroom', dealership: 'showroom', showrooms: 'showroom',
-  store: 'showroom', shop: 'showroom', outlet: 'showroom',
-  nearest: 'showroom', near: 'showroom', dhundna: 'showroom',
-  kahan: 'showroom', kaha: 'showroom',
-  partners: 'showroom', partner: 'showroom',
+  dealer: 'showroom',
+  dealership: 'showroom',
+  showrooms: 'showroom',
+  store: 'showroom',
+  shop: 'showroom',
+  outlet: 'showroom',
+  nearest: 'showroom',
+  near: 'showroom',
+  dhundna: 'showroom',
+  kahan: 'showroom',
+  kaha: 'showroom',
+  partners: 'showroom',
+  partner: 'showroom',
   // Test ride
-  testride: 'testride', trial: 'testride', demo: 'testride',
+  testride: 'testride',
+  trial: 'testride',
+  demo: 'testride',
   ride: 'testride',
-  book: 'book', booking: 'book',
+  book: 'book',
+  booking: 'book',
   // Warranty
-  warrenty: 'warranty', warenty: 'warranty', guarantee: 'warranty',
-  guaranty: 'warranty', claim: 'warranty', claims: 'warranty',
-  coverage: 'warranty', cover: 'warranty',
+  warrenty: 'warranty',
+  warenty: 'warranty',
+  guarantee: 'warranty',
+  guaranty: 'warranty',
+  claim: 'warranty',
+  claims: 'warranty',
+  coverage: 'warranty',
+  cover: 'warranty',
   // Service
-  repair: 'service', maintenance: 'service', workshop: 'service',
-  centre: 'service', center: 'service', mechanic: 'service',
-  servicing: 'service', serviced: 'service',
+  repair: 'service',
+  maintenance: 'service',
+  workshop: 'service',
+  centre: 'service',
+  center: 'service',
+  mechanic: 'service',
+  servicing: 'service',
+  serviced: 'service',
   // Colour
-  color: 'colour', colors: 'colour', colours: 'colour', paint: 'colour',
-  shade: 'colour', shades: 'colour',
+  color: 'colour',
+  colors: 'colour',
+  colours: 'colour',
+  paint: 'colour',
+  shade: 'colour',
+  shades: 'colour',
   // Payload / weight
-  weight: 'payload', capacity: 'payload', load: 'payload', carry: 'payload',
+  weight: 'payload',
+  capacity: 'payload',
+  load: 'payload',
+  carry: 'payload',
   // Brakes
-  braking: 'brakes', brake: 'brakes', cbs: 'brakes', disc: 'brakes',
+  braking: 'brakes',
+  brake: 'brakes',
+  cbs: 'brakes',
+  disc: 'brakes',
   // Features
-  feature: 'features', equipped: 'features', accessories: 'features',
+  feature: 'features',
+  equipped: 'features',
+  accessories: 'features',
   // Buying
-  purchase: 'buy', order: 'buy',
-  bought: 'buy', buying: 'buy', kharidna: 'buy', khareed: 'buy',
+  purchase: 'buy',
+  order: 'buy',
+  bought: 'buy',
+  buying: 'buy',
+  kharidna: 'buy',
+  khareed: 'buy',
   // Home
-  home: 'home', household: 'home', domestic: 'home',
+  home: 'home',
+  household: 'home',
+  domestic: 'home',
 }
 
 // ---------------------------------------------------------------------------
@@ -181,7 +368,10 @@ export function normalizeTokens(input: string): string[] {
   const seen = new Set<string>()
   const result: string[] = []
   for (const t of mapped) {
-    if (!seen.has(t)) { seen.add(t); result.push(t) }
+    if (!seen.has(t)) {
+      seen.add(t)
+      result.push(t)
+    }
   }
   return result
 }
@@ -190,58 +380,67 @@ export function normalizeTokens(input: string): string[] {
 // Model + Topic detection
 // ---------------------------------------------------------------------------
 
-export type FaqModel = 'volt' | 'storm' | 'cruise'
+export type FaqModel = 'nira' | 'cruise'
 export type FaqTopic =
-  | 'range' | 'speed' | 'charge' | 'battery' | 'payload'
-  | 'brakes' | 'features' | 'price' | 'colours' | 'showroom'
+  | 'range'
+  | 'speed'
+  | 'charge'
+  | 'battery'
+  | 'payload'
+  | 'brakes'
+  | 'features'
+  | 'price'
+  | 'colours'
+  | 'showroom'
 
 const MODEL_WORDS: Record<FaqModel, readonly string[]> = {
-  volt:   ['volt', 'v'],
-  storm:  ['storm', 's'],
+  nira: ['nira', 'storm'],
   cruise: ['cruise', 'c'],
 }
 const TOPIC_WORDS: Record<FaqTopic, readonly string[]> = {
-  range:    ['range', 'mileage', 'km', 'kilometre', 'distance', 'dur', 'duri', 'far'],
-  speed:    ['speed', 'fast', 'kmh', 'topspeed', 'maxspeed', 'velocity'],
-  charge:   ['charge', 'charging', 'charger', 'recharge', 'plug', 'der', 'long'],
-  battery:  ['battery', 'kwh', 'bms', 'lithium', 'pack', 'cell'],
-  payload:  ['payload', 'weight', 'capacity', 'load', 'carry'],
-  brakes:   ['brakes', 'brake', 'braking', 'cbs', 'disc'],
+  range: ['range', 'mileage', 'km', 'kilometre', 'distance', 'dur', 'duri', 'far'],
+  speed: ['speed', 'fast', 'kmh', 'topspeed', 'maxspeed', 'velocity'],
+  charge: ['charge', 'charging', 'charger', 'recharge', 'plug', 'der', 'long'],
+  battery: ['battery', 'kwh', 'bms', 'lithium', 'pack', 'cell'],
+  payload: ['payload', 'weight', 'capacity', 'load', 'carry'],
+  brakes: ['brakes', 'brake', 'braking', 'cbs', 'disc'],
   features: ['features', 'feature', 'accessories', 'equipped'],
-  price:    ['price', 'cost', 'emi', 'loan', 'finance', 'daam', 'paisa'],
-  colours:  ['colour', 'color', 'paint', 'shade'],
+  price: ['price', 'cost', 'emi', 'loan', 'finance', 'daam', 'paisa'],
+  colours: ['colour', 'color', 'paint', 'shade'],
   showroom: ['showroom', 'dealer', 'dealership', 'kahan', 'kaha'],
 }
 
 // Build reverse maps for fast lookup
 const WORD_TO_MODEL = new Map<string, FaqModel>()
-for (const [model, words] of Object.entries(MODEL_WORDS) as Array<[FaqModel, readonly string[]]>) {
+for (const [model, words] of Object.entries(MODEL_WORDS) as Array<
+  [FaqModel, readonly string[]]
+>) {
   for (const w of words) WORD_TO_MODEL.set(w, model)
 }
 const WORD_TO_TOPIC = new Map<string, FaqTopic>()
-for (const [topic, words] of Object.entries(TOPIC_WORDS) as Array<[FaqTopic, readonly string[]]>) {
+for (const [topic, words] of Object.entries(TOPIC_WORDS) as Array<
+  [FaqTopic, readonly string[]]
+>) {
   for (const w of words) WORD_TO_TOPIC.set(w, topic)
 }
 
 // Slug overrides for model+topic combos that don't follow ${model}-${topic}
 const SLUG_MAP: Partial<Record<`${FaqModel}-${FaqTopic}`, string>> = {
-  'volt-price':      'model-pricing',
-  'storm-price':     'model-pricing',
-  'cruise-price':    'model-pricing',
-  'volt-showroom':   'find-showroom',
-  'storm-showroom':  'find-showroom',
+  'nira-price': 'model-pricing',
+  'cruise-price': 'model-pricing',
+  'nira-showroom': 'find-showroom',
   'cruise-showroom': 'find-showroom',
 }
 
 // Summary slug overrides for topic-only (no model) queries
 const SUMMARY_SLUG_MAP: Partial<Record<FaqTopic, string>> = {
-  price:    'model-pricing',
+  price: 'model-pricing',
   showroom: 'find-showroom',
-  charge:   'charge-time-all-models',
+  charge: 'charge-time-all-models',
 }
 
 export function detectModel(normalized: string): FaqModel | null {
-  // Run on the raw normalized string (pre-token) to catch e.g. "volt's"
+  // Run on the raw normalized string (pre-token) to catch e.g. "nira's"
   const tokens = normalized.split(' ')
   for (const tok of tokens) {
     const m = WORD_TO_MODEL.get(tok)
@@ -250,7 +449,10 @@ export function detectModel(normalized: string): FaqModel | null {
   return null
 }
 
-function detectWhyBuySlug(normalizedRaw: string, queryTokens: string[]): string | null {
+function detectWhyBuySlug(
+  normalizedRaw: string,
+  queryTokens: string[],
+): string | null {
   const hasWhy = normalizedRaw.includes('why') || queryTokens.includes('why')
   if (!hasWhy) return null
 
@@ -294,7 +496,10 @@ export function detectTopic(tokens: string[]): FaqTopic | null {
  * Useful for catching words that get removed by stopwords.
  */
 function detectTopicRaw(query: string): FaqTopic | null {
-  const raw = query.toLowerCase().split(/[\s\W]+/).filter(Boolean)
+  const raw = query
+    .toLowerCase()
+    .split(/[\s\W]+/)
+    .filter(Boolean)
   for (const tok of raw) {
     const t = WORD_TO_TOPIC.get(tok)
     if (t) return t
@@ -325,7 +530,10 @@ function buildIdf(
     const seen = new Set<string>()
     for (const text of texts) {
       for (const tok of normalizeTokens(text)) {
-        if (!seen.has(tok)) { seen.add(tok); df.set(tok, (df.get(tok) ?? 0) + 1) }
+        if (!seen.has(tok)) {
+          seen.add(tok)
+          df.set(tok, (df.get(tok) ?? 0) + 1)
+        }
       }
     }
   }
@@ -358,7 +566,7 @@ function scoreFaqTokens(
   let faqTotal = 0
   for (const fTok of faqTokens) faqTotal += idf.get(fTok) ?? 1
   const precision = total > 0 ? overlap / total : 0
-  const recall    = faqTotal > 0 ? overlap / faqTotal : 0
+  const recall = faqTotal > 0 ? overlap / faqTotal : 0
   if (precision + recall === 0) return 0
   return (2 * precision * recall) / (precision + recall) // F1-style
 }
@@ -373,7 +581,13 @@ export function embeddingText(faq: Pick<SeedFaq, 'question' | 'aliases'>): strin
 }
 
 export function pickConfidentMatch(
-  ranked: Array<{ faq: Pick<FaqRecord, 'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta'>; score: number }>,
+  ranked: Array<{
+    faq: Pick<
+      FaqRecord,
+      'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta'
+    >
+    score: number
+  }>,
   minScore: number,
   minMargin: number,
 ): (typeof ranked)[number] | null {
@@ -390,10 +604,18 @@ export function pickConfidentMatch(
  * Also used by service.ts to re-rank embedding results.
  */
 export function reRankByModel(
-  ranked: Array<{ faq: Pick<FaqRecord, 'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta'>; score: number }>,
+  ranked: Array<{
+    faq: Pick<
+      FaqRecord,
+      'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta'
+    >
+    score: number
+  }>,
   model: FaqModel,
 ): typeof ranked {
-  const otherModels: FaqModel[] = (['volt', 'storm', 'cruise'] as FaqModel[]).filter((m) => m !== model)
+  const otherModels: FaqModel[] = (
+    ['nira', 'cruise'] as FaqModel[]
+  ).filter((m) => m !== model)
   return ranked
     .map((item) => {
       const slug = item.faq.slug
@@ -406,13 +628,23 @@ export function reRankByModel(
       else if (isThisModel) score = Math.min(1, score * 1.3)
       return { ...item, score }
     })
-    .sort((a, b) => b.score - a.score)
+    .toSorted((a, b) => b.score - a.score)
 }
 
 export function rankLexical(
   query: string,
   faqs: Array<
-    Pick<FaqRecord, 'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta' | 'aliases'>
+    Pick<
+      FaqRecord,
+      | 'id'
+      | 'slug'
+      | 'question'
+      | 'answer'
+      | 'audience'
+      | 'category'
+      | 'cta'
+      | 'aliases'
+    >
   >,
 ): RankedFaq[] {
   const normalizedRaw = normalizeSmallTalk(query)
@@ -500,7 +732,9 @@ export function rankLexical(
 
   const ranked: RankedFaq[] = faqs.map((faq) => {
     const haystacks = [faq.question, ...faq.aliases]
-    const faqTokens = Array.from(new Set(haystacks.flatMap((h) => normalizeTokens(h))))
+    const faqTokens = Array.from(
+      new Set(haystacks.flatMap((h) => normalizeTokens(h))),
+    )
     const score = scoreFaqTokens(queryTokens, faqTokens, idf)
     return {
       faq: {
@@ -517,23 +751,33 @@ export function rankLexical(
     }
   })
 
-  ranked.sort((a, b) => b.score - a.score)
+  const sorted = ranked.toSorted((a, b) => b.score - a.score)
 
   // Model-aware re-rank
   if (model) {
-    const reranked = reRankByModel(ranked, model)
+    const reranked = reRankByModel(sorted, model)
     return reranked.map((r) => ({ ...r, via: 'lexical' as const }))
   }
 
-  return ranked
+  return sorted
 }
 
-const LEXICAL_THRESHOLD = 0.40
+const LEXICAL_THRESHOLD = 0.4
 
 export function pickLexicalMatch(
   query: string,
   faqs: Array<
-    Pick<FaqRecord, 'id' | 'slug' | 'question' | 'answer' | 'audience' | 'category' | 'cta' | 'aliases'>
+    Pick<
+      FaqRecord,
+      | 'id'
+      | 'slug'
+      | 'question'
+      | 'answer'
+      | 'audience'
+      | 'category'
+      | 'cta'
+      | 'aliases'
+    >
   >,
 ): RankedFaq | null {
   const ranked = rankLexical(query, faqs)

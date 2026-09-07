@@ -38,6 +38,7 @@ interface AnnouncementRow {
 }
 
 interface TicketRow {
+  detail?: string
   id: string
   subject: string
   status: string
@@ -76,6 +77,7 @@ function toTicket(row: TicketRow) {
   return {
     id: String(row.id),
     subject: String(row.subject),
+    detail: row.detail ?? '',
     status: String(row.status),
     createdAt: String(row.created_at),
   }
@@ -163,7 +165,7 @@ export function createPortalRoutes(config: AppConfig): Router {
             .limit(6),
           client
             .from('tickets')
-            .select('id, subject, status, created_at')
+            .select('id, subject, detail, status, created_at')
             .eq('dealer_account_id', actor.accountId)
             .order('created_at', { ascending: false })
             .limit(6),
@@ -275,7 +277,7 @@ export function createPortalRoutes(config: AppConfig): Router {
       if (!requireClient(res)) return
       const { data, error } = await client
         .from('tickets')
-        .select('id, subject, status, created_at')
+        .select('id, subject, detail, status, created_at')
         .eq('dealer_account_id', actor.accountId)
         .order('created_at', { ascending: false })
       if (error) throw new Error(`Could not load tickets: ${error.message}`)

@@ -62,7 +62,7 @@ describe('Contact form', () => {
     )
     await user.type(
       screen.getByLabelText('What would you like to buy or book?'),
-      'I want to buy Amptron Storm and book a test ride this weekend.',
+      'I want to buy Amptron NIRA and book a test ride this weekend.',
     )
     await user.click(screen.getByRole('button', { name: /request to buy/i }))
 
@@ -299,5 +299,39 @@ describe('Contact form', () => {
     )
 
     expect(screen.getByText('5/2000')).toBeVisible()
+  })
+})
+
+describe('enquiry navigation', () => {
+  it('restores separate drafts after switching enquiries', async () => {
+    window.history.replaceState(null, '', '/')
+    const user = userEvent.setup()
+    render(<Contact />)
+    await user.type(screen.getByLabelText('Your Name'), 'Rider draft')
+    await user.click(screen.getByRole('tab', { name: 'Stock Amptron' }))
+    await user.type(screen.getByLabelText('Full Name'), 'Dealer draft')
+    await user.click(screen.getByRole('tab', { name: 'Buy Amptron' }))
+    expect(screen.getByLabelText('Your Name')).toHaveValue('Rider draft')
+    await user.click(screen.getByRole('tab', { name: 'Stock Amptron' }))
+    expect(screen.getByLabelText('Full Name')).toHaveValue('Dealer draft')
+  })
+
+  it('navigates tabs with arrows and connects the selected panel', async () => {
+    window.history.replaceState(null, '', '/')
+    const user = userEvent.setup()
+    render(<Contact />)
+    screen.getByRole('tab', { name: 'Buy Amptron' }).focus()
+    await user.keyboard('{ArrowRight}')
+    const ride = screen.getByRole('tab', { name: 'Book a Test Ride' })
+    expect(ride).toHaveFocus()
+    expect(ride).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tabpanel')).toHaveAttribute(
+      'id',
+      ride.getAttribute('aria-controls'),
+    )
+    await user.keyboard('{End}')
+    expect(screen.getByRole('tab', { name: 'Stock Amptron' })).toHaveFocus()
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('tab', { name: 'Buy Amptron' })).toHaveFocus()
   })
 })

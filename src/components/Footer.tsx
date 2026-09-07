@@ -18,8 +18,7 @@ export default function Footer() {
         <div className="footer-brand">
           <img src={logo} alt="Amptron" width={400} height={80} loading="lazy" />
           <p>
-            Certified electric scooters, assembled in India. Buy from Amptron or
-            from a partner showroom. Same machine, same backing.
+            Built to move forward. Electric scooters for your everyday.
           </p>
         </div>
         <div className="footer-cols">
@@ -57,7 +56,7 @@ export default function Footer() {
             <Link to="/blog">Blog</Link>
             <Link to="/privacy">Privacy Policy</Link>
             <Link to="/terms">Terms of Service</Link>
-            <a href="/#buy">Contact Support</a>
+            <Link to="/support">Rider support</Link>
           </div>
         </div>
       </div>

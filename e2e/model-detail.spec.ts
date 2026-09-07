@@ -8,7 +8,7 @@ test('keeps the sticky Buy Amptron control off the hero', async ({
       ? { width: 390, height: 844 }
       : { width: 1280, height: 800 },
   )
-  await page.goto('/models/amptron-volt')
+  await page.goto('/models/amptron-nira')
 
   const subnav = page.getByRole('navigation', { name: 'On this page' })
   const stickyBuy = subnav.getByRole('link', { name: 'Buy Amptron' })

@@ -32,6 +32,8 @@ export default function FeaturePanel({
   const panelRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
+    // Reposition the panel when the selected feature changes.
+    if (!hotspot.id) return
     const node = panelRef.current
     if (!node) return
     const reduceMotion = Boolean(

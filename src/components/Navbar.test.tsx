@@ -91,3 +91,21 @@ describe('Navbar', () => {
     expect(drawer()).not.toHaveClass('is-open')
   })
 })
+
+it('keeps keyboard focus in the mobile menu and restores it on Escape', async () => {
+  const user = userEvent.setup()
+  render(
+    <MemoryRouter>
+      <Navbar />
+    </MemoryRouter>,
+  )
+  await user.click(screen.getByRole('button', { name: 'Open menu' }))
+  const links = drawer().querySelectorAll('a')
+  links[links.length - 1]!.focus()
+  await user.keyboard('{Tab}')
+  expect(screen.getByRole('button', { name: 'Close menu' })).toHaveFocus()
+  await user.keyboard('{Shift>}{Tab}{/Shift}')
+  expect(links[links.length - 1]).toHaveFocus()
+  await user.keyboard('{Escape}')
+  expect(screen.getByRole('button', { name: 'Open menu' })).toHaveFocus()
+})

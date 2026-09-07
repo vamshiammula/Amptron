@@ -39,3 +39,11 @@ blob-report
 
 # Supabase CLI cache
 supabase/.temp
+
+# Local media dumps and scratch files
+tmp/
+NIRA/
+NIRA_Video/
+/NIRA_Amptron.glb
+*.glb
+!reference/approved-brand/**

@@ -26,7 +26,10 @@ export default function PriceTag({ pricing, compact = false }: PriceTagProps) {
         <strong>{formatInr(pricing.exShowroomInr)}</strong>
       </p>
       <p className="price-tag-emi">or {formatInr(emi)}/month*</p>
-      {compact ? null : <p className="price-tag-note">*{note}</p>}
+      <p className="price-tag-note">
+        *{note}
+        {note !== EMI_FOOTNOTE ? ` ${EMI_FOOTNOTE}` : ''}
+      </p>
     </div>
   )
 }

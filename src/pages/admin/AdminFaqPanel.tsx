@@ -160,7 +160,7 @@ export default function AdminFaqPanel({
               name="question"
               autoComplete="off"
               value={form.question}
-              placeholder="e.g. What is the certified range of Amptron Storm?"
+              placeholder="e.g. What is the range of Amptron NIRA?"
               onChange={(event) => {
                 const question = event.target.value
                 setForm((previous) => ({

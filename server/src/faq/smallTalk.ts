@@ -4,7 +4,7 @@ import {
 } from '../../../shared/faqConstants.js'
 
 const PRODUCT_KEYWORDS =
-  /\b(range|storm|volt|cruise|amptron|warrant|price|cost|dealer|showroom|charge|battery|motor|speed|payload|buy|stock|test\s*ride|scooter|model|km)\b/i
+  /\b(range|storm|nira|cruise|amptron|warrant|price|cost|dealer|showroom|charge|battery|motor|speed|payload|buy|stock|test\s*ride|scooter|model|km)\b/i
 
 const MAX_CHARS = 48
 const MAX_WORDS = 8

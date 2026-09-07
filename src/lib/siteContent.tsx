@@ -5,44 +5,35 @@ import {
   useState,
   type PropsWithChildren,
 } from 'react'
-import heroScooter from '../assets/images/hero-scooter.webp'
-import cutaway from '../assets/images/technical-cutaway.webp'
 import { blogPosts, type BlogPost } from '../data/blogPosts'
 import { scooterModels, type ScooterModel } from '../data/models'
 import {
   mapBlogPost,
   mapScooterModel,
-  mapSiteMedia,
   mergeLocalModel,
   type SiteContentValue,
   type SiteMediaMap,
 } from './siteContentMap'
-import {
-  LOCAL_PRODUCT_VIEWERS,
-  mapPublishedViewerConfigs,
-  type ProductMediaSetRow,
-} from './productMediaMap'
 import { hasSupabaseClient, supabase } from './supabase'
 
 export type { SiteContentValue, SiteMediaMap } from './siteContentMap'
 
-function storagePublicUrl(objectPath: string): string {
-  const base = import.meta.env.VITE_SUPABASE_URL
-  if (typeof base !== 'string' || base.length === 0) return ''
-  return `${base.replace(/\/$/, '')}/storage/v1/object/public/site-media/${objectPath}`
+const LOCAL_MEDIA: SiteMediaMap = {
+  heroVideo: '',
+  heroPoster: '',
+  techCutaway: '',
 }
 
-const LOCAL_MEDIA: SiteMediaMap = {
-  heroVideo: storagePublicUrl('hero/hero-showcase.mp4'),
-  heroPoster: storagePublicUrl('hero/hero-scooter.webp') || heroScooter,
-  techCutaway: storagePublicUrl('tech/technical-cutaway.webp') || cutaway,
-}
+const PUBLIC_MODELS = scooterModels.filter(
+  (model) => model.slug !== 'amptron-volt',
+)
 
 const LOCAL_CONTENT: SiteContentValue = {
-  models: scooterModels,
+  catalogReady: true,
+  models: PUBLIC_MODELS,
   posts: blogPosts,
   media: LOCAL_MEDIA,
-  productViewers: LOCAL_PRODUCT_VIEWERS,
+  productViewers: {},
 }
 
 const SiteContentContext = createContext<SiteContentValue>(LOCAL_CONTENT)
@@ -50,72 +41,88 @@ const SiteContentContext = createContext<SiteContentValue>(LOCAL_CONTENT)
 async function fetchSiteContent(): Promise<SiteContentValue | null> {
   if (!hasSupabaseClient || !supabase) return null
 
-  const [modelsResult, postsResult, mediaResult, viewerResult] = await Promise.all([
+  const [modelsResult, postsResult] = await Promise.all([
     supabase
       .from('scooter_models')
-      .select(
-        'slug, name, tagline, description, image_url, featured, highlights, specs, features, price_inr, price_placeholder, colours, story, video_url',
-      )
+      .select('*')
       .eq('published', true)
-      .order('sort_order', { ascending: true }),
+      .order('sort_order', { ascending: true })
+      .abortSignal(AbortSignal.timeout(10000)),
     supabase
       .from('blog_posts')
       .select('slug, title, excerpt, published_at')
       .eq('published', true)
-      .order('published_at', { ascending: false }),
-    supabase.from('site_media').select('key, url'),
-    supabase
-      .from('product_media_sets')
-      .select(
-        'id, mode, label, lifecycle, start_key, scooter_models!inner ( slug ), product_media_assets ( object_path, state_key, sequence_index, alt, width, height, approval, hotspots )',
-      )
-      .eq('lifecycle', 'published'),
+      .order('published_at', { ascending: false })
+      .abortSignal(AbortSignal.timeout(10000)),
   ])
 
   const localBySlug = new Map(
     LOCAL_CONTENT.models.map((model) => [model.slug, model]),
   )
-  const models = (modelsResult.data ?? [])
+  const remoteModels = (modelsResult.data ?? [])
     .map((row) => mapScooterModel(row))
     .filter((row): row is ScooterModel => row !== null)
     .map((model) => mergeLocalModel(model, localBySlug.get(model.slug)))
+  const remoteSlugs = new Set(remoteModels.map((model) => model.slug))
+  const localOnly = LOCAL_CONTENT.models.filter(
+    (model) => !remoteSlugs.has(model.slug),
+  )
+  const replacedByNira = remoteSlugs.has('amptron-nira') || localBySlug.has('amptron-nira')
+  const models = [
+    ...remoteModels.filter(
+      (model) =>
+        model.slug !== 'amptron-volt' &&
+        !(model.slug === 'amptron-storm' && replacedByNira),
+    ),
+    ...localOnly,
+  ]
   const posts = (postsResult.data ?? [])
     .map((row) => mapBlogPost(row))
     .filter((row): row is BlogPost => row !== null)
 
-  if (models.length === 0 && posts.length === 0 && !mediaResult.data?.length) {
+  if (modelsResult.error && postsResult.error) {
     return null
   }
 
   return {
-    models: models.length > 0 ? models : LOCAL_CONTENT.models,
+    catalogReady: true,
+    models: modelsResult.error
+      ? LOCAL_CONTENT.models
+      : remoteModels.length === 0
+        ? remoteModels
+        : models,
     posts: posts.length > 0 ? posts : LOCAL_CONTENT.posts,
-    media: mapSiteMedia(mediaResult.data ?? [], LOCAL_MEDIA),
-    productViewers: mapPublishedViewerConfigs(
-      viewerResult.error ? [] : ((viewerResult.data ?? []) as ProductMediaSetRow[]),
-      (objectPath) => storagePublicUrl(objectPath),
-      LOCAL_PRODUCT_VIEWERS,
-    ),
+    media: LOCAL_MEDIA,
+    productViewers: {},
   }
 }
 
 export function SiteContentProvider({ children }: Readonly<PropsWithChildren>) {
-  const [content, setContent] = useState<SiteContentValue>(LOCAL_CONTENT)
+  const [content, setContent] = useState<SiteContentValue>({
+    ...LOCAL_CONTENT,
+    catalogReady: import.meta.env.MODE === 'test' || !hasSupabaseClient,
+  })
 
   useEffect(() => {
     if (import.meta.env.MODE === 'test') return
 
     let active = true
-    fetchSiteContent()
-      .then((next) => {
-        if (active && next) setContent(next)
-      })
-      .catch(() => {
-        // Keep the local catalog if Supabase is unreachable.
-      })
+    const refresh = () => {
+      void fetchSiteContent()
+        .then((next) => {
+          if (active) setContent(next ?? LOCAL_CONTENT)
+        })
+        .catch(() => {
+          if (active)
+            setContent((previous) => ({ ...previous, catalogReady: true }))
+        })
+    }
+    refresh()
+    window.addEventListener('amptron:catalog-updated', refresh)
 
     return () => {
       active = false
+      window.removeEventListener('amptron:catalog-updated', refresh)
     }
   }, [])
 

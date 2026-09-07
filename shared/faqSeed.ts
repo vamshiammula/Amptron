@@ -36,30 +36,27 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'which-models',
     question: 'Which Amptron models are available?',
     answer:
-      'Amptron currently offers three scooters: Amptron Volt, Amptron Storm (Most Popular), and Amptron Cruise.',
+      'Amptron currently offers two scooters: Amptron NIRA (everyday mobility) and Amptron Cruise.',
     audience: 'both',
     category: 'models',
     aliases: ['model lineup', 'scooter range', 'what scooters do you sell'],
     cta: 'buy',
   },
   {
-    slug: 'volt-overview',
-    question: 'What is Amptron Volt?',
+    slug: 'nira-overview',
+    question: 'What is Amptron NIRA?',
     answer:
-      'Amptron Volt is a smart low-speed commuter for dense city routes. It is built for short urban hops and high-frequency use, with an 80 km certified range, 25 km/h top speed, and a 3.5 hour charge time.',
+      'Amptron NIRA is everyday electric mobility: simple to ride, simple to charge, and simple to own. It is built around a 45–55 km real-world range target, 24 km/h top speed, and about 4.0–4.5 hours to charge. Range and weight remain targets until final test-agency values are confirmed.',
     audience: 'rider',
     category: 'models',
-    aliases: ['tell me about volt', 'volt scooter', 'city commuter scooter'],
-    cta: 'test_ride',
-  },
-  {
-    slug: 'storm-overview',
-    question: 'What is Amptron Storm?',
-    answer:
-      'Amptron Storm is the Most Popular model. It is a performance-first city and peri-urban scooter with a 120 km certified range, 65 km/h top speed, and a 4.0 hour charge time.',
-    audience: 'rider',
-    category: 'models',
-    aliases: ['most popular scooter', 'storm scooter', 'tell me about storm'],
+    aliases: [
+      'everyday scooter',
+      'nira scooter',
+      'tell me about nira',
+      'storm scooter',
+      'tell me about storm',
+      'what is amptron storm',
+    ],
     cta: 'test_ride',
   },
   {
@@ -73,21 +70,20 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: 'test_ride',
   },
   {
-    slug: 'volt-range',
-    question: 'What is the certified range of Amptron Volt?',
-    answer: 'Amptron Volt has a certified range of 80 km per charge.',
+    slug: 'nira-range',
+    question: 'What is the range of Amptron NIRA?',
+    answer:
+      'Amptron NIRA is designed around a 45–55 km real-world range target for everyday local travel. A controlled test range target is up to approximately 55–65 km. These are not certified Rule 126 figures until a test agency confirms them.',
     audience: 'rider',
     category: 'specs',
-    aliases: ['volt km', 'how far does volt go', 'volt range per charge'],
-    cta: null,
-  },
-  {
-    slug: 'storm-range',
-    question: 'What is the certified range of Amptron Storm?',
-    answer: 'Amptron Storm has a certified range of 120 km per charge.',
-    audience: 'rider',
-    category: 'specs',
-    aliases: ['storm km', 'how far does storm go', 'storm range per charge'],
+    aliases: [
+      'nira km',
+      'how far does nira go',
+      'nira range per charge',
+      'storm km',
+      'how far does storm go',
+      'certified range of amptron storm',
+    ],
     cta: null,
   },
   {
@@ -100,21 +96,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: null,
   },
   {
-    slug: 'volt-speed',
-    question: 'What is the top speed of Amptron Volt?',
-    answer: 'Amptron Volt has a top speed of 25 km/h, in the low-speed category.',
+    slug: 'nira-speed',
+    question: 'What is the top speed of Amptron NIRA?',
+    answer:
+      'Amptron NIRA has a top speed of 24 km/h, intended for the applicable low-speed electric two-wheeler category pending testing-agency verification.',
     audience: 'rider',
     category: 'specs',
-    aliases: ['volt km/h', 'volt maximum speed'],
-    cta: null,
-  },
-  {
-    slug: 'storm-speed',
-    question: 'What is the top speed of Amptron Storm?',
-    answer: 'Amptron Storm has a top speed of 65 km/h.',
-    audience: 'rider',
-    category: 'specs',
-    aliases: ['storm km/h', 'storm maximum speed'],
+    aliases: ['nira km/h', 'nira maximum speed', 'storm km/h', 'storm maximum speed'],
     cta: null,
   },
   {
@@ -127,21 +115,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: null,
   },
   {
-    slug: 'volt-charge',
-    question: 'How long does Amptron Volt take to charge?',
-    answer: 'Amptron Volt charges in 3.5 hours.',
+    slug: 'nira-charge',
+    question: 'How long does Amptron NIRA take to charge?',
+    answer:
+      'Amptron NIRA charges in about 4.0–4.5 hours from a household socket. You can remove the battery and charge indoors, or charge with the battery installed.',
     audience: 'rider',
     category: 'charging',
-    aliases: ['volt charging time', 'volt charger hours'],
-    cta: null,
-  },
-  {
-    slug: 'storm-charge',
-    question: 'How long does Amptron Storm take to charge?',
-    answer: 'Amptron Storm charges in 4.0 hours.',
-    audience: 'rider',
-    category: 'charging',
-    aliases: ['storm charging time', 'storm charger hours'],
+    aliases: ['nira charging time', 'nira charger hours', 'storm charging time', 'storm charger hours'],
     cta: null,
   },
   {
@@ -154,23 +134,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: null,
   },
   {
-    slug: 'volt-battery',
-    question: 'What battery does Amptron Volt use?',
+    slug: 'nira-battery',
+    question: 'What battery does Amptron NIRA use?',
     answer:
-      'Amptron Volt uses a 2.0 kWh lithium-ion pack, AIS 156 Phase 2, at 60V, with a 1500W BLDC hub motor.',
+      'Amptron NIRA uses a removable underfloor LFP lithium battery of about 1.54 kWh / 30Ah, at 51.2V nominal (48V class), with a 240W continuous BLDC hub motor.',
     audience: 'rider',
     category: 'specs',
-    aliases: ['volt battery capacity', 'volt motor'],
-    cta: null,
-  },
-  {
-    slug: 'storm-battery',
-    question: 'What battery does Amptron Storm use?',
-    answer:
-      'Amptron Storm uses a 2.65 kWh lithium-ion pack with smart BMS, at 60V, with a 2500W BLDC hub motor.',
-    audience: 'rider',
-    category: 'specs',
-    aliases: ['storm battery capacity', 'storm motor'],
+    aliases: ['nira battery capacity', 'nira motor', 'storm battery capacity', 'storm motor'],
     cta: null,
   },
   {
@@ -184,21 +154,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: null,
   },
   {
-    slug: 'volt-payload',
-    question: 'What is the payload of Amptron Volt?',
-    answer: 'Amptron Volt has a 145 kg payload and an 89 kg kerb weight.',
+    slug: 'nira-payload',
+    question: 'What is the payload of Amptron NIRA?',
+    answer:
+      'Amptron NIRA has a 140 kg payload. Kerb weight is a target of about 68–72 kg including the battery, and vehicle weight excluding the battery is a target of 56 kg or less, pending confirmation.',
     audience: 'rider',
     category: 'specs',
-    aliases: ['volt weight', 'volt carrying capacity'],
-    cta: null,
-  },
-  {
-    slug: 'storm-payload',
-    question: 'What is the payload of Amptron Storm?',
-    answer: 'Amptron Storm has a 150 kg payload and a 95 kg kerb weight.',
-    audience: 'rider',
-    category: 'specs',
-    aliases: ['storm weight', 'storm carrying capacity'],
+    aliases: ['nira weight', 'nira carrying capacity', 'storm weight', 'storm carrying capacity'],
     cta: null,
   },
   {
@@ -259,7 +221,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'test-ride',
     question: 'Can I book a test ride?',
     answer:
-      'Yes. Book a test ride with Amptron, or visit a partner showroom. Tell us the model (Volt, Storm, or Cruise) and your city.',
+      'Yes. Book a test ride with Amptron, or visit a partner showroom. Tell us the model (NIRA or Cruise) and your city.',
     audience: 'rider',
     category: 'buying',
     aliases: [
@@ -316,23 +278,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: null,
   },
   {
-    slug: 'storm-features',
-    question: 'What features does Amptron Storm include?',
+    slug: 'nira-features',
+    question: 'What features does Amptron NIRA include?',
     answer:
-      'Amptron Storm includes keyless start, Eco/City/Power ride modes, a digital TFT console, anti-theft alarm, regenerative braking, USB charging, and a navigation mount.',
+      'Amptron NIRA includes a simple digital dashboard, reverse assist, side-stand motor cut-off, LED lighting, USB charging, mechanical steering and battery locks, a remote anti-theft alarm, regenerative braking support, and under-seat storage. It does not require a touchscreen, app, or subscription.',
     audience: 'rider',
     category: 'features',
-    aliases: ['storm equipment', 'storm accessories'],
-    cta: 'test_ride',
-  },
-  {
-    slug: 'volt-features',
-    question: 'What features does Amptron Volt include?',
-    answer:
-      'Amptron Volt includes a digital dashboard, reverse assist, remote lock/unlock, a mobile charging socket, a side-stand sensor, and regenerative braking support.',
-    audience: 'rider',
-    category: 'features',
-    aliases: ['volt equipment', 'volt accessories'],
+    aliases: ['nira equipment', 'nira accessories', 'storm equipment', 'storm accessories'],
     cta: 'test_ride',
   },
   {
@@ -346,19 +298,19 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: 'test_ride',
   },
   {
-    slug: 'storm-brakes',
-    question: 'What brakes does Amptron Storm use?',
-    answer: 'Amptron Storm uses disc plus drum brakes with CBS.',
+    slug: 'nira-brakes',
+    question: 'What brakes does Amptron NIRA use?',
+    answer: 'Amptron NIRA uses a hydraulic disc at the front and a mechanical drum at the rear.',
     audience: 'rider',
     category: 'specs',
-    aliases: ['storm braking', 'storm cbs'],
+    aliases: ['nira braking', 'nira cbs', 'storm braking', 'storm cbs'],
     cta: null,
   },
   {
     slug: 'most-popular',
     question: 'Which Amptron scooter is most popular?',
     answer:
-      'Amptron Storm is the Most Popular model: 120 km certified range and 65 km/h, built for mixed-terrain city and peri-urban commutes.',
+      'Amptron NIRA is the everyday Amptron: a 45–55 km real-world range target and 24 km/h, built for local travel, apartment charging and simple ownership.',
     audience: 'rider',
     category: 'models',
     aliases: ['best selling', 'recommended model', 'which scooter should I buy'],
@@ -368,7 +320,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'home-charging',
     question: 'Can I charge Amptron scooters at home?',
     answer:
-      'Yes. Amptron chargers accept AC 180–265V, 50Hz household input. Charge times are 3.5 hours for Volt, 4.0 hours for Storm, and 4.5 hours for Cruise.',
+      'Yes. Amptron chargers accept AC 180–265V, 50Hz household input. Charge times are about 4.0–4.5 hours for NIRA and 4.5 hours for Cruise.',
     audience: 'rider',
     category: 'charging',
     aliases: ['household charging', 'plug in at home', 'charger voltage'],
@@ -378,13 +330,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'model-pricing',
     question: 'How much do Amptron scooters cost?',
     answer:
-      'Starting ex-showroom prices are indicative until booking: Amptron Volt at ₹79,990, Amptron Storm at ₹1,09,990, and Amptron Cruise at ₹1,34,990. EMI estimates are on each model page.',
+      'Starting ex-showroom prices are indicative until booking: Amptron NIRA at ₹69,990 and Amptron Cruise at ₹1,34,990. EMI estimates are on each model page.',
     audience: 'rider',
     category: 'buying',
     aliases: [
-      'price', 'cost', 'how much is storm', 'ex showroom price',
+      'price', 'cost', 'how much is nira', 'how much is storm', 'ex showroom price',
       'price kya hai', 'kitna paisa', 'kitne mein milega', 'scooter ka daam',
-      'storm ka price', 'volt ka price', 'cruise ka price',
+      'nira ka price', 'storm ka price', 'cruise ka price',
       'scooter price', 'rate kya hai',
     ],
     cta: 'buy',
@@ -407,17 +359,17 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'which-model-to-choose',
     question: 'Which Amptron scooter should I choose?',
     answer:
-      'Choose by your daily route. Amptron Volt (80 km, 25 km/h) suits dense city hops. Amptron Storm (120 km, 65 km/h) is the Most Popular mix of range and speed. Amptron Cruise (150 km, 80 km/h) is for longer all-day rides. Compare all three on the Models page.',
+      'Choose by your daily route. Amptron NIRA (45–55 km real-world target, 24 km/h) is everyday local travel with a removable underfloor battery. Amptron Cruise (150 km, 80 km/h) is for longer all-day rides. Compare both on the Models page.',
     audience: 'rider',
     category: 'models',
-    aliases: ['which one should I buy', 'best model for me', 'volt or storm', 'choose a scooter', 'help me choose', 'recommend a model', 'which scooter should I choose'],
+    aliases: ['which one should I buy', 'best model for me', 'nira or cruise', 'choose a scooter', 'help me choose', 'recommend a model', 'which scooter should I choose'],
     cta: 'test_ride',
   },
   {
     slug: 'compare-models',
-    question: 'How do I compare Amptron Volt, Storm, and Cruise?',
+    question: 'How do I compare Amptron NIRA and Cruise?',
     answer:
-      'Open the Models page or any model detail page and use the compare table. It lines up certified range, speed, charge time, battery, motor, brakes, weight, starting price, and EMI side by side.',
+      'Open the Models page or any model detail page and use the compare table. It lines up published range, speed, charge time, battery, motor, brakes, weight, starting price, and EMI side by side.',
     audience: 'rider',
     category: 'models',
     aliases: ['comparison table', 'spec comparison', 'difference between models'],
@@ -427,7 +379,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'certified-range-meaning',
     question: 'What does certified range mean on Amptron scooters?',
     answer:
-      'Certified range is the published per-charge figure on the spec sheet: 80 km for Volt, 120 km for Storm, and 150 km for Cruise. Real-world range depends on ride mode, load, terrain, and temperature. Plan around the certified number.',
+      'Certified range is the published per-charge figure on the spec sheet. Amptron Cruise has a 150 km certified range. Amptron NIRA currently publishes a 45–55 km real-world range target until test-agency confirmation. Real-world range depends on load, terrain, and temperature.',
     audience: 'rider',
     category: 'specs',
     aliases: ['real world range', 'actual range', 'how far can I go'],
@@ -477,7 +429,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'direct-vs-showroom',
     question: 'Is there a difference between buying direct and from a showroom?',
     answer:
-      'No difference in the scooter. Both paths sell the same certified Amptron Volt, Storm, and Cruise, with the same warranty framework. Buy from Amptron directly, or visit a partner showroom if you prefer a local handover and test ride.',
+      'No difference in the scooter. Both paths sell the same Amptron NIRA and Cruise, with the same warranty framework. Buy from Amptron directly, or visit a partner showroom if you prefer a local handover and test ride.',
     audience: 'rider',
     category: 'buying',
     aliases: ['buy online vs dealer', 'direct purchase', 'same scooter'],
@@ -494,33 +446,29 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     cta: 'buy',
   },
   {
-    slug: 'volt-low-speed',
-    question: 'Is Amptron Volt a low-speed scooter?',
-    answer:
-      'Yes. Amptron Volt is built for the 25 km/h low-speed category, suited to dense city routes where everyday usefulness and simpler ownership matter more than top speed.',
-    audience: 'rider',
-    category: 'models',
-    aliases: ['low speed category', 'volt license', 'volt registration'],
-    cta: 'test_ride',
-  },
-  {
     slug: 'battery-safety',
     question: 'Are Amptron batteries safe?',
     answer:
-      'Amptron packs use AIS 156 Phase 2 certified lithium-ion cells with temperature control and a redundant BMS (battery management system). Volt specifies AIS 156 Phase 2 on the spec sheet; Storm and Cruise use smart or advanced BMS-equipped packs at 60V and 72V respectively.',
+      'Amptron packs use a BMS with voltage, current and temperature protection. NIRA uses a removable LFP pack. Cruise uses an advanced lithium-ion pack at 72V.',
     audience: 'rider',
     category: 'specs',
     aliases: ['battery safety', 'ais 156', 'bms', 'fire safe'],
     cta: null,
   },
   {
-    slug: 'storm-vs-cruise',
-    question: 'What is the difference between Amptron Storm and Cruise?',
+    slug: 'nira-vs-cruise',
+    question: 'What is the difference between Amptron NIRA and Cruise?',
     answer:
-      'Amptron Storm (120 km, 65 km/h, 2.65 kWh) is the Most Popular city and peri-urban scooter. Amptron Cruise (150 km, 80 km/h, 3.4 kWh) is the long-range flagship with dual disc brakes, cruise control, and a wider floorboard. Storm suits mixed city commutes; Cruise suits longer all-day rides.',
+      'Amptron NIRA (45–55 km real-world target, 24 km/h, about 1.54 kWh) is everyday local mobility with a removable underfloor LFP battery. Amptron Cruise (150 km, 80 km/h, 3.4 kWh) is the long-range flagship with dual disc brakes, cruise control, and a wider floorboard. NIRA suits short neighbourhood trips; Cruise suits longer all-day rides.',
     audience: 'rider',
     category: 'models',
-    aliases: ['storm or cruise', 'cruise vs storm', 'flagship vs popular'],
+    aliases: [
+      'nira or cruise',
+      'cruise vs nira',
+      'storm or cruise',
+      'cruise vs storm',
+      'flagship vs everyday',
+    ],
     cta: 'test_ride',
   },
   {
@@ -555,31 +503,22 @@ export const FAQ_SEED: readonly SeedFaq[] = [
   },
   {
     slug: 'ride-modes',
-    question: 'What ride modes does Amptron Storm have?',
+    question: 'What ride modes does Amptron NIRA have?',
     answer:
-      'Amptron Storm has Eco, City, and Power ride modes. Switch between them for efficiency or acceleration depending on your route.',
+      'Amptron NIRA does not use Eco, City, and Power ride modes. It is designed around simple, predictable local riding without extra mode switching.',
     audience: 'rider',
     category: 'features',
-    aliases: ['eco city power', 'storm modes', 'riding modes'],
+    aliases: ['eco city power', 'nira modes', 'storm modes', 'riding modes'],
     cta: 'test_ride',
   },
   {
     slug: 'regenerative-braking',
     question: 'Does Amptron have regenerative braking?',
     answer:
-      'Yes. Regenerative braking is specified on Amptron Volt, Storm, and Cruise. It sends kinetic energy back to the battery during deceleration.',
+      'Yes. Regenerative braking is specified on Amptron NIRA and Cruise. It sends kinetic energy back to the battery during deceleration.',
     audience: 'rider',
     category: 'features',
     aliases: ['regen braking', 'energy recovery', 'regen'],
-    cta: null,
-  },
-  {
-    slug: 'volt-brakes',
-    question: 'What brakes does Amptron Volt use?',
-    answer: 'Amptron Volt uses a front disc and rear drum with CBS.',
-    audience: 'rider',
-    category: 'specs',
-    aliases: ['volt braking', 'volt cbs'],
     cta: null,
   },
   {
@@ -595,7 +534,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'colours-available',
     question: 'What colours are available for Amptron scooters?',
     answer:
-      'Colours vary by model. Amptron Volt comes in Glacier White and Midnight Navy. Storm adds Crimson Red and Forest Green plus Graphite Grey. Cruise is available in Graphite Grey and Midnight Navy. See each model page for the current palette.',
+      'Colours vary by model. NIRA is available in Pearl Ivory, Sage Green, Matte Grey and Midnight Black. Cruise is available in Graphite Grey and Midnight Navy. See each model page for the current palette.',
     audience: 'rider',
     category: 'models',
     aliases: ['color options', 'paint colours', 'available colours'],
@@ -604,13 +543,13 @@ export const FAQ_SEED: readonly SeedFaq[] = [
 
   // -------------------------------------------------------------------------
   // Model-less summary FAQs
-  // Catch "what is the range?" / "kitna range hai" without a three-way tie.
+  // Catch "what is the range?" / "kitna range hai" without a two-way tie.
   // -------------------------------------------------------------------------
   {
     slug: 'range-all-models',
     question: 'What is the range of Amptron scooters?',
     answer:
-      'Certified range by model: Amptron Volt 80 km, Amptron Storm 120 km (Most Popular), Amptron Cruise 150 km. All figures are per charge on a household socket.',
+      'Range by model: Amptron NIRA 45–55 km real-world target, Amptron Cruise 150 km certified. NIRA figures await test-agency confirmation. All charge from a household socket.',
     audience: 'rider',
     category: 'specs',
     aliases: [
@@ -624,7 +563,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'speed-all-models',
     question: 'What is the top speed of Amptron scooters?',
     answer:
-      'Top speed by model: Amptron Volt 25 km/h (low-speed category), Amptron Storm 65 km/h, Amptron Cruise 80 km/h.',
+      'Top speed by model: Amptron NIRA 24 km/h, Amptron Cruise 80 km/h.',
     audience: 'rider',
     category: 'specs',
     aliases: [
@@ -637,7 +576,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'charge-time-all-models',
     question: 'How long do Amptron scooters take to charge?',
     answer:
-      'Charge time by model: Amptron Volt 3.5 hours, Amptron Storm 4.0 hours, Amptron Cruise 4.5 hours. All models charge on a standard AC 180-265V household socket.',
+      'Charge time by model: Amptron NIRA about 4.0–4.5 hours, Amptron Cruise 4.5 hours. All models charge on a standard AC 180-265V household socket.',
     audience: 'rider',
     category: 'charging',
     aliases: [
@@ -651,7 +590,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'battery-all-models',
     question: 'What battery do Amptron scooters use?',
     answer:
-      'Battery by model: Volt uses a 2.0 kWh lithium-ion pack (AIS 156 Phase 2, 60V, 1500W BLDC). Storm uses 2.65 kWh with smart BMS (60V, 2500W BLDC). Cruise uses 3.4 kWh advanced lithium-ion (72V, 3200W BLDC). All packs have temperature control and a BMS.',
+      'Battery by model: NIRA uses a removable underfloor LFP pack of about 1.54 kWh / 30Ah (51.2V nominal, 240W continuous BLDC). Cruise uses 3.4 kWh advanced lithium-ion (72V, 3200W BLDC). All packs have a BMS.',
     audience: 'rider',
     category: 'specs',
     aliases: [
@@ -664,7 +603,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'payload-all-models',
     question: 'What is the payload capacity of Amptron scooters?',
     answer:
-      'Payload by model: Amptron Volt 145 kg (kerb weight 89 kg), Amptron Storm 150 kg (kerb weight 95 kg), Amptron Cruise 155 kg (kerb weight 102 kg).',
+      'Payload by model: Amptron NIRA 140 kg (kerb weight target about 68–72 kg including battery), Amptron Cruise 155 kg (kerb weight 102 kg).',
     audience: 'rider',
     category: 'specs',
     aliases: [
@@ -677,7 +616,7 @@ export const FAQ_SEED: readonly SeedFaq[] = [
     slug: 'brakes-all-models',
     question: 'What brakes do Amptron scooters use?',
     answer:
-      'Brake setup by model: Amptron Volt front disc and rear drum with CBS. Amptron Storm disc plus drum with CBS. Amptron Cruise dual disc with CBS.',
+      'Brake setup by model: Amptron NIRA hydraulic disc and mechanical drum. Amptron Cruise dual disc with CBS.',
     audience: 'rider',
     category: 'specs',
     aliases: [

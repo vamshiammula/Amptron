@@ -130,12 +130,12 @@ export function createAdminRoutes(
           .in('status', ['pending', 'in_dispatch']),
         client
           .from('dealer_orders')
-          .select('id, model, quantity, status, created_at')
+          .select('id, dealer_account_id, model, quantity, status, created_at')
           .order('created_at', { ascending: false })
           .limit(8),
         client
           .from('tickets')
-          .select('id, subject, status, created_at')
+          .select('id, dealer_account_id, subject, detail, status, created_at')
           .order('created_at', { ascending: false })
           .limit(8),
       ])
@@ -163,6 +163,7 @@ export function createAdminRoutes(
         recentOrders:
           recentOrders.data?.map((row) => ({
             id: String(row.id),
+            dealerAccountId: String(row.dealer_account_id),
             model: String(row.model),
             quantity: Number(row.quantity),
             status: String(row.status),
@@ -171,7 +172,9 @@ export function createAdminRoutes(
         recentTickets:
           recentTickets.data?.map((row) => ({
             id: String(row.id),
+            dealerAccountId: String(row.dealer_account_id),
             subject: String(row.subject),
+            detail: String(row.detail ?? ''),
             status: String(row.status),
             createdAt: String(row.created_at),
           })) ?? [],
@@ -261,6 +264,37 @@ export function createAdminRoutes(
         .single()
       if (error) throw new Error(`Could not create dealer: ${error.message}`)
       res.status(201).json(data)
+    }),
+  )
+
+  router.patch(
+    '/admin/dealers/:id',
+    asyncHandler(async (req: AuthedRequest, res: Response) => {
+      const actor = await resolveActor(req, res, 'admin')
+      if (!actor || !requireClient(res)) return
+      const parsed = dealerSchema.safeParse(req.body)
+      const id = normalizeId(req.params.id)
+      if (!parsed.success || !id) {
+        res.status(422).json({
+          message:
+            'Provide a showroom name, city, state, area and valid phone number.',
+        })
+        return
+      }
+      const { data, error } = await client
+        .from('dealers')
+        .update(parsed.data)
+        .eq('id', id)
+        .select('id')
+        .maybeSingle()
+      if (error) throw new Error('Could not update this showroom.')
+      if (!data) {
+        res.status(404).json({
+          message: 'This showroom no longer exists. Refresh and try again.',
+        })
+        return
+      }
+      res.json({ message: 'Showroom details updated.' })
     }),
   )
 
@@ -367,12 +401,13 @@ export function createAdminRoutes(
 
       const { data, error } = await client
         .from('dealer_orders')
-        .select('id, model, quantity, status, created_at')
+        .select('id, dealer_account_id, model, quantity, status, created_at')
         .order('created_at', { ascending: false })
       if (error) throw new Error(`Could not load orders: ${error.message}`)
       const orders =
         data?.map((row) => ({
           id: String(row.id),
+          dealerAccountId: String(row.dealer_account_id),
           model: String(row.model),
           quantity: Number(row.quantity),
           status: String(row.status),
@@ -421,13 +456,15 @@ export function createAdminRoutes(
 
       const { data, error } = await client
         .from('tickets')
-        .select('id, subject, status, created_at')
+        .select('id, dealer_account_id, subject, detail, status, created_at')
         .order('created_at', { ascending: false })
       if (error) throw new Error(`Could not load tickets: ${error.message}`)
       const tickets =
         data?.map((row) => ({
           id: String(row.id),
+          dealerAccountId: String(row.dealer_account_id),
           subject: String(row.subject),
+          detail: String(row.detail ?? ''),
           status: String(row.status),
           createdAt: String(row.created_at),
         })) ?? []

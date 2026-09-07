@@ -1,4 +1,4 @@
-import { useSiteContent } from '../lib/siteContent'
+import MediaPlaceholder from './MediaPlaceholder'
 import SectionHeader from './ui/SectionHeader'
 
 const features = [
@@ -20,13 +20,11 @@ const features = [
   {
     num: '04',
     title: 'Regenerative braking',
-    copy: 'Kinetic energy harvested during deceleration feeds charge back to the battery. Specified on Volt, Storm, and Cruise.',
+    copy: 'Kinetic energy harvested during deceleration feeds charge back to the battery. Specified on NIRA and Cruise.',
   },
 ]
 
 export default function Technology() {
-  const { media } = useSiteContent()
-
   return (
     <section className="tech" id="technology">
       <div className="wrap tech-grid">
@@ -50,14 +48,7 @@ export default function Technology() {
           </div>
         </div>
         <div className="tech-media">
-          <img
-            src={media.techCutaway}
-            alt="Technical cutaway of an Amptron electric scooter"
-            width={1200}
-            height={933}
-            loading="lazy"
-            decoding="async"
-          />
+          <MediaPlaceholder label="Engineering" />
         </div>
       </div>
     </section>

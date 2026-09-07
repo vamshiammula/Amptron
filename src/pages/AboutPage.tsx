@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-import hqMap from '../assets/images/hq-map.webp'
-import heroScooter from '../assets/images/hero-scooter.webp'
 import Numbers from '../components/Numbers'
 import Seo from '../components/Seo'
 import MediaFrame from '../components/ui/MediaFrame'
@@ -34,7 +32,7 @@ export default function AboutPage() {
           aside={
             <MediaFrame
               className="page-hero-media"
-              src={heroScooter}
+              src=""
               alt="Amptron electric scooter in the assembly hall"
               ratio="4 / 3"
               eager
@@ -117,7 +115,7 @@ export default function AboutPage() {
               <SectionHeader
                 eyebrow="Made in Manesar"
                 title="Assembled in India, built for the road ahead"
-                sub={`${HEADQUARTERS.legalName} assembles every Volt, Storm, and Cruise at ${HEADQUARTERS.street}. Precision assembly, certified packs, and a parts shelf that stays stocked.`}
+                sub={`${HEADQUARTERS.legalName} assembles electric scooters at ${HEADQUARTERS.street}. Precision assembly, certified packs, and a parts shelf that stays stocked.`}
                 align="left"
               />
               <div className="model-actions">
@@ -141,14 +139,13 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               aria-label="Open Amptron headquarters in Maps"
             >
-              <img
-                src={hqMap}
-                alt="Map of IMT Manesar, Gurugram, showing the Amptron plant"
-                width={900}
-                height={600}
-                loading="lazy"
-                decoding="async"
-              />
+              <span className="location-address">
+                Amptron headquarters
+                <br />
+                {HEADQUARTERS.street}
+                <br />
+                Open in Maps ↗
+              </span>
             </a>
           </div>
         </section>

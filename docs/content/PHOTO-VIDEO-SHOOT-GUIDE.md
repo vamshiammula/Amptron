@@ -1,10 +1,10 @@
 # Photo and video shoot guide
 
-Amptron’s public site is built to accept a consistent studio set per model. Until files land, Volt, Storm, and Cruise use the current stills and the Storm viewer set in `public/products/amptron-storm/`.
+Amptron’s public site is built to accept a consistent studio set per model. Until files land, NIRA uses studio stills and Cruise uses the current stills.
 
 Brand photography (see `docs/brand/AMPTRON-BRAND-GUIDELINES.md` §30.7): three-quarter scooter, clean ground, everyday roads. No future-city, neon, or gadget-theatre sets. Do not overlay teal gradients on photos.
 
-## What to shoot (each of Volt, Storm, Cruise)
+## What to shoot (each of NIRA, Cruise)
 
 Shoot the primary colourway first. Additional colours are optional; the site can preview them with a disclosed CSS filter until real frames exist.
 
@@ -39,13 +39,13 @@ public/products/<slug>/
   details/<part>.jpg
 ```
 
-Raw masters (PNG/TIFF) go in `src/assets/raw/` and are processed with `npm run images` into `src/assets/images/` for catalog cards (`volt.webp`, `storm.webp`, `cruise.webp`) and `hero-scooter.webp`.
+Raw masters (PNG/TIFF) go in `src/assets/raw/` and are processed with `npm run images` into `src/assets/images/` for catalog cards (`nira.webp`, `cruise.webp`) and `hero-scooter.webp`.
 
 Hero loop: `src/assets/videos/hero-showcase.mp4`.
 
 ## After you drop files
 
-1. Storm already has a viewer config. Copy `[src/data/products/amptron-storm.ts](../../src/data/products/amptron-storm.ts)` to `amptron-volt.ts` / `amptron-cruise.ts`, set `modelSlug`, paths, and `enabled` flags for modes you actually shot.
+1. NIRA already has studio stills. Copy `[src/data/products/amptron-storm.ts](../../src/data/products/amptron-storm.ts)` to `amptron-cruise.ts` if Cruise needs a viewer config, then set `modelSlug`, paths, and `enabled` flags for modes you actually shot.
 2. Export the new config from `[src/data/products/index.ts](../../src/data/products/index.ts)` and register it in `LOCAL_PRODUCT_VIEWERS`.
 3. Point `image` (and optional `video`) on that model in `[src/data/models.ts](../../src/data/models.ts)`.
 4. If a colour has real photos, add `image` on that colour and omit CSS `filter` on the matching colorway.

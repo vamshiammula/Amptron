@@ -3,6 +3,7 @@ import { getAccessToken } from './supabase'
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export interface DealerOrder {
+  dealerAccountId?: string
   id: string
   model: string
   quantity: number
@@ -25,6 +26,8 @@ export interface DealerAnnouncement {
 }
 
 export interface DealerTicket {
+  dealerAccountId?: string
+  detail?: string
   id: string
   subject: string
   status: string
@@ -45,6 +48,8 @@ export interface AdminApplicationsPayload {
   applications: Array<{
     id: string
     fullName: string
+    phone?: string
+    profile?: string
     email: string
     city: string
     status: string
@@ -81,6 +86,7 @@ async function fetchWithAuth<T>(path: string, init?: RequestInit): Promise<T> {
   const token = await getAccessToken()
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
+    signal: init?.signal ?? AbortSignal.timeout(15000),
     headers: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -481,5 +487,21 @@ export function deleteAdminProductMediaSet(setId: number) {
   return fetchWithAuth<{ message: string }>(
     `/api/admin/product-media/sets/${setId}`,
     { method: 'DELETE' },
+  )
+}
+
+export function updateDealerRecord(
+  id: string,
+  payload: {
+    name: string
+    city: string
+    state: string
+    area: string
+    phone: string
+  },
+) {
+  return fetchWithAuth<{ message: string }>(
+    `/api/admin/dealers/${encodeURIComponent(id)}`,
+    { method: 'PATCH', body: JSON.stringify(payload) },
   )
 }

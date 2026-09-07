@@ -14,7 +14,7 @@ import {
   type SupportLanguage,
   type SupportReason,
 } from '@shared/faqConstants'
-import { OPEN_CHAT_EVENT } from '../lib/openChat'
+import { OPEN_CHAT_EVENT, consumeChatOpenRequest } from '../lib/openChat'
 import './ChatWidget.css'
 
 type MatchResponse =
@@ -38,7 +38,7 @@ interface ChatMessage {
 
 const HIDDEN_PREFIXES = ['/admin', '/portal']
 const SUGGESTIONS_FALLBACK = [
-  'What is Amptron Storm?',
+  'Which Amptron model should I choose?',
   'How do I buy an Amptron scooter?',
   'How can a dealer stock Amptron?',
 ]
@@ -110,6 +110,7 @@ export default function ChatWidget() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [pending, setPending] = useState(false)
+  const [retryQuestion, setRetryQuestion] = useState<string | null>(null)
   const [suggestions, setSuggestions] = useState(SUGGESTIONS_FALLBACK)
   const [collapsed, setCollapsed] = useState(readNudgeCollapsed)
   const [nudge, setNudge] = useState(() => !readNudgeCollapsed())
@@ -117,7 +118,7 @@ export default function ChatWidget() {
     {
       id: 'welcome',
       role: 'assistant',
-      text: 'Amptron agent here. Ask about Volt, Storm, or Cruise. Answers come from published FAQs.',
+      text: 'Welcome to Amptron. I can help with scooters, test rides, dealers and ownership. Ask a question, or leave a request for our team.',
     },
   ])
   const [capture, setCapture] = useState<{
@@ -129,7 +130,13 @@ export default function ChatWidget() {
   const [contactSent, setContactSent] = useState(false)
 
   useEffect(() => {
-    const onOpen = () => setOpen(true)
+    const onOpen = () => {
+      consumeChatOpenRequest()
+      setOpen(true)
+    }
+    // Synchronize an external request queued before this lazy component mounted.
+    // oxlint-disable-next-line react/set-state-in-effect
+    if (consumeChatOpenRequest()) setOpen(true)
     window.addEventListener(OPEN_CHAT_EVENT, onOpen)
     return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen)
   }, [])
@@ -243,6 +250,7 @@ export default function ChatWidget() {
     if (!trimmed || pending) return
     const requestId = requestIdRef.current + 1
     requestIdRef.current = requestId
+    setRetryQuestion(null)
     setQuery('')
     requestAnimationFrame(() => fitComposer(inputRef.current))
     setCapture(null)
@@ -258,12 +266,14 @@ export default function ChatWidget() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ query: trimmed }),
+        signal: AbortSignal.timeout(15000),
       })
       if (requestId !== requestIdRef.current) return
       const payload = (await response.json()) as MatchResponse & {
         message?: string
       }
       if (!response.ok) {
+        setRetryQuestion(trimmed)
         setMessages((previous) => [
           ...previous,
           {
@@ -298,6 +308,7 @@ export default function ChatWidget() {
       setCapture({ question: trimmed, reason: payload.reason })
     } catch {
       if (requestId !== requestIdRef.current) return
+      setRetryQuestion(trimmed)
       setMessages((previous) => [
         ...previous,
         {
@@ -396,7 +407,7 @@ export default function ChatWidget() {
                 <h2 id={titleId}>Amptron agent</h2>
                 <p className="chatbot-presence">
                   <span className="chatbot-presence-dot" aria-hidden="true" />
-                  Online
+                  FAQ assistant
                 </p>
               </div>
             </div>
@@ -410,6 +421,52 @@ export default function ChatWidget() {
             </button>
           </header>
 
+          <div className="chatbot-recovery">
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => {
+                setMessages([
+                  {
+                    id: nextId(),
+                    role: 'assistant',
+                    text: 'How can we help with your next step?',
+                  },
+                ])
+                setCapture(null)
+                setContact(EMPTY_CONTACT)
+                setContactSent(false)
+                setRetryQuestion(null)
+                setQuery('')
+                inputRef.current?.focus()
+              }}
+            >
+              New conversation
+            </button>
+            <button
+              type="button"
+              disabled={pending}
+              onClick={() => {
+                setCapture({
+                  question: query.trim() || 'General support request',
+                  reason: 'unmatched',
+                })
+                setContactSent(false)
+                setContactError(null)
+              }}
+            >
+              Contact the team
+            </button>
+            {retryQuestion && (
+              <button
+                type="button"
+                disabled={pending}
+                onClick={() => void ask(retryQuestion)}
+              >
+                Retry question
+              </button>
+            )}
+          </div>
           <div className="chatbot-log" ref={logRef} aria-live="polite">
             {messages.map((message) => (
               <div

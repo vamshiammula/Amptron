@@ -4,10 +4,10 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import ModelDetailPage from './ModelDetailPage'
 
-function renderVolt() {
+function renderModel() {
   return render(
     <HelmetProvider>
-      <MemoryRouter initialEntries={['/models/amptron-volt']}>
+      <MemoryRouter initialEntries={['/models/amptron-nira']}>
         <Routes>
           <Route path="/models/:slug" element={<ModelDetailPage />} />
         </Routes>
@@ -26,7 +26,7 @@ describe('Model detail subnav', () => {
   })
 
   it('keeps the sticky Buy Amptron control off the hero', () => {
-    renderVolt()
+    renderModel()
 
     expect(within(subnav()).queryByRole('link', { name: 'Buy Amptron' })).toBeNull()
     expect(
@@ -55,7 +55,7 @@ describe('Model detail subnav', () => {
     }
 
     vi.stubGlobal('IntersectionObserver', MockObserver)
-    renderVolt()
+    renderModel()
 
     const heroObserver = observers.find((item) => item.node?.id === 'overview')
     expect(heroObserver).toBeDefined()

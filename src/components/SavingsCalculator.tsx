@@ -1,8 +1,7 @@
+import ElectricComparison from './ElectricComparison'
 import {
-  useEffect,
   useId,
   useMemo,
-  useRef,
   useState,
   type CSSProperties,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -48,7 +47,43 @@ interface SavingsCalculatorProps {
   tone?: 'white' | 'fog'
 }
 
-export default function SavingsCalculator({
+export default function SavingsCalculator(props: Readonly<SavingsCalculatorProps>) {
+  const [comparison, setComparison] = useState('petrol')
+  const groupId = useId()
+  return (
+    <div>
+      <fieldset className="comparison-choice">
+        <legend>Compare Amptron with</legend>
+        <label>
+          <input
+            type="radio"
+            name={groupId}
+            checked={comparison === 'petrol'}
+            onChange={() => setComparison('petrol')}
+          />
+          A petrol scooter
+        </label>
+        <label>
+          <input
+            type="radio"
+            name={groupId}
+            checked={comparison === 'electric'}
+            onChange={() => setComparison('electric')}
+          />
+          Another electric scooter
+        </label>
+      </fieldset>
+      <div hidden={comparison !== 'petrol'}>
+        <PetrolSavingsCalculator {...props} />
+      </div>
+      <div hidden={comparison !== 'electric'}>
+        <ElectricComparison {...props} />
+      </div>
+    </div>
+  )
+}
+
+function PetrolSavingsCalculator({
   defaultSlug,
   onSlugChange,
   tone = 'white',
@@ -157,10 +192,19 @@ export default function SavingsCalculator({
   const onViewKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
     const index = VIEWS.findIndex((item) => item.id === view)
     if (index < 0) return
-    if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+    if (['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) {
       event.preventDefault()
       const offset = event.key === 'ArrowRight' ? 1 : VIEWS.length - 1
-      const next = VIEWS[(index + offset) % VIEWS.length]
+      const nextIndex =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? VIEWS.length - 1
+            : (index + offset) % VIEWS.length
+      const next = VIEWS[nextIndex]
+      const tabs =
+        event.currentTarget.querySelectorAll<HTMLButtonElement>('[role=tab]')
+      tabs[nextIndex]?.focus()
       setView(next.id)
     }
   }
@@ -215,7 +259,7 @@ export default function SavingsCalculator({
   return (
     <div className={`savings-board${tone === 'fog' ? ' savings-board--fog' : ''}`}>
       <div className="savings-panel">
-        <div className="savings-controls">
+        <div className="savings-controls" id={`${tablistId}-inputs`}>
           <div className="savings-field">
             <span className="savings-field-label">Model</span>
             <ModelSelect
@@ -234,6 +278,12 @@ export default function SavingsCalculator({
             maxLabel={`${SAVINGS_LIMITS.maxDailyKm} km`}
             onChange={setDailyKm}
           />
+          <p className="savings-control-hint">
+            Drag a slider or type a value. Press Enter or leave the field to apply.
+          </p>
+          <a className="savings-jump" href={`#${tablistId}-panel`}>
+            View your results ↓
+          </a>
           <div
             className="savings-views"
             role="tablist"
@@ -274,7 +324,11 @@ export default function SavingsCalculator({
           role="tabpanel"
           id={`${tablistId}-panel`}
           aria-labelledby={`${tablistId}-${view}`}
+          tabIndex={-1}
         >
+          <a className="savings-jump" href={`#${tablistId}-inputs`}>
+            Adjust your figures ↑
+          </a>
           {view === 'running' ? (
             <RunningView modelName={model.name} result={result} />
           ) : null}
@@ -312,8 +366,7 @@ export default function SavingsCalculator({
         </p>
         <p>
           Battery repair or replacement is a scenario you can test. It is not a
-          prediction that the pack will fail, and it is not Amptron warranty
-          policy.
+          prediction that the pack will fail, and it is not Amptron warranty policy.
         </p>
         <ul className="savings-sources">
           {OWNERSHIP_SOURCES.map((source) => (
@@ -732,14 +785,13 @@ function BatteryView({
           At this daily use,{' '}
           {action === 'none' ? 'five years is' : `year ${year} is`} about{' '}
           {Math.round(cyclesNote)} equivalent full charges on a {certifiedRangeKm}{' '}
-          km certified range. That is a usage figure, not a battery-life or
-          warranty claim.
+          km certified range. That is a usage figure, not a battery-life or warranty
+          claim.
         </p>
       ) : null}
       <p className="savings-note">
-        Repair is cell or BMS work, not a new pack. Replacement is a full pack.
-        Both are scenarios you can test. Neither is a prediction that the pack
-        will fail.
+        Repair is cell or BMS work, not a new pack. Replacement is a full pack. Both
+        are scenarios you can test. Neither is a prediction that the pack will fail.
       </p>
     </>
   )
@@ -791,6 +843,31 @@ function TotalView({
         </p>
         <p className="savings-card-meta">{paybackCopy(result.paybackMonths)}</p>
       </div>
+      <figure
+        className="savings-total-chart"
+        aria-label="Five-year ownership cost comparison"
+      >
+        <figcaption>Total ownership cost · 5 years</figcaption>
+        {[
+          { label: 'Petrol scooter', amount: result.petrolTcoInr, tone: 'petrol' },
+          { label: modelName, amount: result.amptronTcoInr, tone: 'electric' },
+        ].map((item) => (
+          <div className="savings-total-row" key={item.tone}>
+            <div>
+              <span>{item.label}</span>
+              <strong>{formatInr(item.amount)}</strong>
+            </div>
+            <span className="savings-total-track" aria-hidden="true">
+              <span
+                style={{
+                  width: `${(item.amount / Math.max(result.petrolTcoInr, result.amptronTcoInr, 1)) * 100}%`,
+                  background: `var(--data-${item.tone})`,
+                }}
+              />
+            </span>
+          </div>
+        ))}
+      </figure>
       <dl className="savings-kpis">
         <div>
           <dt>Petrol, per km</dt>
@@ -917,7 +994,7 @@ function SavingsBar({
   heightPct: number
   tone: 'petrol' | 'amptron'
 }>) {
-  const target = heightPct > 0 ? Math.max(heightPct, 8) : 8
+  const target = Math.max(0, Math.min(100, heightPct))
 
   return (
     <div className={`savings-bar savings-bar--${tone}`}>
@@ -955,28 +1032,56 @@ function SliderField({
   maxLabel: string
   onChange: (value: number) => void
 }>) {
+  const id = useId()
+  const [draft, setDraft] = useState<string | null>(null)
   const fill = ((value - min) / (max - min)) * 100
+  const commit = () => {
+    if (draft !== null && draft.trim() !== '' && Number.isFinite(Number(draft))) {
+      const snapped = min + Math.round((Number(draft) - min) / step) * step
+      onChange(Number(Math.max(min, Math.min(max, snapped)).toFixed(2)))
+    }
+    setDraft(null)
+  }
 
   return (
-    <label className="savings-field">
-      <span className="savings-field-label">
+    <div className="savings-field">
+      <label className="savings-field-label" htmlFor={id}>
         {label}
         <strong>{display}</strong>
-      </span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
-        style={{ '--fill': `${fill}%` } as CSSProperties}
-      />
+      </label>
+      <div className="savings-input-row">
+        <input
+          id={id}
+          aria-label={label}
+          aria-valuetext={display}
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(event) => onChange(Number(event.target.value))}
+          style={{ '--fill': `${fill}%` } as CSSProperties}
+        />
+        <input
+          className="savings-number"
+          type="number"
+          aria-label={`${label}, exact value`}
+          min={min}
+          max={max}
+          step={step}
+          value={draft ?? value}
+          onChange={(event) => setDraft(event.target.value)}
+          onBlur={commit}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') event.currentTarget.blur()
+          }}
+        />
+      </div>
       <span className="savings-scale">
         <span>{minLabel}</span>
         <span>{maxLabel}</span>
       </span>
-    </label>
+    </div>
   )
 }
 
@@ -989,60 +1094,18 @@ function ModelSelect({
   value: string
   onChange: (slug: string) => void
 }>) {
-  const [open, setOpen] = useState(false)
-  const rootRef = useRef<HTMLDivElement>(null)
-  const listId = useId()
-  const selected = models.find((item) => item.slug === value) ?? models[0]
-
-  useEffect(() => {
-    if (!open) return
-    const onPointer = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false)
-    }
-    const onKey = (event: globalThis.KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('mousedown', onPointer)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onPointer)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [open])
-
   return (
-    <div className="savings-select" ref={rootRef}>
-      <button
-        type="button"
-        className="savings-select-btn"
-        aria-label={`Model: ${selected?.name ?? 'Choose a model'}`}
-        aria-haspopup="true"
-        aria-expanded={open}
-        aria-controls={listId}
-        onClick={() => setOpen((current) => !current)}
-      >
-        {selected?.name ?? 'Choose a model'}
-        <span className="savings-select-chevron" aria-hidden="true" />
-      </button>
-      {open ? (
-        <ul className="savings-select-menu" id={listId}>
-          {models.map((item) => (
-            <li key={item.slug}>
-              <button
-                type="button"
-                aria-current={item.slug === value ? 'true' : undefined}
-                className={item.slug === value ? 'is-active' : undefined}
-                onClick={() => {
-                  onChange(item.slug)
-                  setOpen(false)
-                }}
-              >
-                {item.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-    </div>
+    <select
+      className="savings-select-btn"
+      aria-label="Model"
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+    >
+      {models.map((item) => (
+        <option key={item.slug} value={item.slug}>
+          {item.name}
+        </option>
+      ))}
+    </select>
   )
 }

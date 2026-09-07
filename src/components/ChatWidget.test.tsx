@@ -22,7 +22,7 @@ describe('ChatWidget', () => {
                 matched: true,
                 source: 'smalltalk',
                 answer:
-                  'Hello. Ask about Amptron Volt, Storm, or Cruise: range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
+                  'Hello. Ask about Amptron NIRA or Cruise: range, charging, test rides, or stocking. Answers come from Amptron’s published FAQs.',
               }),
               { status: 200 },
             )
@@ -52,7 +52,7 @@ describe('ChatWidget', () => {
     expect(
       await screen.findByRole('heading', { name: 'Amptron agent' }),
     ).toBeVisible()
-    expect(await screen.findByText(/Hello\. Ask about Amptron Volt/i)).toBeVisible()
+    expect(await screen.findByText(/Hello\. Ask about Amptron NIRA/i)).toBeVisible()
   })
 
   it('opens a contact form when no FAQ matches', async () => {
@@ -127,7 +127,25 @@ describe('ChatWidget', () => {
     await user.type(input, 'Hi')
     await user.click(screen.getByRole('button', { name: 'Send' }))
 
-    expect(await screen.findByText(/Hello\. Ask about Amptron Volt/i)).toBeVisible()
+    expect(await screen.findByText(/Hello\. Ask about Amptron NIRA/i)).toBeVisible()
     expect(screen.queryByText(/characters left/i)).not.toBeInTheDocument()
+  })
+  it('lets a visitor request contact directly and clear the conversation', async () => {
+    const user = userEvent.setup()
+    render(
+      <MemoryRouter>
+        <ChatWidget />
+      </MemoryRouter>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Ask Amptron' }))
+    await user.click(screen.getByRole('button', { name: 'Contact the team' }))
+    expect(
+      await screen.findByText(/Name, plus a mobile number or email/i),
+    ).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'New conversation' }))
+    expect(
+      screen.queryByText(/Name, plus a mobile number or email/i),
+    ).not.toBeInTheDocument()
+    expect(screen.getByText('How can we help with your next step?')).toBeVisible()
   })
 })

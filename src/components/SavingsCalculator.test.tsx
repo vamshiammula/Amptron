@@ -4,6 +4,57 @@ import { describe, expect, it } from 'vitest'
 import SavingsCalculator from './SavingsCalculator'
 
 describe('SavingsCalculator', () => {
+  it('applies typed values, clamps bounds and keeps a cleared field unchanged', async () => {
+    const user = userEvent.setup()
+    render(<SavingsCalculator />)
+    const exact = screen.getByRole('spinbutton', {
+      name: 'Daily distance, exact value',
+    })
+    await user.clear(exact)
+    await user.type(exact, '45')
+    await user.keyboard('{Enter}')
+    expect(screen.getByRole('slider', { name: 'Daily distance' })).toHaveValue('45')
+    await user.clear(exact)
+    await user.tab()
+    expect(exact).toHaveValue(45)
+    await user.clear(exact)
+    await user.type(exact, '999')
+    await user.tab()
+    expect(exact).toHaveValue(150)
+  })
+
+  it('moves keyboard focus with selected tabs and supports Home and End', async () => {
+    const user = userEvent.setup()
+    render(<SavingsCalculator />)
+    screen.getByRole('tab', { name: 'Running cost' }).focus()
+    await user.keyboard('{ArrowRight}')
+    expect(screen.getByRole('tab', { name: 'Service' })).toHaveFocus()
+    await user.keyboard('{End}')
+    expect(screen.getByRole('tab', { name: '5-year total' })).toHaveFocus()
+    expect(
+      screen.getByRole('figure', { name: 'Five-year ownership cost comparison' }),
+    ).toBeVisible()
+    await user.keyboard('{Home}')
+    expect(screen.getByRole('tab', { name: 'Running cost' })).toHaveFocus()
+  })
+
+  it('keeps small service costs proportional rather than imposing a minimum bar', async () => {
+    const user = userEvent.setup()
+    const { container } = render(<SavingsCalculator />)
+    await user.click(screen.getByRole('tab', { name: 'Service' }))
+    fireEvent.change(screen.getByRole('slider', { name: /petrol service/i }), {
+      target: { value: '0.05' },
+    })
+    fireEvent.change(screen.getByRole('slider', { name: /amptron service/i }), {
+      target: { value: '1' },
+    })
+    const bar = container.querySelector<HTMLElement>(
+      '.savings-bar--petrol .savings-bar-fill',
+    )!
+    expect(parseFloat(bar.style.height)).toBeGreaterThan(0)
+    expect(parseFloat(bar.style.height)).toBeLessThan(8)
+  })
+
   it('starts on running cost with energy filters on that tab', () => {
     render(<SavingsCalculator />)
 
@@ -34,7 +85,7 @@ describe('SavingsCalculator', () => {
     expect(screen.getByRole('slider', { name: /petrol service/i })).toBeVisible()
     const petrolPurchase = screen.getByRole('slider', { name: /petrol purchase/i })
     const amptronPurchase = screen.getByRole('slider', {
-      name: /amptron storm purchase/i,
+      name: /amptron nira purchase/i,
     })
     expect(petrolPurchase).toBeVisible()
     expect(petrolPurchase).toHaveAttribute('min', '20000')

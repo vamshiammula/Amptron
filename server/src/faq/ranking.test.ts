@@ -62,17 +62,24 @@ describe('normalizeTokens', () => {
 // ---------------------------------------------------------------------------
 
 describe('detectModel', () => {
-  it('detects volt', () => expect(detectModel('volt range')).toBe('volt'))
-  it('detects storm', () => expect(detectModel('how fast is storm')).toBe('storm'))
-  it('detects cruise', () => expect(detectModel('cruise charging time')).toBe('cruise'))
-  it('returns null for no model', () => expect(detectModel('range of scooter')).toBeNull())
+  it('detects nira', () => expect(detectModel('how fast is nira')).toBe('nira'))
+  it('maps storm to nira', () =>
+    expect(detectModel('how fast is storm')).toBe('nira'))
+  it('detects cruise', () =>
+    expect(detectModel('cruise charging time')).toBe('cruise'))
+  it('returns null for no model', () =>
+    expect(detectModel('range of scooter')).toBeNull())
 })
 
 describe('detectTopic', () => {
-  it('detects range', () => expect(detectTopic(normalizeTokens('how far does it go'))).toBe('range'))
-  it('detects charge from charging', () => expect(detectTopic(normalizeTokens('charging time'))).toBe('charge'))
-  it('detects price from cost', () => expect(detectTopic(normalizeTokens('cost kitna'))).toBe('price'))
-  it('detects battery from kwh', () => expect(detectTopic(normalizeTokens('kwh battery'))).toBe('battery'))
+  it('detects range', () =>
+    expect(detectTopic(normalizeTokens('how far does it go'))).toBe('range'))
+  it('detects charge from charging', () =>
+    expect(detectTopic(normalizeTokens('charging time'))).toBe('charge'))
+  it('detects price from cost', () =>
+    expect(detectTopic(normalizeTokens('cost kitna'))).toBe('price'))
+  it('detects battery from kwh', () =>
+    expect(detectTopic(normalizeTokens('kwh battery'))).toBe('battery'))
 })
 
 // ---------------------------------------------------------------------------
@@ -83,13 +90,13 @@ describe('resolver (model + topic)', () => {
   it('resolves storm range directly', () => {
     const match = pickLexicalMatch('storm range', faqs)
     expect(match).not.toBeNull()
-    expect(match?.faq.slug).toBe('storm-range')
+    expect(match?.faq.slug).toBe('nira-range')
     expect(match?.via).toBe('resolver')
   })
 
-  it('resolves volt charge directly', () => {
-    const match = pickLexicalMatch('volt charging time', faqs)
-    expect(match?.faq.slug).toBe('volt-charge')
+  it('resolves nira charge directly', () => {
+    const match = pickLexicalMatch('nira charging time', faqs)
+    expect(match?.faq.slug).toBe('nira-charge')
     expect(match?.via).toBe('resolver')
   })
 
@@ -118,7 +125,7 @@ describe('natural phrasing (previously embedding-only)', () => {
   it('answers "What is the range of Storm?"', () => {
     const match = pickLexicalMatch('What is the range of Storm?', faqs)
     expect(match).not.toBeNull()
-    expect(match?.faq.slug).toBe('storm-range')
+    expect(match?.faq.slug).toBe('nira-range')
   })
 
   it('answers "storm price?"', () => {
@@ -144,9 +151,9 @@ describe('natural phrasing (previously embedding-only)', () => {
     expect(match?.faq.slug).toBe('service-locations')
   })
 
-  it('answers "volt battery size"', () => {
-    const match = pickLexicalMatch('volt battery size', faqs)
-    expect(match?.faq.slug).toBe('volt-battery')
+  it('answers "nira battery size"', () => {
+    const match = pickLexicalMatch('nira battery size', faqs)
+    expect(match?.faq.slug).toBe('nira-battery')
   })
 })
 
@@ -158,13 +165,13 @@ describe('typo tolerance', () => {
   it('matches "warrenty" to warranty FAQ', () => {
     const match = pickLexicalMatch('warrenty claim', faqs)
     expect(match).not.toBeNull()
-    expect(['warranty', 'warranty-claim'].some((s) => match?.faq.slug.includes('warrant'))).toBe(true)
+    expect(match?.faq.slug).toContain('warrant')
   })
 
-  it('matches "chrging time volt" to volt-charge', () => {
-    const match = pickLexicalMatch('chrging time volt', faqs)
+  it('matches "chrging time nira" to nira-charge', () => {
+    const match = pickLexicalMatch('chrging time nira', faqs)
     expect(match).not.toBeNull()
-    expect(match?.faq.slug).toBe('volt-charge')
+    expect(match?.faq.slug).toBe('nira-charge')
   })
 })
 
@@ -200,19 +207,18 @@ describe('Hinglish / Telugu', () => {
 // ---------------------------------------------------------------------------
 
 describe('model disambiguation', () => {
-  it('"storm range" does not return volt-range', () => {
+  it('"storm range" does not return cruise-range', () => {
     const match = pickLexicalMatch('storm range', faqs)
-    expect(match?.faq.slug).not.toBe('volt-range')
     expect(match?.faq.slug).not.toBe('cruise-range')
-    expect(match?.faq.slug).toBe('storm-range')
+    expect(match?.faq.slug).toBe('nira-range')
   })
 
-  it('"volt speed" does not return storm-speed or cruise-speed', () => {
-    const match = pickLexicalMatch('volt speed', faqs)
-    expect(match?.faq.slug).toBe('volt-speed')
+  it('"nira speed" does not return cruise-speed', () => {
+    const match = pickLexicalMatch('nira speed', faqs)
+    expect(match?.faq.slug).toBe('nira-speed')
   })
 
-  it('"cruise battery" does not return volt-battery', () => {
+  it('"cruise battery" does not return nira-battery', () => {
     const match = pickLexicalMatch('cruise battery', faqs)
     expect(match?.faq.slug).toBe('cruise-battery')
   })
@@ -228,9 +234,9 @@ describe('model disambiguation', () => {
 // ---------------------------------------------------------------------------
 
 describe('stored answer fidelity', () => {
-  it('returns the exact Storm range answer', () => {
-    const match = pickLexicalMatch('What is the certified range of Amptron Storm?', faqs)
-    expect(match?.faq.answer).toBe('Amptron Storm has a certified range of 120 km per charge.')
+  it('returns the exact NIRA range answer', () => {
+    const match = pickLexicalMatch('What is the range of Amptron NIRA?', faqs)
+    expect(match?.faq.answer).toMatch(/45–55 km real-world range target/)
   })
 
   it('does not invent an answer for unrelated questions', () => {
@@ -246,7 +252,7 @@ describe('new FAQ corpus coverage', () => {
   it('returns pricing guidance for cost questions', () => {
     const match = pickLexicalMatch('How much do Amptron scooters cost?', faqs)
     expect(match?.faq.slug).toBe('model-pricing')
-    expect(match?.faq.answer).toMatch(/79,990/)
+    expect(match?.faq.answer).toMatch(/69,990/)
   })
 
   it('returns model selection guidance for comparison questions', () => {
@@ -257,7 +263,7 @@ describe('new FAQ corpus coverage', () => {
 
     const match2 = pickLexicalMatch('recommend a model', faqs)
     expect(match2).not.toBeNull()
-    expect(match2?.faq.answer).toMatch(/Most Popular/)
+    expect(match2?.faq.answer).toMatch(/NIRA/)
   })
 
   it('returns service guidance for maintenance questions', () => {

@@ -26,9 +26,9 @@ describe('Ownership calculator page', () => {
     expect(
       screen.getByRole('heading', { name: 'Plan the cost of switching' }),
     ).toBeVisible()
-    expect(
-      screen.getByRole('button', { name: 'Model: Amptron Cruise' }),
-    ).toBeVisible()
+    expect(screen.getByRole('combobox', { name: 'Model' })).toHaveValue(
+      'amptron-cruise',
+    )
     expect(screen.getByRole('tab', { name: 'Running cost' })).toHaveAttribute(
       'aria-selected',
       'true',

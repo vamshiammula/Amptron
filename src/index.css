@@ -1,12 +1,22 @@
 :root {
-  --navy: #0a1f44;
-  --navy-deep: #061430;
-  --teal: #00c896;
-  --teal-soft: #e6faf5;
-  --slate: #64748b;
-  --line: #e2e8f0;
-  --fog: #f5f7fa;
-  --mist: #e2e8f0;
+  --graphite: #171c1b;
+  --electric: #c2f34b;
+  --paper: #f3f2ec;
+  --steel: #76817b;
+  --text-on-dark: #c6cec8;
+  --data-petrol: #56615c;
+  --data-electric: #376047;
+  --control-border: #76817b;
+  --accent-text: #456018;
+  /* Compatibility aliases shared by public and operations components. */
+  --navy: #171c1b;
+  --navy-deep: #101513;
+  --teal: #c2f34b;
+  --teal-soft: #eef6d9;
+  --slate: #56615c;
+  --line: #dce0d7;
+  --fog: #f3f2ec;
+  --mist: #dce0d7;
   --white: #ffffff;
   --danger: #ff8080;
   --danger-deep: #b42318;
@@ -16,8 +26,8 @@
   --info-soft: #e0f2fe;
   --success: #047857;
   --success-soft: #d1fae5;
-  --display: 'Outfit', sans-serif;
-  --body: 'Geist', sans-serif;
+  --display: 'Outfit Variable', 'Outfit', sans-serif;
+  --body: 'Geist Variable', 'Geist', sans-serif;
   --max: 1440px;
 
   /* Compact on a 360px phone, brand sizes by 1100px. */
@@ -26,9 +36,9 @@
   --fs-title: clamp(1.375rem, 0.83rem + 2.43vw, 2.5rem);
   --fs-card: clamp(1.0625rem, 0.85rem + 0.95vw, 1.5rem);
   --fs-lead: clamp(0.90625rem, 0.8rem + 0.47vw, 1.125rem);
-  --fs-body: clamp(0.9375rem, 0.9rem + 0.18vw, 1rem);
+  --fs-body: 1rem;
   --fs-small: 0.875rem;
-  --fs-ui: clamp(0.8125rem, 0.78rem + 0.18vw, 0.9375rem);
+  --fs-ui: 0.9375rem;
   --fs-stat: clamp(1.5rem, 0.77rem + 3.24vw, 3rem);
   --fs-eyebrow: clamp(0.75rem, 0.68rem + 0.3vw, 0.875rem);
 
@@ -43,16 +53,16 @@
   --space-9: 80px;
 
   --radius-control: 8px;
-  --radius-chip: 12px;
-  --radius-card: 16px;
+  --radius-chip: 6px;
+  --radius-card: 10px;
   --radius-pill: 100px;
 
-  --shadow-navy: 0 12px 32px rgba(10, 31, 68, 0.08);
+  --shadow-navy: 0 12px 32px rgba(23, 28, 27, 0.08);
   --hero-overlay: linear-gradient(
     180deg,
-    rgba(6, 20, 48, 0.28) 0%,
-    rgba(10, 31, 68, 0.72) 55%,
-    rgba(6, 20, 48, 0.92) 100%
+    rgba(16, 21, 19, 0.28) 0%,
+    rgba(23, 28, 27, 0.72) 55%,
+    rgba(16, 21, 19, 0.92) 100%
   );
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -119,7 +129,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--teal);
+  outline: 2px solid var(--accent-text);
   outline-offset: 2px;
 }
 

@@ -8,7 +8,7 @@ import { useSiteContent } from '../lib/siteContent'
 /** The ride each model is built for, shown as the card eyebrow. */
 const USE_CASE: Record<string, string> = {
   'amptron-volt': 'City hops',
-  'amptron-storm': 'City and suburbs',
+  'amptron-nira': 'Everyday local travel',
   'amptron-cruise': 'All-day range',
 }
 
@@ -19,17 +19,17 @@ export default function ModelsPage() {
     <>
       <Seo
         title="Amptron Models: Electric Scooter Range"
-        description="Compare Amptron Volt, Storm, and Cruise with certified range, speed, charging time, price, and full technical specifications."
+        description="Compare the current Amptron scooter range, charging times, prices, and specifications."
         path="/models"
       />
       <main id="main" className="site-page">
         <PageHero
           eyebrow="Model catalog"
           title="Choose your Amptron"
-          lede="Three certified scooters. Range, charge time, and ownership first. Buy from Amptron, or find a partner showroom. Same machine either way."
+          lede="Explore the current range. Charging, price, and ownership first. Buy from Amptron, or find a partner showroom. Same machine either way."
         >
           <a className="btn btn-primary" href="#compare">
-            Compare all three
+            Compare all models
           </a>
           <Link className="btn btn-ghost-dark" to="/book-test-ride">
             Book a Test Ride
@@ -63,7 +63,7 @@ export default function ModelsPage() {
               <h2>Ready when you are.</h2>
               <p>
                 Buy from Amptron, book a test ride, or walk into a partner showroom.
-                Same certified scooter, same backing, whichever door you use.
+                Same published machine, same backing, whichever door you use.
               </p>
             </div>
             <div className="cta-band-actions">

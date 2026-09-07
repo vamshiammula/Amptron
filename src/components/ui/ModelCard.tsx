@@ -1,3 +1,4 @@
+import MediaPlaceholder from '../MediaPlaceholder'
 import { Link } from 'react-router-dom'
 import type { ScooterModel } from '../../data/models'
 import PriceTag from './PriceTag'
@@ -26,16 +27,20 @@ export default function ModelCard({
         to={`/models/${model.slug}`}
         aria-label={`Explore ${model.name}`}
       >
-        <img
-          src={model.image}
-          alt={`${model.name} electric scooter`}
-          width={900}
-          height={600}
-          loading={eager ? 'eager' : 'lazy'}
-          decoding="async"
-        />
+        {model.image ? (
+          <img
+            src={model.image}
+            alt={`${model.name} electric scooter`}
+            width={900}
+            height={600}
+            loading={eager ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        ) : (
+          <MediaPlaceholder label={model.name} compact />
+        )}
         {model.featured ? (
-          <span className="product-badge">Most Popular</span>
+          <span className="product-badge">{model.badge ?? 'Most Popular'}</span>
         ) : null}
       </Link>
       <div className="model-rail-body">

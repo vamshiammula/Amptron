@@ -5,7 +5,11 @@ import { scooterModels } from '../../data/models'
 import { stormViewerConfig } from '../../data/products/amptron-storm'
 import ProductViewer from './ProductViewer'
 
-const storm = scooterModels.find((model) => model.slug === 'amptron-storm')!
+const storm = {
+  ...scooterModels[0]!,
+  slug: 'amptron-storm',
+  name: 'Amptron Storm',
+}
 
 describe('ProductViewer', () => {
   beforeEach(() => {

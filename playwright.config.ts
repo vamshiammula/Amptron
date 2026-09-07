@@ -45,6 +45,8 @@ export default defineConfig({
      */
     env: {
       NODE_ENV: 'production',
+      VITE_SUPABASE_URL: BASE_URL,
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'e2e-public-test-key',
       APPLICATIONS_STORE: 'memory',
       PORT: String(PORT),
       HOST: '127.0.0.1',

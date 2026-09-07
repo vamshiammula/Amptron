@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { QUOTA_UNAVAILABLE_MESSAGE } from '../../../shared/faqConstants.js'
 import { InMemoryApplicationsRepository } from '../applications/inMemoryRepository.js'
 import { createApp } from '../app.js'
@@ -51,17 +51,15 @@ describe('FAQ public routes', () => {
     expect(response.status).toBe(200)
     expect(response.body.matched).toBe(true)
     expect(response.body.source).toBe('smalltalk')
-    expect(response.body.answer).toMatch(/Volt, Storm, or Cruise/)
+    expect(response.body.answer).toMatch(/NIRA or Cruise/)
   })
 
   it('returns the stored FAQ answer unchanged', async () => {
     const response = await request(app)
       .post('/api/faq/match')
-      .send({ query: 'What is the certified range of Amptron Storm?' })
+      .send({ query: 'What is the range of Amptron NIRA?' })
     expect(response.status).toBe(200)
-    expect(response.body.answer).toBe(
-      'Amptron Storm has a certified range of 120 km per charge.',
-    )
+    expect(response.body.answer).toMatch(/45–55 km real-world range target/)
     expect(response.body.source).toBe('faq')
   })
 
@@ -71,7 +69,13 @@ describe('FAQ public routes', () => {
       .send({ query: 'storm range' })
     expect(response.status).toBe(200)
     expect(response.body.matched).toBe(true)
-    const validVia: MatchVia[] = ['smalltalk', 'cache', 'resolver', 'lexical', 'embedding']
+    const validVia: MatchVia[] = [
+      'smalltalk',
+      'cache',
+      'resolver',
+      'lexical',
+      'embedding',
+    ]
     expect(validVia).toContain(response.body.via)
   })
 
@@ -81,7 +85,7 @@ describe('FAQ public routes', () => {
       .send({ query: 'storm range' })
     expect(response.body.matched).toBe(true)
     expect(['resolver', 'lexical']).toContain(response.body.via)
-    expect(response.body.answer).toMatch(/120 km/)
+    expect(response.body.answer).toMatch(/45–55 km/)
   })
 
   it('resolves Hinglish "storm ka price" via lexical tier', async () => {
@@ -89,7 +93,7 @@ describe('FAQ public routes', () => {
       .post('/api/faq/match')
       .send({ query: 'storm ka price kitna hai' })
     expect(response.body.matched).toBe(true)
-    expect(response.body.answer).toMatch(/79,990|1,09,990|1,34,990/)
+    expect(response.body.answer).toMatch(/69,990|1,09,990|1,34,990/)
   })
 
   it('resolves "how long to charge cruise" without embeddings', async () => {
@@ -101,7 +105,7 @@ describe('FAQ public routes', () => {
   })
 
   it('returns the same answer for a repeat query (cache path)', async () => {
-    const query = 'volt charging time'
+    const query = 'nira charging time'
     const first = await request(app).post('/api/faq/match').send({ query })
     expect(first.body.matched).toBe(true)
     const second = await request(app).post('/api/faq/match').send({ query })
@@ -165,12 +169,12 @@ describe('FAQ public routes', () => {
     expect(response.body.via).toBe('smalltalk')
   })
 
-  it('model disambiguation: storm range never returns volt answer', async () => {
+  it('model disambiguation: storm range never returns cruise answer', async () => {
     const response = await request(app)
       .post('/api/faq/match')
       .send({ query: 'storm range' })
     expect(response.body.matched).toBe(true)
-    expect(response.body.answer).not.toMatch(/80 km per charge/)
-    expect(response.body.answer).toMatch(/120 km/)
+    expect(response.body.answer).not.toMatch(/150 km per charge/)
+    expect(response.body.answer).toMatch(/45–55 km/)
   })
 })

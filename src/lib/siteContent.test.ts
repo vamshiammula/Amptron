@@ -4,11 +4,12 @@ import { mapBlogPost, mapScooterModel, mapSiteMedia } from './siteContentMap'
 describe('site content mappers', () => {
   it('maps a scooter model row into the catalog shape', () => {
     const model = mapScooterModel({
-      slug: 'amptron-volt',
-      name: 'Amptron Volt',
+      slug: 'amptron-nira',
+      name: 'Amptron NIRA',
       tagline: 'City commuter',
       description: 'Short-range scooter',
-      image_url: 'https://example.test/volt.webp',
+      image_url: 'https://example.test/nira.webp',
+      media_ready: true,
       featured: true,
       highlights: [{ label: 'Range', value: '80 km', note: 'City' }],
       specs: [{ label: 'Weight', value: '89 kg' }],
@@ -16,11 +17,11 @@ describe('site content mappers', () => {
     })
 
     expect(model).toMatchObject({
-      slug: 'amptron-volt',
-      name: 'Amptron Volt',
+      slug: 'amptron-nira',
+      name: 'Amptron NIRA',
       tagline: 'City commuter',
       description: 'Short-range scooter',
-      image: 'https://example.test/volt.webp',
+      image: 'https://example.test/nira.webp',
       featured: true,
       highlights: [{ label: 'Range', value: '80 km', note: 'City' }],
       specs: [{ label: 'Weight', value: '89 kg' }],
@@ -34,10 +35,10 @@ describe('site content mappers', () => {
     expect(
       mapScooterModel({
         slug: '',
-        name: 'Volt',
+        name: 'NIRA',
         tagline: '',
         description: '',
-        image_url: 'https://example.test/volt.webp',
+        image_url: 'https://example.test/nira.webp',
         featured: false,
         highlights: [],
         specs: [],
@@ -81,4 +82,30 @@ describe('site content mappers', () => {
       techCutaway: '/local-cutaway.webp',
     })
   })
+})
+
+it('keeps legacy media hidden and allows a model without photography', () => {
+  const row = {
+    slug: 'amptron-next',
+    name: 'Amptron Next',
+    tagline: '',
+    description: '',
+    image_url: '/old.webp',
+    video_url: '/old.mp4',
+    model_3d_url: '/next.glb',
+    featured: false,
+    highlights: [],
+    specs: [],
+    features: [],
+  }
+  expect(mapScooterModel(row)).toMatchObject({
+    image: '',
+    video: undefined,
+    model3d: undefined,
+  })
+  expect(mapScooterModel({ ...row, media_ready: true })).toMatchObject({
+    image: '/old.webp',
+    model3d: '/next.glb',
+  })
+  expect(mapScooterModel({ ...row, image_url: '' })?.name).toBe('Amptron Next')
 })

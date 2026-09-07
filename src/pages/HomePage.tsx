@@ -13,8 +13,8 @@ export default function HomePage() {
   return (
     <>
       <Seo
-        title="Amptron: Powering India's Electric Future"
-        description="Amptron is India's trusted EV scooter manufacturer. Buy certified electric scooters from us, or from a partner showroom."
+        title="Amptron | Built to move forward"
+        description="Explore Amptron electric scooters. Compare models, request a test ride, or connect with our dealer network."
         path="/"
       />
       <main id="main">

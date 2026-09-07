@@ -1,37 +1,15 @@
 import { expect, test } from '@playwright/test'
 
-test.describe('responsive type', () => {
-  test('hero type scales with the viewport instead of matching laptop sizes on a phone', async ({
-    page,
-  }, testInfo) => {
-    await page.goto('/')
-
-    const hero = page.getByRole('heading', { level: 1 })
-    await expect(hero).toBeVisible()
-
-    const metrics = await hero.evaluate((el) => {
-      const styles = getComputedStyle(el)
-      const section = el.closest('.hero')
-      const title = document.querySelector('.section-title')
-      const media = section?.querySelector('.hero-media video, .hero-media img')
-      return {
-        fontSize: parseFloat(styles.fontSize),
-        titleSize: title ? parseFloat(getComputedStyle(title).fontSize) : 0,
-        heroHeight: section?.getBoundingClientRect().height ?? 0,
-        mediaHeight: media?.getBoundingClientRect().height ?? 0,
-        viewportHeight: window.innerHeight,
-      }
-    })
-
-    if (testInfo.project.name === 'mobile-safari') {
-      expect(metrics.fontSize).toBeLessThan(32)
-      expect(metrics.fontSize).toBeGreaterThan(24)
-      expect(metrics.titleSize).toBeLessThan(28)
-      expect(metrics.mediaHeight).toBeGreaterThan(300)
-      expect(metrics.heroHeight).toBeLessThan(metrics.viewportHeight * 1.45)
-    } else {
-      expect(metrics.fontSize).toBeGreaterThanOrEqual(48)
-      expect(metrics.titleSize).toBeGreaterThanOrEqual(32)
-    }
-  })
+test('studio hero fits desktop and mobile without loading retired media', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  await expect(page.locator('.hero .scooter-stage')).toBeVisible()
+  await expect(page.locator('.hero img, .hero video')).toHaveCount(0)
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true)
 })

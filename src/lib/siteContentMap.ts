@@ -9,6 +9,7 @@ export interface SiteMediaMap {
 }
 
 export interface SiteContentValue {
+  catalogReady?: boolean
   models: ScooterModel[]
   posts: BlogPost[]
   media: SiteMediaMap
@@ -29,7 +30,12 @@ export interface ScooterModelRow {
   price_placeholder?: unknown
   colours?: unknown
   story?: unknown
+  captions_url?: unknown
   video_url?: unknown
+  model_3d_url?: unknown
+  media_ready?: unknown
+  battery_kwh?: unknown
+  certified_range_km?: unknown
 }
 
 export interface BlogPostRow {
@@ -99,6 +105,8 @@ function asStory(value: unknown): ModelStory[] {
       body?: unknown
       image?: unknown
       imageAlt?: unknown
+      points?: unknown
+      aside?: unknown
     }
     const title = asString(row.title)
     const body = asString(row.body)
@@ -110,6 +118,8 @@ function asStory(value: unknown): ModelStory[] {
         body,
         image: asString(row.image) || undefined,
         imageAlt: asString(row.imageAlt) || undefined,
+        points: asStringArray(row.points),
+        aside: asString(row.aside) || undefined,
       },
     ]
   })
@@ -127,6 +137,7 @@ function parseRangeKm(
 ): number {
   const row =
     highlights.find((item) => item.label === 'Certified Range') ??
+    highlights.find((item) => item.label === 'Real-World Range') ??
     specs.find((item) => item.label === 'Range Per Charge')
   const match = row?.value.match(/(\d+)/)
   return match ? Number(match[1]) : 0
@@ -135,8 +146,8 @@ function parseRangeKm(
 export function mapScooterModel(row: ScooterModelRow): ScooterModel | null {
   const slug = asString(row.slug)
   const name = asString(row.name)
-  const image = asString(row.image_url)
-  if (!slug || !name || !image) return null
+  const image = row.media_ready === true ? asString(row.image_url) : ''
+  if (!slug || !name) return null
 
   const highlights = asLabeledList(row.highlights).map((item) => ({
     label: item.label,
@@ -148,9 +159,16 @@ export function mapScooterModel(row: ScooterModelRow): ScooterModel | null {
     value,
   }))
   const price = asNumber(row.price_inr)
-  const colours = asColours(row.colours)
-  const story = asStory(row.story)
-  const video = asString(row.video_url)
+  const colours = asColours(row.colours).map(({ name: colourName, hex }) => ({
+    name: colourName,
+    hex,
+  }))
+  const story = asStory(row.story).map(({ eyebrow, title, body }) => ({
+    eyebrow,
+    title,
+    body,
+  }))
+  const video = row.media_ready === true ? asString(row.video_url) : ''
 
   return {
     slug,
@@ -162,8 +180,9 @@ export function mapScooterModel(row: ScooterModelRow): ScooterModel | null {
     highlights,
     specs,
     features: asStringArray(row.features),
-    batteryKwh: parseKwh(specs),
-    certifiedRangeKm: parseRangeKm(highlights, specs),
+    batteryKwh: asNumber(row.battery_kwh) || parseKwh(specs),
+    certifiedRangeKm:
+      asNumber(row.certified_range_km) || parseRangeKm(highlights, specs),
     pricing: price
       ? {
           exShowroomInr: price,
@@ -173,6 +192,9 @@ export function mapScooterModel(row: ScooterModelRow): ScooterModel | null {
     colours: colours.length > 0 ? colours : undefined,
     story: story.length > 0 ? story : undefined,
     video: video || undefined,
+    videoCaptions:
+      row.media_ready === true ? asString(row.captions_url) : undefined,
+    model3d: row.media_ready === true ? asString(row.model_3d_url) : undefined,
   }
 }
 
@@ -184,12 +206,22 @@ export function mergeLocalModel(
   return {
     ...local,
     ...remote,
+    image: remote.image || local.image,
+    model3d: remote.model3d || local.model3d,
     batteryKwh: remote.batteryKwh || local.batteryKwh,
     certifiedRangeKm: remote.certifiedRangeKm || local.certifiedRangeKm,
     pricing: remote.pricing ?? local.pricing,
     colours: remote.colours ?? local.colours,
     story: remote.story ?? local.story,
     video: remote.video ?? local.video,
+    badge: remote.badge ?? local.badge,
+    specGroups: remote.specGroups ?? local.specGroups,
+    specHeadline: remote.specHeadline ?? local.specHeadline,
+    specSub: remote.specSub ?? local.specSub,
+    omitted: remote.omitted ?? local.omitted,
+    extras: remote.extras ?? local.extras,
+    audiences: remote.audiences ?? local.audiences,
+    promise: remote.promise ?? local.promise,
   }
 }
 

@@ -1,75 +1,44 @@
 import { Link } from 'react-router-dom'
-import heroScooter from '../assets/images/hero-scooter.webp'
-import heroShowcase from '../assets/videos/hero-showcase.mp4'
-import ellipse from '../assets/icons/ellipse.svg'
-import { formatInr, monthlyEmi } from '../data/pricing'
-import { usePrefersReducedMotion } from '../lib/usePrefersReducedMotion'
 import { useSiteContent } from '../lib/siteContent'
+import HeroFilm from './HeroFilm'
 
 export default function Hero() {
-  const { media, models } = useSiteContent()
-  const reducedMotion = usePrefersReducedMotion()
-  const storm = models.find((model) => model.featured) ?? models[1]
-  const poster = media.heroPoster || heroScooter
-  const video = media.heroVideo || heroShowcase
-
+  const { models } = useSiteContent()
+  const featured = models.find((model) => model.featured) ?? models[0]
   return (
-    <section className="hero" id="top">
-      <div className="hero-media">
-        <video
-          autoPlay={!reducedMotion}
-          muted
-          loop={!reducedMotion}
-          playsInline
-          preload="metadata"
-          poster={poster}
-          aria-label="Amptron electric scooter product showcase"
-          width={1920}
-          height={1080}
-          disablePictureInPicture
-          ref={(node) => {
-            if (node) node.muted = true
-          }}
-        >
-          <source src={video} type="video/mp4" />
-        </video>
-        <div className="hero-shade" />
-      </div>
-      <div className="hero-copy">
-        <div className="hero-badge">
-          <img src={ellipse} alt="" width={8} height={8} />
-          <span>Buy Direct · Partner Showrooms Open</span>
-        </div>
-        <h1>
-          Powering India&apos;s
-          <br />
-          Electric Future
-        </h1>
-        <p className="hero-lead">
-          Certified electric scooters. Dependable electric mobility without
-          unnecessary complexity.
-        </p>
-        <div className="hero-actions">
-          <a className="btn btn-primary" href="#buy">
-            Buy Amptron
-          </a>
-          <Link className="btn btn-ghost" to="/book-test-ride">
-            Book a Test Ride
-          </Link>
-        </div>
-        <p className="hero-aside">
-          Also available at partner showrooms.{' '}
-          <Link to="/dealers/locate">Find a Showroom</Link>
-        </p>
-        {storm?.pricing ? (
-          <div className="hero-chip">
-            <small>{storm.name} · Most Popular</small>
-            <strong>
-              {formatInr(storm.pricing.exShowroomInr)} or{' '}
-              {formatInr(monthlyEmi(storm.pricing.exShowroomInr))}/month*
-            </strong>
+    <section className="hero hero--studio" id="top">
+      <div className="wrap studio-hero-grid">
+        <div className="studio-hero-copy">
+          <p className="eyebrow">Electric mobility / Amptron</p>
+          <h1>
+            Built to move
+            <br />
+            forward.
+          </h1>
+          <p className="hero-lead">
+            Electric scooters for your everyday. Find the model that fits the way
+            you move.
+          </p>
+          <div className="hero-actions">
+            <Link className="btn btn-primary" to="/models">
+              Explore scooters ↗
+            </Link>
+            <Link className="btn btn-ghost-dark" to="/book-test-ride">
+              Book a Test Ride
+            </Link>
           </div>
-        ) : null}
+          <p className="studio-hero-aside">
+            For riders. For dealers. For the road ahead.
+          </p>
+        </div>
+        {featured ? (
+          <HeroFilm key={featured.slug} model={featured} />
+        ) : (
+          <div className="stage-empty">
+            <h2>The next chapter is on its way.</h2>
+            <p>Our model catalog is being updated.</p>
+          </div>
+        )}
       </div>
     </section>
   )

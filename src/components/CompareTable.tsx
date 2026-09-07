@@ -1,3 +1,4 @@
+import MediaPlaceholder from './MediaPlaceholder'
 import { Link } from 'react-router-dom'
 import { COMPARE_ROWS, specValue, type ScooterModel } from '../data/models'
 import { EMI_FOOTNOTE, formatInr, monthlyEmi } from '../data/pricing'
@@ -24,7 +25,7 @@ export default function CompareTable({
         <SectionHeader
           eyebrow="Catalog"
           title={heading}
-          sub="Certified specs side by side. Price is indicative until booking."
+          sub="Published specs side by side. Price is indicative until booking. NIRA range and weight remain targets until test-agency confirmation."
         />
         <div className="compare-table-wrap">
           <table className="compare-table">
@@ -41,17 +42,23 @@ export default function CompareTable({
                     aria-label={model.name}
                   >
                     <Link to={`/models/${model.slug}`} className="compare-model">
-                      <img
-                        src={model.image}
-                        alt=""
-                        width={160}
-                        height={100}
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      {model.image ? (
+                        <img
+                          src={model.image}
+                          alt=""
+                          width={160}
+                          height={100}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        <MediaPlaceholder label={model.name} compact />
+                      )}
                       <span>
                         <strong>{model.name}</strong>
-                        {model.featured ? <small>Most Popular</small> : null}
+                        {model.featured ? (
+                          <small>{model.badge ?? 'Most Popular'}</small>
+                        ) : null}
                       </span>
                     </Link>
                   </th>

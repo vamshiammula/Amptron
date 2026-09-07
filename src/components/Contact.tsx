@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+} from 'react'
 import {
   APPLICATION_LIMITS,
   applicationSchema,
@@ -61,7 +67,7 @@ const COPY: Record<
     cityPlaceholder: 'e.g. Pune, Maharashtra',
     profileLabel: 'What would you like to buy or book?',
     profilePlaceholder:
-      'Tell us the model (Volt, Storm, or Cruise) and whether you want to buy or book a test ride...',
+      'Tell us your preferred model and whether you want to buy or book a test ride...',
     submit: 'Request to Buy',
     sending: 'Sending your request…',
     reset: 'Send another request',
@@ -69,7 +75,7 @@ const COPY: Record<
   stock: {
     headingId: 'stock-heading',
     title: 'Stock Amptron',
-    lead: 'Submit your showroom profile. Our network team will review your application and respond within 2 business days.',
+    lead: 'Tell us about your showroom. Our network team will review your application and contact you about the next step.',
     emailLabel: 'Business Email',
     emailPlaceholder: 'name@company.com',
     nameLabel: 'Full Name',
@@ -86,7 +92,7 @@ const COPY: Record<
   testRide: {
     headingId: 'ride-heading',
     title: 'Book a Test Ride',
-    lead: 'Tell us the model (Volt, Storm, or Cruise) and your city. We will confirm a slot, or point you to a partner showroom.',
+    lead: 'Tell us your preferred model and city. We will confirm a slot, or point you to a partner showroom.',
     emailLabel: 'Email',
     emailPlaceholder: 'you@email.com',
     nameLabel: 'Your Name',
@@ -94,7 +100,7 @@ const COPY: Record<
     cityLabel: 'City',
     cityPlaceholder: 'e.g. Pune, Maharashtra',
     profileLabel: 'Which model, and when can you ride?',
-    profilePlaceholder: 'Amptron Storm this Saturday morning, around Sector 18...',
+    profilePlaceholder: 'Amptron NIRA this Saturday morning, around Sector 18...',
     submit: 'Book a Test Ride',
     sending: 'Sending your request…',
     reset: 'Send another request',
@@ -114,12 +120,19 @@ function fieldId(kind: InquiryKind, field: ApplicationField): string {
 export function InquiryForm({
   kind,
   headingLevel = 'h2',
-}: Readonly<{ kind: InquiryKind; headingLevel?: 'h2' | 'h3' }>) {
+  initialValues = EMPTY_FORM,
+  onValuesChange,
+}: Readonly<{
+  kind: InquiryKind
+  headingLevel?: 'h2' | 'h3'
+  initialValues?: ApplicationInput
+  onValuesChange?: (values: ApplicationInput) => void
+}>) {
   const copy = COPY[kind]
   const id = (field: ApplicationField) => fieldId(kind, field)
   const Heading = headingLevel
 
-  const [values, setValues] = useState<ApplicationInput>(EMPTY_FORM)
+  const [values, setValues] = useState<ApplicationInput>(initialValues)
   const [errors, setErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState<string | null>(null)
   const [status, setStatus] = useState<Status>('idle')
@@ -130,7 +143,9 @@ export function InquiryForm({
   )
 
   const setField = (field: ApplicationField, value: string) => {
-    setValues((previous) => ({ ...previous, [field]: value }))
+    const nextValues = { ...values, [field]: value }
+    setValues(nextValues)
+    onValuesChange?.(nextValues)
     setErrors((previous) => {
       if (!previous[field]) return previous
       const next = { ...previous }
@@ -182,6 +197,7 @@ export function InquiryForm({
       setReceipt(result.message)
       setStatus('success')
       setValues(EMPTY_FORM)
+      onValuesChange?.(EMPTY_FORM)
     } catch (error) {
       setStatus('idle')
 
@@ -210,7 +226,8 @@ export function InquiryForm({
       <p className="contact-lead">{copy.lead}</p>
 
       {status === 'success' ? (
-        <output className="form-success">
+        <output className="form-success" aria-live="polite">
+          <h3>Request received</h3>
           <p>{receipt}</p>
           <button
             className="btn btn-ghost form-success-action"
@@ -366,9 +383,14 @@ export function InquiryForm({
             {submitting ? 'Submitting…' : copy.submit}
           </button>
           <p className="form-note" aria-live="polite">
-            {submitting
-              ? copy.sending
-              : 'We reply within 2 business days. Your details are never shared.'}
+            {submitting ? (
+              copy.sending
+            ) : (
+              <>
+                All fields are required. We use your details to respond to this
+                request. <a href="/privacy">Privacy policy</a>
+              </>
+            )}
           </p>
         </form>
       )}
@@ -388,6 +410,10 @@ function tabFromHash(hash: string): InquiryKind {
 }
 
 export default function Contact() {
+  const [drafts, setDrafts] = useState<
+    Partial<Record<InquiryKind, ApplicationInput>>
+  >({})
+  const tabRefs = useRef<Partial<Record<InquiryKind, HTMLButtonElement | null>>>({})
   const [tab, setTab] = useState<InquiryKind>(() =>
     tabFromHash(window.location.hash),
   )
@@ -404,15 +430,36 @@ export default function Contact() {
     if (next) window.history.replaceState(null, '', `#${next.hash}`)
   }
 
+  const onTabKey = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next: number
+    if (event.key === 'ArrowRight') next = (index + 1) % TABS.length
+    else if (event.key === 'ArrowLeft')
+      next = (index + TABS.length - 1) % TABS.length
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = TABS.length - 1
+    else return
+    event.preventDefault()
+    const item = TABS[next]!
+    selectTab(item.kind)
+    tabRefs.current[item.kind]?.focus()
+  }
+
   return (
     <section className="contact">
       <div className="contact-forms">
         <div className="contact-tabs" role="tablist" aria-label="Enquiry type">
-          {TABS.map((item) => (
+          {TABS.map((item, index) => (
             <button
               key={item.kind}
               type="button"
               role="tab"
+              id={`enquiry-tab-${item.kind}`}
+              aria-controls={item.hash}
+              tabIndex={tab === item.kind ? 0 : -1}
+              ref={(node) => {
+                tabRefs.current[item.kind] = node
+              }}
+              onKeyDown={(event) => onTabKey(event, index)}
               aria-selected={tab === item.kind}
               onClick={() => selectTab(item.kind)}
             >
@@ -426,9 +473,17 @@ export default function Contact() {
             id={item.hash}
             role="tabpanel"
             hidden={tab !== item.kind}
-            aria-labelledby={COPY[item.kind].headingId}
+            aria-labelledby={`enquiry-tab-${item.kind}`}
           >
-            {tab === item.kind ? <InquiryForm kind={item.kind} /> : null}
+            {tab === item.kind ? (
+              <InquiryForm
+                kind={item.kind}
+                initialValues={drafts[item.kind]}
+                onValuesChange={(values) =>
+                  setDrafts((previous) => ({ ...previous, [item.kind]: values }))
+                }
+              />
+            ) : null}
           </section>
         ))}
       </div>

@@ -1,26 +1,18 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Seo from '../components/Seo'
+import ScooterStage from '../components/ScooterStage'
 import MediaFrame from '../components/ui/MediaFrame'
 import PriceTag from '../components/ui/PriceTag'
 import Reveal from '../components/ui/Reveal'
 import SectionHeader from '../components/ui/SectionHeader'
-import {
-  EMI_DEFAULTS,
-  EMI_FOOTNOTE,
-  formatInr,
-  monthlyEmi,
-} from '../data/pricing'
-import { chapterImages, heroStill } from '../lib/modelMedia'
+import { EMI_DEFAULTS, EMI_FOOTNOTE, formatInr, monthlyEmi } from '../data/pricing'
+import { chapterImages } from '../lib/modelMedia'
 import { useScooterModel, useSiteContent } from '../lib/siteContent'
 import { useActiveSection } from '../lib/useActiveSection'
 import { FAQ_SEED } from '@shared/faqSeed'
 
-const ProductViewer = lazy(
-  () => import('../components/product-viewer/ProductViewer'),
-)
-
-const SPEC_GROUPS: Array<{ title: string; labels: string[] }> = [
+const DEFAULT_SPEC_GROUPS: Array<{ title: string; labels: string[] }> = [
   {
     title: 'Dimensions',
     labels: [
@@ -66,7 +58,7 @@ const SECTION_IDS = SECTION_LINKS.map((link) => link.id)
 
 export default function ModelDetailPage() {
   const { slug = '' } = useParams()
-  const { models, productViewers } = useSiteContent()
+  const { models, productViewers, catalogReady } = useSiteContent()
   const model = useScooterModel(slug)
   const [colour, setColour] = useState(0)
   const active = useActiveSection(SECTION_IDS)
@@ -103,6 +95,12 @@ export default function ModelDetailPage() {
     ).slice(0, 6)
   }, [model])
 
+  if (!model && catalogReady === false)
+    return (
+      <main id="main" className="wrap page-section">
+        <output>Loading model details…</output>
+      </main>
+    )
   if (!model) {
     return <Navigate to="/models" replace />
   }
@@ -119,7 +117,6 @@ export default function ModelDetailPage() {
     colours.every((item) => Boolean(item.image) || Boolean(colorwayFor(item.name)))
   const related = models.filter((candidate) => candidate.slug !== slug)
   const media = chapterImages(model, viewer)
-  const still = heroStill(model, viewer)
   const price = model.pricing?.exShowroomInr
   const emi = price ? monthlyEmi(price) : null
 
@@ -162,44 +159,12 @@ export default function ModelDetailPage() {
         <section ref={heroRef} className="model-hero-band" id="overview">
           <div className="wrap model-hero">
             <div className="model-hero-media">
-              {viewer ? (
-                <Suspense
-                  fallback={
-                    <MediaFrame
-                      src={still}
-                      alt={`${model.name} electric scooter`}
-                      eager
-                      ratio="1 / 1"
-                    />
-                  }
-                >
-                  <ProductViewer
-                    model={model}
-                    config={viewer}
-                    embedded
-                    colorwayId={activeColorway?.id}
-                    onColorwayChange={(id) => {
-                      const way = viewer.colorways?.find((item) => item.id === id)
-                      const index = colours.findIndex(
-                        (item) => item.name === way?.name,
-                      )
-                      if (index >= 0) setColour(index)
-                    }}
-                  />
-                </Suspense>
-              ) : (
-                <MediaFrame
-                  src={activeColour?.image || model.image}
-                  alt={`${model.name}${activeColour ? ` in ${activeColour.name}` : ''}`}
-                  eager
-                  ratio="4 / 3"
-                />
-              )}
+              <ScooterStage key={model.slug} model={model} />
             </div>
             <div className="model-hero-copy">
               <div className="eyebrow">
                 <span className="eyebrow-bar" />
-                {model.featured ? 'Most Popular' : 'Amptron scooter'}
+                {model.badge ?? (model.featured ? 'Most Popular' : 'Amptron scooter')}
               </div>
               <h1>{model.name}</h1>
               <p className="model-hero-tagline">{model.tagline}</p>
@@ -298,6 +263,16 @@ export default function ModelDetailPage() {
                       </div>
                       <h3>{chapter.title}</h3>
                       <p>{chapter.body}</p>
+                      {chapter.aside ? (
+                        <p className="chapter-aside">{chapter.aside}</p>
+                      ) : null}
+                      {chapter.points && chapter.points.length > 0 ? (
+                        <ul className="chapter-points">
+                          {chapter.points.map((point) => (
+                            <li key={point}>{point}</li>
+                          ))}
+                        </ul>
+                      ) : null}
                     </div>
                     <MediaFrame
                       className="chapter-media"
@@ -316,11 +291,14 @@ export default function ModelDetailPage() {
           <div className="wrap">
             <SectionHeader
               eyebrow="Specifications"
-              title="Certified numbers, not estimates"
-              sub="Every figure below is what we publish on the spec sheet. Range and charge time are certified values."
+              title={model.specHeadline ?? 'Certified numbers, not estimates'}
+              sub={
+                model.specSub ??
+                'Every figure below is what we publish on the spec sheet. Range and charge time are certified values.'
+              }
             />
             <div className="spec-groups">
-              {SPEC_GROUPS.map((group) => (
+              {(model.specGroups ?? DEFAULT_SPEC_GROUPS).map((group) => (
                 <article className="spec-panel" key={group.title}>
                   <h3>{group.title}</h3>
                   <div className="spec-table">
@@ -345,9 +323,80 @@ export default function ModelDetailPage() {
                   ))}
                 </ul>
               </article>
+              {model.omitted ? (
+                <article className="spec-panel spec-panel--omitted">
+                  <h3>Deliberately not on the machine</h3>
+                  <p className="omission-intro">{model.omitted.title}</p>
+                  <p>{model.omitted.intro}</p>
+                  <ul className="feature-grid feature-grid--omit">
+                    {model.omitted.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  <p className="omission-close">{model.omitted.close}</p>
+                </article>
+              ) : null}
             </div>
           </div>
         </section>
+
+        {model.extras && model.extras.length > 0 ? (
+          <section className="page-section">
+            <div className="wrap extra-grid">
+              {model.extras.map((extra) => (
+                <article className="extra-panel" key={extra.id} id={extra.id}>
+                  <div className="eyebrow">
+                    <span className="eyebrow-bar" />
+                    {extra.eyebrow}
+                  </div>
+                  <h2>{extra.title}</h2>
+                  <p>{extra.body}</p>
+                  {extra.steps && extra.steps.length > 0 ? (
+                    <ol className="extra-steps">
+                      {extra.steps.map((step) => (
+                        <li key={step}>{step}</li>
+                      ))}
+                    </ol>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {model.audiences && model.audiences.length > 0 ? (
+          <section className="page-section page-section--fog">
+            <div className="wrap">
+              <SectionHeader
+                eyebrow="Made for"
+                title={`${model.name} is built around everyday riders`}
+                sub="Simple local travel, not a gadget showcase."
+              />
+              <div className="audience-grid">
+                {model.audiences.map((audience) => (
+                  <article className="audience-card" key={audience.title}>
+                    <h3>{audience.title}</h3>
+                    <p>{audience.body}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {model.promise ? (
+          <section className="promise-band">
+            <div className="wrap promise-band-inner">
+              <p className="eyebrow">{model.name}</p>
+              {model.promise.lines.map((line) => (
+                <p className="promise-line" key={line}>
+                  {line}
+                </p>
+              ))}
+              <p>{model.promise.close}</p>
+            </div>
+          </section>
+        ) : null}
 
         {price && emi ? (
           <section className="page-section" id="emi">
@@ -367,7 +416,7 @@ export default function ModelDetailPage() {
                     warranty, spares, and trained workshops.
                   </p>
                   <p className="emi-card-links">
-                    <Link to="/models#compare">Compare all three</Link>
+                    <Link to="/models#compare">Compare all models</Link>
                   </p>
                 </div>
                 <dl className="emi-facts">
@@ -417,7 +466,7 @@ export default function ModelDetailPage() {
             <div>
               <h2>Buy {model.name} from Amptron, or from a partner showroom.</h2>
               <p>
-                Same certified machine either way. Tell us your city and we will
+                Same published machine either way. Tell us your city and we will
                 confirm a slot, a delivery, or the nearest showroom.
               </p>
             </div>
@@ -439,7 +488,7 @@ export default function ModelDetailPage() {
                   {item.name}
                 </Link>
               ))}
-              <Link to="/models#compare">Compare all three</Link>
+              <Link to="/models#compare">Compare all models</Link>
             </p>
           </div>
         </section>

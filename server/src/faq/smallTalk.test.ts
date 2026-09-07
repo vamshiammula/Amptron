@@ -40,7 +40,7 @@ describe('matchSmallTalk', () => {
   })
 
   it('returns canned English replies', () => {
-    expect(smallTalkReply('greeting')).toMatch(/Volt, Storm, or Cruise/)
+    expect(smallTalkReply('greeting')).toMatch(/NIRA or Cruise/)
     expect(smallTalkReply('thanks')).toMatch(/welcome/i)
     expect(smallTalkReply('unhelpful')).toMatch(/missed the mark/i)
   })

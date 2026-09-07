@@ -29,17 +29,17 @@ export default function BookTestRidePage() {
     <>
       <Seo
         title="Book an Amptron Test Ride"
-        description="Book a test ride on Amptron Volt, Storm, or Cruise. Helmet, a short city route, and a clear debrief."
+        description="Book a test ride on Amptron NIRA or Cruise. Helmet, a short city route, and a clear debrief."
         path="/book-test-ride"
       />
       <main id="main" className="site-page">
         <PageHero
           eyebrow="Ride"
           title="Book a Test Ride"
-          lede="Try Amptron on the roads you actually use. Same certified machine if you prefer a partner showroom instead."
+          lede="Tell us your preferred model and location. Our team will confirm availability and arrange the next step with you."
         >
           <a className="btn btn-primary" href="#test-ride">
-            Pick a slot
+            Request a test ride
           </a>
           <Link className="btn btn-ghost-dark" to="/dealers/locate">
             Find a Showroom

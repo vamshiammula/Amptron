@@ -1,29 +1,29 @@
 {
-  "name": "Amptron: Powering India's Electric Future",
+  "name": "Amptron | Built to move forward",
   "short_name": "Amptron",
-  "description": "India's trusted EV scooter manufacturer. Buy certified electric scooters from Amptron or a partner showroom.",
+  "description": "Explore Amptron electric scooters, compare models and request a test ride.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0a1f44",
+  "theme_color": "#171c1b",
   "icons": [
     {
-      "src": "/favicon.svg?v=8",
+      "src": "/favicon.svg?v=12",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/web-app-manifest-192x192.png?v=8",
+      "src": "/web-app-manifest-192x192.png?v=12",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
-      "src": "/web-app-manifest-512x512.png?v=8",
+      "src": "/web-app-manifest-512x512.png?v=12",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ]
 }

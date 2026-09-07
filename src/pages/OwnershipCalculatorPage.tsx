@@ -11,14 +11,14 @@ export default function OwnershipCalculatorPage() {
     <>
       <Seo
         title="Ownership calculator"
-        description="Plan Amptron running cost, service, and five-year ownership against a petrol scooter. Indicative figures you can change."
+        description="Compare Amptron with a petrol scooter or another electric scooter using your own figures for running costs and five-year ownership."
         path="/ownership-calculator"
       />
       <main id="main" className="site-page">
         <PageHero
           eyebrow="Ownership"
           title="Plan the cost of switching"
-          lede="Start with fuel. Then routine service. Then a battery repair or replacement if you want to test one. Then the five-year total. Change the figures to match how you ride. Indicative, not a quote."
+          lede="Compare Amptron with a petrol scooter or another electric scooter. See the upfront price, running costs and five-year total using your own figures. This is an estimate, not a quote."
           narrow
         >
           <Link className="btn btn-ghost-dark" to="/book-test-ride">

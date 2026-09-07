@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useSearchParams } from 'react-router-dom'
 import Seo from '../components/Seo'
+import WorkspaceTabs from '../components/WorkspaceTabs'
+import { exportCsv } from '../lib/workspace'
 import {
   createAdminAnnouncement,
   createAdminResource,
   createDealerRecord,
+  updateDealerRecord,
   createDealerLogin,
   fetchPortalProfile,
   fetchAdminAnnouncements,
@@ -33,11 +36,12 @@ import {
 } from '../lib/portalApi'
 import { useAuth } from '../lib/auth'
 import AdminFaqPanel from './admin/AdminFaqPanel'
-import AdminProductMediaPanel from './admin/AdminProductMediaPanel'
+import AdminCatalogPanel from './admin/AdminCatalogPanel'
 import AdminSupportQueriesPanel from './admin/AdminSupportQueriesPanel'
 
 const ADMIN_TABS = [
   { id: 'overview', label: 'Overview' },
+  { id: 'catalog', label: 'Models & templates' },
   { id: 'applications', label: 'Applications' },
   { id: 'accounts', label: 'Accounts' },
   { id: 'dealers', label: 'Dealers' },
@@ -51,7 +55,13 @@ const ADMIN_TABS = [
 type AdminTab = (typeof ADMIN_TABS)[number]['id']
 
 const APPLICATION_STATUSES = ['new', 'contacted', 'approved', 'rejected'] as const
-const ORDER_STATUSES = ['pending', 'in_dispatch', 'shipped', 'delivered'] as const
+const ORDER_STATUSES = [
+  'pending',
+  'in_dispatch',
+  'shipped',
+  'delivered',
+  'cancelled',
+] as const
 const TICKET_STATUSES = ['open', 'in_progress', 'closed'] as const
 
 const KPI_TAB: Record<string, AdminTab> = {
@@ -63,11 +73,12 @@ const KPI_TAB: Record<string, AdminTab> = {
 
 const SEARCH_PLACEHOLDERS: Record<AdminTab, string> = {
   overview: 'Search the console…',
+  catalog: 'Search the catalog…',
   applications: 'Search applicants, cities, or status…',
   accounts: 'Search accounts, roles, or territory…',
   dealers: 'Search dealers, cities, or area…',
-  orders: 'Search models or status…',
-  tickets: 'Search subjects or status…',
+  orders: 'Search account, model or reference…',
+  tickets: 'Search account, subject or reference…',
   faqs: 'Search questions, answers, or slugs…',
   queries: 'Search visitor questions, names, or reason…',
   content: 'Search titles or announcements…',
@@ -159,6 +170,10 @@ export default function AdminPage() {
   const [resources, setResources] = useState<DealerResource[]>([])
   const [announcements, setAnnouncements] = useState<DealerAnnouncement[]>([])
   const [search, setSearch] = useState('')
+  const [recordFilter, setRecordFilter] = useState('all')
+  const [refreshing, setRefreshing] = useState(false)
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+  const [page, setPage] = useState(1)
   const [applicationFilter, setApplicationFilter] = useState<
     'all' | (typeof APPLICATION_STATUSES)[number]
   >('all')
@@ -177,6 +192,7 @@ export default function AdminPage() {
     password: '',
     role: 'dealer' as 'dealer' | 'admin',
   })
+  const [editingDealer, setEditingDealer] = useState<string | null>(null)
   const [dealerNetworkForm, setDealerNetworkForm] = useState({
     name: '',
     city: '',
@@ -191,6 +207,9 @@ export default function AdminPage() {
   const activeTab: AdminTab = isAdminTab(tabParam) ? tabParam : 'overview'
 
   const setActiveTab = (tab: AdminTab) => {
+    setSearch('')
+    setRecordFilter('all')
+    setPage(1)
     setSearchParams(
       (previous) => {
         const next = new URLSearchParams(previous)
@@ -202,65 +221,70 @@ export default function AdminPage() {
     )
   }
 
-  const load = useCallback(() => {
-    Promise.resolve()
-      .then(async () => {
-        const profilePayload = await fetchPortalProfile()
-        setProfile(profilePayload)
-        if (profilePayload.role !== 'admin') {
-          setRedirectPath('/portal')
-          return
+  const load = useCallback(async () => {
+    setRefreshing(true)
+    setError(null)
+    try {
+      const profilePayload = await fetchPortalProfile()
+      setProfile(profilePayload)
+      if (profilePayload.role !== 'admin') {
+        setRedirectPath('/portal')
+        return
+      }
+      const failures: string[] = []
+      const read = async (name: string, action: () => Promise<void>) => {
+        try {
+          await action()
+        } catch {
+          failures.push(name)
         }
-        const [
-          overviewPayload,
-          applicationsPayload,
-          accountsPayload,
-          dealersPayload,
-          ordersPayload,
-          ticketsPayload,
-          faqsPayload,
-          supportQueriesPayload,
-          resourcesPayload,
-          announcementsPayload,
-        ] = await Promise.all([
-          fetchAdminOverview(),
-          fetchAdminApplications(),
-          fetchAdminDealerAccounts(),
-          fetchAdminDealers(),
-          fetchAdminOrders(),
-          fetchAdminTickets(),
-          fetchAdminFaqs().catch(() => ({ faqs: [] as AdminFaq[], count: 0 })),
-          fetchAdminSupportQueries().catch(() => ({
-            queries: [] as AdminSupportQuery[],
-            count: 0,
-          })),
-          fetchAdminResources(),
-          fetchAdminAnnouncements(),
-        ])
-        setOverview(overviewPayload)
-        setApplications(applicationsPayload)
-        setAccounts(accountsPayload.accounts)
-        setDealers(dealersPayload.dealers ?? [])
-        setOrders(ordersPayload.orders)
-        setTickets(ticketsPayload.tickets)
-        setFaqs(faqsPayload.faqs)
-        setSupportQueries(supportQueriesPayload.queries)
-        setResources(resourcesPayload.resources)
-        setAnnouncements(announcementsPayload.announcements)
-      })
-      .catch((fetchError) => {
+      }
+      await Promise.all([
+        read('overview', async () => setOverview(await fetchAdminOverview())),
+        read('applications', async () =>
+          setApplications(await fetchAdminApplications()),
+        ),
+        read('accounts', async () =>
+          setAccounts((await fetchAdminDealerAccounts()).accounts),
+        ),
+        read('dealer network', async () =>
+          setDealers((await fetchAdminDealers()).dealers ?? []),
+        ),
+        read('orders', async () => setOrders((await fetchAdminOrders()).orders)),
+        read('tickets', async () =>
+          setTickets((await fetchAdminTickets()).tickets),
+        ),
+        read('FAQs', async () => setFaqs((await fetchAdminFaqs()).faqs)),
+        read('support queries', async () =>
+          setSupportQueries((await fetchAdminSupportQueries()).queries),
+        ),
+        read('resources', async () =>
+          setResources((await fetchAdminResources()).resources),
+        ),
+        read('announcements', async () =>
+          setAnnouncements((await fetchAdminAnnouncements()).announcements),
+        ),
+      ])
+      if (failures.length)
         setError(
-          fetchError instanceof Error
-            ? fetchError.message
-            : 'Failed to load admin data.',
+          `Could not refresh ${failures.join(', ')}. Other sections are available; any previous values are retained. Try again.`,
         )
-      })
-      .finally(() => setLoading(false))
+      else setLastUpdated(new Date())
+    } catch {
+      setError(
+        'Could not load your workspace. Check your connection and try again.',
+      )
+    } finally {
+      setLoading(false)
+      setRefreshing(false)
+    }
   }, [])
 
   useEffect(() => {
     if (!session) return
-    load()
+    // Initial synchronization with the authenticated API.
+    // oxlint-disable-next-line react/set-state-in-effect
+    void load()
   }, [load, session])
 
   useEffect(() => {
@@ -314,23 +338,33 @@ export default function AdminPage() {
 
   const filteredOrders = useMemo(() => {
     const term = search.trim().toLowerCase()
-    if (!term) return orders
-    return orders.filter(
-      (order) =>
-        order.model.toLowerCase().includes(term) ||
-        order.status.toLowerCase().includes(term),
-    )
-  }, [orders, search])
+    return orders
+      .filter((order) => recordFilter === 'all' || order.status === recordFilter)
+      .filter(
+        (order) =>
+          order.model.toLowerCase().includes(term) ||
+          order.status.replaceAll('_', ' ').toLowerCase().includes(term) ||
+          order.id.toLowerCase().includes(term) ||
+          (accounts.find((a) => a.id === order.dealerAccountId)?.accountName ?? '')
+            .toLowerCase()
+            .includes(term),
+      )
+  }, [orders, search, recordFilter, accounts])
 
   const filteredTickets = useMemo(() => {
     const term = search.trim().toLowerCase()
-    if (!term) return tickets
-    return tickets.filter(
-      (ticket) =>
-        ticket.subject.toLowerCase().includes(term) ||
-        ticket.status.toLowerCase().includes(term),
-    )
-  }, [tickets, search])
+    return tickets
+      .filter((ticket) => recordFilter === 'all' || ticket.status === recordFilter)
+      .filter(
+        (ticket) =>
+          ticket.subject.toLowerCase().includes(term) ||
+          ticket.status.replaceAll('_', ' ').toLowerCase().includes(term) ||
+          ticket.id.toLowerCase().includes(term) ||
+          (accounts.find((a) => a.id === ticket.dealerAccountId)?.accountName ?? '')
+            .toLowerCase()
+            .includes(term),
+      )
+  }, [tickets, search, recordFilter, accounts])
 
   const filteredResources = useMemo(() => {
     const term = search.trim().toLowerCase()
@@ -350,6 +384,9 @@ export default function AdminPage() {
     )
   }, [announcements, search])
 
+  const accountName = (id?: string) =>
+    accounts.find((account) => account.id === id)?.accountName ?? id ?? 'Unassigned'
+
   const tabCounts: Partial<Record<AdminTab, number>> = {
     applications: applications?.count ?? applications?.applications.length ?? 0,
     accounts: accounts.length,
@@ -366,7 +403,12 @@ export default function AdminPage() {
     ...(overview?.pipeline.map((step) => step.count) ?? [1]),
   )
 
-  if (!ready) return null
+  if (!ready)
+    return (
+      <main id="main" className="content-page">
+        <output>Loading your workspace…</output>
+      </main>
+    )
   if (!session) return <Navigate to="/portal/login?next=/admin" replace />
   if (redirectPath) return <Navigate to={redirectPath} replace />
 
@@ -380,7 +422,7 @@ export default function AdminPage() {
       await updateAdminApplicationStatus(id, status)
       setNotice(`Application marked as ${formatStatus(status).toLowerCase()}.`)
       setPendingReject(null)
-      refresh()
+      await load()
     } catch (updateError) {
       setError(
         updateError instanceof Error
@@ -399,7 +441,7 @@ export default function AdminPage() {
     try {
       const result = await updateAdminOrderStatus(id, status)
       setNotice(result.message)
-      refresh()
+      await load()
     } catch (updateError) {
       setError(
         updateError instanceof Error
@@ -418,7 +460,7 @@ export default function AdminPage() {
     try {
       const result = await updateAdminTicketStatus(id, status)
       setNotice(result.message)
-      refresh()
+      await load()
     } catch (updateError) {
       setError(
         updateError instanceof Error
@@ -435,7 +477,10 @@ export default function AdminPage() {
     setError(null)
     setNotice(null)
     try {
-      const result = await createDealerLogin(dealerForm)
+      const result = await createDealerLogin({
+        ...dealerForm,
+        territory: dealerForm.territory.trim() || undefined,
+      })
       setNotice(result.message)
       setDealerForm({
         accountName: '',
@@ -444,7 +489,7 @@ export default function AdminPage() {
         password: '',
         role: 'dealer',
       })
-      refresh()
+      await load()
     } catch (createError) {
       setError(
         createError instanceof Error
@@ -461,10 +506,16 @@ export default function AdminPage() {
     setError(null)
     setNotice(null)
     try {
-      await createDealerRecord(dealerNetworkForm)
-      setNotice('Dealer network record created successfully.')
+      if (editingDealer) await updateDealerRecord(editingDealer, dealerNetworkForm)
+      else await createDealerRecord(dealerNetworkForm)
+      setNotice(
+        editingDealer
+          ? 'Showroom details updated.'
+          : 'Showroom added to the network.',
+      )
+      setEditingDealer(null)
       setDealerNetworkForm({ name: '', city: '', state: '', area: '', phone: '' })
-      refresh()
+      await load()
     } catch (createError) {
       setError(
         createError instanceof Error
@@ -484,7 +535,7 @@ export default function AdminPage() {
       await createAdminResource(resourceForm)
       setNotice('Resource published successfully.')
       setResourceForm({ title: '', fileUrl: '' })
-      refresh()
+      await load()
     } catch (createError) {
       setError(
         createError instanceof Error
@@ -504,7 +555,7 @@ export default function AdminPage() {
       await createAdminAnnouncement(announcementForm)
       setNotice('Announcement published successfully.')
       setAnnouncementForm({ title: '', body: '' })
-      refresh()
+      await load()
     } catch (createError) {
       setError(
         createError instanceof Error
@@ -516,6 +567,58 @@ export default function AdminPage() {
     }
   }
 
+  const exportRows: unknown[][] | null =
+    activeTab === 'applications'
+      ? [
+          ['Name', 'Email', 'City', 'Status', 'Created'],
+          ...filteredApplications.map((r) => [
+            r.fullName,
+            r.email,
+            r.city,
+            r.status,
+            r.createdAt,
+          ]),
+        ]
+      : activeTab === 'accounts'
+        ? [
+            ['Account', 'Role', 'Territory'],
+            ...filteredAccounts.map((r) => [r.accountName, r.role, r.territory]),
+          ]
+        : activeTab === 'dealers'
+          ? [
+              ['Name', 'City', 'State', 'Area', 'Phone'],
+              ...filteredDealers.map((r) => [
+                r.name,
+                r.city,
+                r.state,
+                r.area,
+                r.phone,
+              ]),
+            ]
+          : activeTab === 'orders'
+            ? [
+                ['Reference', 'Model', 'Quantity', 'Status', 'Created'],
+                ...filteredOrders.map((r) => [
+                  r.id,
+                  r.model,
+                  r.quantity,
+                  r.status,
+                  r.createdAt,
+                ]),
+              ]
+            : activeTab === 'tickets'
+              ? [
+                  ['Reference', 'Subject', 'Status', 'Created'],
+                  ...filteredTickets.map((r) => [
+                    r.id,
+                    r.subject,
+                    r.status,
+                    r.createdAt,
+                  ]),
+                ]
+              : null
+  const pageCount = Math.max(1, Math.ceil(((exportRows?.length ?? 1) - 1) / 50))
+  const currentPage = Math.min(page, pageCount)
   const searchField =
     activeTab === 'overview' ? null : (
       <div className="ops-search">
@@ -529,7 +632,10 @@ export default function AdminPage() {
           spellCheck={false}
           placeholder={SEARCH_PLACEHOLDERS[activeTab]}
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => {
+            setSearch(event.target.value)
+            setPage(1)
+          }}
         />
       </div>
     )
@@ -545,7 +651,7 @@ export default function AdminPage() {
         <header className="ops-hero">
           <div>
             <p className="content-eyebrow">Admin Console</p>
-            <h1>Operations Control Center</h1>
+            <h1>Admin workspace</h1>
             <p>
               Review onboarding, accounts, logistics, and support from one
               workspace.
@@ -557,31 +663,68 @@ export default function AdminPage() {
           </p>
         </header>
 
-        <nav className="ops-toolbar" aria-label="Admin sections">
-          <div className="portal-tabs" role="tablist">
-            {ADMIN_TABS.map((tab) => (
+        <WorkspaceTabs
+          prefix="ops"
+          items={ADMIN_TABS.map((tab) => ({ ...tab, count: tabCounts[tab.id] }))}
+          active={activeTab}
+          onChange={(id) => setActiveTab(id as AdminTab)}
+        />
+        <div className="workspace-data-tools">
+          <small>
+            {lastUpdated
+              ? `Updated ${lastUpdated.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+              : 'Workspace data'}
+            {refreshing ? ' · Refreshing…' : ''}
+          </small>
+          <div className="workspace-actions">
+            {['faqs', 'queries'].includes(activeTab) && searchField}
+            {['orders', 'tickets'].includes(activeTab) && (
+              <label>
+                Status{' '}
+                <select
+                  aria-label="Filter by status"
+                  value={recordFilter}
+                  onChange={(e) => {
+                    setRecordFilter(e.target.value)
+                    setPage(1)
+                  }}
+                >
+                  <option value="all">All statuses</option>
+                  {(activeTab === 'orders' ? ORDER_STATUSES : TICKET_STATUSES).map(
+                    (status) => (
+                      <option key={status} value={status}>
+                        {formatStatus(status)}
+                      </option>
+                    ),
+                  )}
+                </select>
+              </label>
+            )}
+            {exportRows && (
               <button
-                type="button"
-                role="tab"
-                key={tab.id}
-                id={`ops-tab-${tab.id}`}
-                aria-selected={activeTab === tab.id}
-                aria-controls={`ops-panel-${tab.id}`}
-                className={activeTab === tab.id ? 'is-active' : ''}
-                onClick={() => setActiveTab(tab.id)}
+                className="ops-btn"
+                disabled={exportRows.length < 2}
+                onClick={() => exportCsv(activeTab, exportRows)}
               >
-                {tab.label}
-                {tab.id !== 'overview' ? (
-                  <span className="ops-tab-count">{tabCounts[tab.id] ?? 0}</span>
-                ) : null}
+                Export CSV
               </button>
-            ))}
+            )}
+            <button
+              className="ops-btn"
+              disabled={refreshing || Boolean(busyId)}
+              onClick={() => void load()}
+            >
+              {refreshing ? 'Refreshing…' : 'Refresh data'}
+            </button>
           </div>
-        </nav>
+        </div>
 
         {error ? (
           <p className="ops-banner ops-banner--error" role="alert">
             {error}
+            <button disabled={refreshing} onClick={() => void load()}>
+              Retry
+            </button>
           </p>
         ) : null}
         {notice ? (
@@ -637,7 +780,7 @@ export default function AdminPage() {
             <section className="ops-split">
               <article className="ops-panel">
                 <div className="ops-panel-head">
-                  <h2>Application Pipeline</h2>
+                  <h2>Application pipeline</h2>
                 </div>
                 {overview.pipeline.length === 0 ? (
                   <EmptyState
@@ -675,7 +818,7 @@ export default function AdminPage() {
               </article>
               <article className="ops-panel">
                 <div className="ops-panel-head">
-                  <h2>Recent Tickets</h2>
+                  <h2>Recent tickets</h2>
                   <button
                     type="button"
                     className="ops-text-btn"
@@ -695,6 +838,9 @@ export default function AdminPage() {
                       <li key={ticket.id}>
                         <div className="ops-person">
                           <strong>{ticket.subject}</strong>
+                          <p className="workspace-muted">
+                            {accountName(ticket.dealerAccountId)}
+                          </p>
                           <span>{formatDate(ticket.createdAt)}</span>
                         </div>
                         <StatusBadge status={ticket.status} />
@@ -769,75 +915,88 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredApplications.map((application) => (
-                      <tr key={application.id}>
-                        <td className="ops-person">
-                          <strong>{application.fullName}</strong>
-                          <a
-                            href={`mailto:${application.email}`}
-                            aria-label={`Email ${application.fullName}`}
-                          >
-                            {application.email}
-                          </a>
-                        </td>
-                        <td>{application.city}</td>
-                        <td>
-                          <StatusBadge status={application.status} />
-                        </td>
-                        <td className="ops-num">
-                          {formatDate(application.createdAt)}
-                        </td>
-                        <td className="ops-col-actions">
-                          <div className="ops-actions">
-                            <button
-                              type="button"
-                              className="ops-btn ops-btn--success"
-                              aria-label={`Approve ${application.fullName}`}
-                              disabled={
-                                busyId === application.id ||
-                                application.status === 'approved'
-                              }
-                              onClick={() =>
-                                updateStatus(application.id, 'approved')
-                              }
+                    {filteredApplications
+                      .slice((currentPage - 1) * 50, currentPage * 50)
+                      .map((application) => (
+                        <tr key={application.id}>
+                          <td className="ops-person">
+                            <strong>{application.fullName}</strong>
+                            <a
+                              href={`mailto:${application.email}`}
+                              aria-label={`Email ${application.fullName}`}
                             >
-                              Approve
-                            </button>
-                            <button
-                              type="button"
-                              className="ops-btn ops-btn--danger"
-                              aria-label={`Reject ${application.fullName}`}
-                              disabled={
-                                busyId === application.id ||
-                                application.status === 'rejected'
-                              }
-                              onClick={() =>
-                                setPendingReject({
-                                  id: application.id,
-                                  name: application.fullName,
-                                })
-                              }
-                            >
-                              Reject
-                            </button>
-                            <button
-                              type="button"
-                              className="ops-btn"
-                              aria-label={`Mark ${application.fullName} as contacted`}
-                              disabled={
-                                busyId === application.id ||
-                                application.status === 'contacted'
-                              }
-                              onClick={() =>
-                                updateStatus(application.id, 'contacted')
-                              }
-                            >
-                              Mark Contacted
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                              {application.email}
+                            </a>
+                            {application.phone && (
+                              <a href={`tel:${application.phone}`}>
+                                {application.phone}
+                              </a>
+                            )}
+                            {application.profile && (
+                              <details className="workspace-record-detail">
+                                <summary>Showroom experience</summary>
+                                <p>{application.profile}</p>
+                              </details>
+                            )}
+                          </td>
+                          <td>{application.city}</td>
+                          <td>
+                            <StatusBadge status={application.status} />
+                          </td>
+                          <td className="ops-num">
+                            {formatDate(application.createdAt)}
+                          </td>
+                          <td className="ops-col-actions">
+                            <div className="ops-actions">
+                              <button
+                                type="button"
+                                className="ops-btn ops-btn--success"
+                                aria-label={`Approve ${application.fullName}`}
+                                disabled={
+                                  busyId === application.id ||
+                                  application.status === 'approved'
+                                }
+                                onClick={() =>
+                                  updateStatus(application.id, 'approved')
+                                }
+                              >
+                                Approve
+                              </button>
+                              <button
+                                type="button"
+                                className="ops-btn ops-btn--danger"
+                                aria-label={`Reject ${application.fullName}`}
+                                disabled={
+                                  busyId === application.id ||
+                                  application.status === 'rejected'
+                                }
+                                onClick={() =>
+                                  setPendingReject({
+                                    id: application.id,
+                                    name: application.fullName,
+                                  })
+                                }
+                              >
+                                Reject
+                              </button>
+                              <button
+                                type="button"
+                                className="ops-btn"
+                                aria-label={`Mark ${application.fullName} as contacted`}
+                                disabled={
+                                  busyId === application.id ||
+                                  application.status === 'contacted'
+                                }
+                                onClick={() =>
+                                  updateStatus(application.id, 'contacted')
+                                }
+                              >
+                                Mark Contacted
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -854,7 +1013,7 @@ export default function AdminPage() {
           >
             <article className="ops-panel">
               <div className="ops-panel-head">
-                <h2>Create Dealer Login</h2>
+                <h2>Create account login</h2>
               </div>
               <form
                 className="simple-form"
@@ -867,6 +1026,9 @@ export default function AdminPage() {
                   Account Name
                   <input
                     id="dealer-account-name"
+                    required
+                    minLength={2}
+                    maxLength={120}
                     name="accountName"
                     autoComplete="organization"
                     value={dealerForm.accountName}
@@ -882,6 +1044,8 @@ export default function AdminPage() {
                   Territory
                   <input
                     id="dealer-territory"
+                    minLength={2}
+                    maxLength={120}
                     name="territory"
                     autoComplete="off"
                     value={dealerForm.territory}
@@ -897,6 +1061,7 @@ export default function AdminPage() {
                   Login Email
                   <input
                     id="dealer-email"
+                    required
                     name="email"
                     type="email"
                     autoComplete="off"
@@ -914,6 +1079,9 @@ export default function AdminPage() {
                   Temporary Password
                   <input
                     id="dealer-password"
+                    required
+                    minLength={8}
+                    maxLength={72}
                     name="password"
                     type="password"
                     autoComplete="new-password"
@@ -948,14 +1116,16 @@ export default function AdminPage() {
                   type="submit"
                   disabled={busyId === 'dealer-create'}
                 >
-                  {busyId === 'dealer-create' ? 'Creating…' : 'Create Dealer Login'}
+                  {busyId === 'dealer-create'
+                    ? 'Creating…'
+                    : 'Create account login'}
                 </button>
               </form>
             </article>
             <article className="ops-panel">
               <div className="ops-panel-head">
                 <div>
-                  <h2>Account Directory</h2>
+                  <h2>Account directory</h2>
                   <p>{filteredAccounts.length} accounts</p>
                 </div>
                 {searchField}
@@ -976,17 +1146,19 @@ export default function AdminPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredAccounts.map((account) => (
-                        <tr key={account.id}>
-                          <td>
-                            <strong>{account.accountName}</strong>
-                          </td>
-                          <td>
-                            <StatusBadge status={account.role} />
-                          </td>
-                          <td>{account.territory ?? '-'}</td>
-                        </tr>
-                      ))}
+                      {filteredAccounts
+                        .slice((currentPage - 1) * 50, currentPage * 50)
+                        .map((account) => (
+                          <tr key={account.id}>
+                            <td>
+                              <strong>{account.accountName}</strong>
+                            </td>
+                            <td>
+                              <StatusBadge status={account.role} />
+                            </td>
+                            <td>{account.territory ?? '-'}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
@@ -1004,8 +1176,29 @@ export default function AdminPage() {
           >
             <article className="ops-panel">
               <div className="ops-panel-head">
-                <h2>Add Dealer to Network</h2>
+                <h2>{editingDealer ? 'Edit showroom' : 'Add showroom'}</h2>
               </div>
+              <p className="workspace-muted">
+                Showroom locations appear in the public dealer finder. Account
+                logins are managed separately.
+              </p>
+              {editingDealer && (
+                <button
+                  className="ops-text-btn"
+                  onClick={() => {
+                    setEditingDealer(null)
+                    setDealerNetworkForm({
+                      name: '',
+                      city: '',
+                      state: '',
+                      area: '',
+                      phone: '',
+                    })
+                  }}
+                >
+                  Cancel editing
+                </button>
+              )}
               <form
                 className="simple-form"
                 onSubmit={(event) => {
@@ -1026,6 +1219,17 @@ export default function AdminPage() {
                     {label}
                     <input
                       id={`network-${field}`}
+                      required
+                      minLength={field === 'phone' ? 8 : 2}
+                      maxLength={
+                        field === 'phone'
+                          ? 20
+                          : field === 'name'
+                            ? 100
+                            : field === 'area'
+                              ? 120
+                              : 80
+                      }
                       name={field}
                       type={type}
                       autoComplete="off"
@@ -1044,14 +1248,18 @@ export default function AdminPage() {
                   type="submit"
                   disabled={busyId === 'network-dealer-create'}
                 >
-                  {busyId === 'network-dealer-create' ? 'Saving…' : 'Create Dealer'}
+                  {busyId === 'network-dealer-create'
+                    ? 'Saving…'
+                    : editingDealer
+                      ? 'Save changes'
+                      : 'Save showroom'}
                 </button>
               </form>
             </article>
             <article className="ops-panel">
               <div className="ops-panel-head">
                 <div>
-                  <h2>Dealer Network</h2>
+                  <h2>Showroom directory</h2>
                   <p>{filteredDealers.length} locations</p>
                 </div>
                 {searchField}
@@ -1070,27 +1278,50 @@ export default function AdminPage() {
                         <th scope="col">City</th>
                         <th scope="col">State</th>
                         <th scope="col">Phone</th>
+                        <th scope="col">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredDealers.map((dealer) => (
-                        <tr key={dealer.id}>
-                          <td className="ops-person">
-                            <strong>{dealer.name}</strong>
-                            <span>{dealer.area}</span>
-                          </td>
-                          <td>{dealer.city}</td>
-                          <td>{dealer.state}</td>
-                          <td>
-                            <a
-                              href={`tel:${dealer.phone}`}
-                              aria-label={`Call ${dealer.name}`}
-                            >
-                              {dealer.phone}
-                            </a>
-                          </td>
-                        </tr>
-                      ))}
+                      {filteredDealers
+                        .slice((currentPage - 1) * 50, currentPage * 50)
+                        .map((dealer) => (
+                          <tr key={dealer.id}>
+                            <td className="ops-person">
+                              <strong>{dealer.name}</strong>
+                              <span>{dealer.area}</span>
+                            </td>
+                            <td>{dealer.city}</td>
+                            <td>{dealer.state}</td>
+                            <td>
+                              <a
+                                href={`tel:${dealer.phone}`}
+                                aria-label={`Call ${dealer.name}`}
+                              >
+                                {dealer.phone}
+                              </a>
+                            </td>
+                            <td>
+                              <button
+                                className="ops-btn"
+                                aria-label={`Edit ${dealer.name}`}
+                                disabled={Boolean(busyId)}
+                                onClick={() => {
+                                  setEditingDealer(dealer.id)
+                                  setDealerNetworkForm({
+                                    name: dealer.name,
+                                    city: dealer.city,
+                                    state: dealer.state,
+                                    area: dealer.area,
+                                    phone: dealer.phone,
+                                  })
+                                  document.getElementById('network-name')?.focus()
+                                }}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
@@ -1130,42 +1361,51 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredOrders.map((order) => (
-                      <tr key={order.id}>
-                        <td>
-                          <strong>{order.model}</strong>
-                        </td>
-                        <td className="ops-num">{order.quantity}</td>
-                        <td>
-                          <StatusBadge status={order.status} />
-                        </td>
-                        <td>
-                          <label
-                            className="ops-select"
-                            htmlFor={`order-status-${order.id}`}
-                          >
-                            <span className="sr-only">
-                              Update status for {order.model}
-                            </span>
-                            <select
-                              id={`order-status-${order.id}`}
-                              aria-label={`Update status for ${order.model}`}
-                              value={order.status}
-                              disabled={busyId === order.id}
-                              onChange={(event) =>
-                                updateOrder(order.id, event.target.value)
-                              }
+                    {filteredOrders
+                      .slice((currentPage - 1) * 50, currentPage * 50)
+                      .map((order) => (
+                        <tr key={order.id}>
+                          <td>
+                            <strong>{order.model}</strong>
+                            <p className="workspace-muted">
+                              {accountName(order.dealerAccountId)}
+                            </p>
+                            <p className="workspace-muted">
+                              Ref {order.id.slice(0, 8)} ·{' '}
+                              {formatDate(order.createdAt)}
+                            </p>
+                          </td>
+                          <td className="ops-num">{order.quantity}</td>
+                          <td>
+                            <StatusBadge status={order.status} />
+                          </td>
+                          <td>
+                            <label
+                              className="ops-select"
+                              htmlFor={`order-status-${order.id}`}
                             >
-                              {ORDER_STATUSES.map((status) => (
-                                <option key={status} value={status}>
-                                  {formatStatus(status)}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        </td>
-                      </tr>
-                    ))}
+                              <span className="sr-only">
+                                Update status for {order.model}
+                              </span>
+                              <select
+                                id={`order-status-${order.id}`}
+                                aria-label={`Update status for ${order.model}`}
+                                value={order.status}
+                                disabled={Boolean(busyId) || refreshing}
+                                onChange={(event) =>
+                                  updateOrder(order.id, event.target.value)
+                                }
+                              >
+                                {ORDER_STATUSES.map((status) => (
+                                  <option key={status} value={status}>
+                                    {formatStatus(status)}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -1182,7 +1422,7 @@ export default function AdminPage() {
           >
             <div className="ops-panel-head">
               <div>
-                <h2>Support Tickets</h2>
+                <h2>Support tickets</h2>
                 <p>{filteredTickets.length} conversations</p>
               </div>
               {searchField}
@@ -1204,42 +1444,58 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredTickets.map((ticket) => (
-                      <tr key={ticket.id}>
-                        <td>
-                          <strong>{ticket.subject}</strong>
-                        </td>
-                        <td>
-                          <StatusBadge status={ticket.status} />
-                        </td>
-                        <td className="ops-num">{formatDate(ticket.createdAt)}</td>
-                        <td>
-                          <label
-                            className="ops-select"
-                            htmlFor={`ticket-status-${ticket.id}`}
-                          >
-                            <span className="sr-only">
-                              Update status for {ticket.subject}
-                            </span>
-                            <select
-                              id={`ticket-status-${ticket.id}`}
-                              aria-label={`Update status for ${ticket.subject}`}
-                              value={ticket.status}
-                              disabled={busyId === ticket.id}
-                              onChange={(event) =>
-                                updateTicket(ticket.id, event.target.value)
-                              }
+                    {filteredTickets
+                      .slice((currentPage - 1) * 50, currentPage * 50)
+                      .map((ticket) => (
+                        <tr key={ticket.id}>
+                          <td>
+                            <strong>{ticket.subject}</strong>
+                            <p className="workspace-muted">
+                              {accountName(ticket.dealerAccountId)}
+                            </p>
+                            <p className="workspace-muted">
+                              Ref {ticket.id.slice(0, 8)}
+                            </p>
+                            {ticket.detail && (
+                              <details className="workspace-record-detail">
+                                <summary>View details</summary>
+                                <p>{ticket.detail}</p>
+                              </details>
+                            )}
+                          </td>
+                          <td>
+                            <StatusBadge status={ticket.status} />
+                          </td>
+                          <td className="ops-num">
+                            {formatDate(ticket.createdAt)}
+                          </td>
+                          <td>
+                            <label
+                              className="ops-select"
+                              htmlFor={`ticket-status-${ticket.id}`}
                             >
-                              {TICKET_STATUSES.map((status) => (
-                                <option key={status} value={status}>
-                                  {formatStatus(status)}
-                                </option>
-                              ))}
-                            </select>
-                          </label>
-                        </td>
-                      </tr>
-                    ))}
+                              <span className="sr-only">
+                                Update status for {ticket.subject}
+                              </span>
+                              <select
+                                id={`ticket-status-${ticket.id}`}
+                                aria-label={`Update status for ${ticket.subject}`}
+                                value={ticket.status}
+                                disabled={Boolean(busyId) || refreshing}
+                                onChange={(event) =>
+                                  updateTicket(ticket.id, event.target.value)
+                                }
+                              >
+                                {TICKET_STATUSES.map((status) => (
+                                  <option key={status} value={status}>
+                                    {formatStatus(status)}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -1305,6 +1561,9 @@ export default function AdminPage() {
                   Title
                   <input
                     id="resource-title"
+                    required
+                    minLength={4}
+                    maxLength={120}
                     name="title"
                     autoComplete="off"
                     value={resourceForm.title}
@@ -1320,6 +1579,7 @@ export default function AdminPage() {
                   File URL
                   <input
                     id="resource-url"
+                    required
                     name="fileUrl"
                     type="url"
                     inputMode="url"
@@ -1360,6 +1620,9 @@ export default function AdminPage() {
                   Title
                   <input
                     id="announcement-title"
+                    required
+                    minLength={4}
+                    maxLength={120}
                     name="announcementTitle"
                     autoComplete="off"
                     value={announcementForm.title}
@@ -1375,6 +1638,9 @@ export default function AdminPage() {
                   Body
                   <textarea
                     id="announcement-body"
+                    required
+                    minLength={10}
+                    maxLength={2000}
                     name="announcementBody"
                     rows={5}
                     value={announcementForm.body}
@@ -1400,7 +1666,7 @@ export default function AdminPage() {
             <article className="ops-panel">
               <div className="ops-panel-head">
                 <div>
-                  <h2>Published Content</h2>
+                  <h2>Published content</h2>
                   <p>
                     {filteredResources.length} resources ·{' '}
                     {filteredAnnouncements.length} announcements
@@ -1464,20 +1730,32 @@ export default function AdminPage() {
             </article>
           </section>
         ) : null}
-        {!loading && activeTab === 'content' ? (
-          <AdminProductMediaPanel
-            busyId={busyId}
-            onBusy={setBusyId}
-            onNotice={(message) => {
-              setError(null)
-              setNotice(message)
-            }}
-            onError={(message) => {
-              setNotice(null)
-              setError(message)
-            }}
-          />
-        ) : null}
+        {!loading && (
+          <div hidden={activeTab !== 'catalog'}>
+            <AdminCatalogPanel />
+          </div>
+        )}
+        {pageCount > 1 && (
+          <nav className="workspace-data-tools" aria-label="Record pages">
+            <button
+              className="ops-btn"
+              disabled={currentPage === 1}
+              onClick={() => setPage(currentPage - 1)}
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {pageCount} · 50 records per page
+            </span>
+            <button
+              className="ops-btn"
+              disabled={currentPage === pageCount}
+              onClick={() => setPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          </nav>
+        )}
       </main>
 
       {pendingReject ? (

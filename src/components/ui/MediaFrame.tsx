@@ -1,3 +1,4 @@
+import MediaPlaceholder from '../MediaPlaceholder'
 interface MediaFrameProps {
   src: string
   alt: string
@@ -18,14 +19,18 @@ export default function MediaFrame({
       className={`media-frame${className ? ` ${className}` : ''}`}
       style={{ aspectRatio: ratio }}
     >
-      <img
-        src={src}
-        alt={alt}
-        width={900}
-        height={600}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-      />
+      {src ? (
+        <img
+          src={src}
+          alt={alt}
+          width={900}
+          height={600}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      ) : (
+        <MediaPlaceholder label={alt} />
+      )}
     </div>
   )
 }

@@ -11,9 +11,9 @@ export default function ModelRail() {
     <section className="model-rail" id="products">
       <div className="wrap">
         <SectionHeader
-          eyebrow="Our Fleet"
+          eyebrow="Find your everyday"
           title="Choose your Amptron"
-          sub="Three certified scooters. Range, charge time, and ownership first. Buy from Amptron or find a showroom."
+          sub="Compare range, charging, and price. Find the scooter that fits the way you move."
         />
       </div>
       <div className="model-rail-track">
@@ -24,7 +24,7 @@ export default function ModelRail() {
         ))}
       </div>
       <div className="wrap model-rail-foot">
-        <Link to="/models#compare">Compare all three side by side</Link>
+        <Link to="/models#compare">Compare all models side by side</Link>
       </div>
     </section>
   )

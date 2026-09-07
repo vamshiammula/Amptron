@@ -1,4 +1,5 @@
-import { useEffect, useId, useState } from 'react'
+import MediaPlaceholder from './MediaPlaceholder'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
 import menuIcon from '../assets/icons/menu.svg'
@@ -17,6 +18,8 @@ export default function Navbar() {
   )
   const [pathForDrawer, setPathForDrawer] = useState(location.pathname)
   const megaId = useId()
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const drawerRef = useRef<HTMLElement>(null)
 
   if (location.pathname !== pathForDrawer) {
     setPathForDrawer(location.pathname)
@@ -40,10 +43,32 @@ export default function Navbar() {
   useEffect(() => {
     if (!open) return
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggleRef.current?.focus()
+      }
+      if (event.key === 'Tab') {
+        const links =
+          drawerRef.current?.querySelectorAll<HTMLAnchorElement>('a[href]')
+        const last = links?.[links.length - 1]
+        if (event.shiftKey && document.activeElement === toggleRef.current) {
+          event.preventDefault()
+          last?.focus()
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault()
+          toggleRef.current?.focus()
+        }
+      }
     }
+    const onResize = () => {
+      if (window.innerWidth >= 1100) setOpen(false)
+    }
+    window.addEventListener('resize', onResize)
     document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      window.removeEventListener('resize', onResize)
+    }
   }, [open])
 
   const navClass = [
@@ -71,7 +96,11 @@ export default function Navbar() {
                 className="nav-mega-item"
                 to={`/models/${model.slug}`}
               >
-                <img src={model.image} alt="" width={180} height={120} />
+                {model.image ? (
+                  <img src={model.image} alt="" width={180} height={120} />
+                ) : (
+                  <MediaPlaceholder label={model.name} compact />
+                )}
                 <strong>{model.name}</strong>
                 <span>
                   {model.highlights[0]?.value} range
@@ -89,7 +118,12 @@ export default function Navbar() {
         <Link to="/about">About</Link>
         <Link to="/dealers/locate">Find a Showroom</Link>
         <Link to="/ownership-calculator">Savings calculator</Link>
-        <Link to="/blog">Blog</Link>
+        <Link
+          to="/support"
+          aria-current={location.pathname === '/support' ? 'page' : undefined}
+        >
+          Support
+        </Link>
         <Link to="/portal/login">Dealer Login</Link>
       </nav>
       <a className="btn btn-primary nav-cta" href="/#buy">
@@ -97,6 +131,7 @@ export default function Navbar() {
       </a>
       <button
         className="nav-menu"
+        ref={toggleRef}
         type="button"
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
@@ -107,6 +142,7 @@ export default function Navbar() {
       </button>
       <nav
         id={DRAWER_ID}
+        ref={drawerRef}
         className={`nav-drawer${open ? ' is-open' : ''}`}
         aria-label="Mobile"
         inert={!open}
@@ -118,7 +154,11 @@ export default function Navbar() {
         <div className="nav-drawer-models">
           {models.map((model) => (
             <Link key={model.slug} to={`/models/${model.slug}`} onClick={close}>
-              <img src={model.image} alt="" width={72} height={48} />
+              {model.image ? (
+                <img src={model.image} alt="" width={72} height={48} />
+              ) : (
+                <MediaPlaceholder label={model.name} compact />
+              )}
               <span>
                 <strong>{model.name}</strong>
                 <span>
@@ -142,9 +182,12 @@ export default function Navbar() {
         <Link to="/ownership-calculator" onClick={close}>
           Savings calculator
         </Link>
-        <Link to="/blog" onClick={close}>
-          Blog
+        <Link to="/support" onClick={close}>
+          Support
         </Link>
+        <a href="/#contact" onClick={close}>
+          Stock Amptron
+        </a>
         <Link to="/portal/login" onClick={close}>
           Dealer Login
         </Link>

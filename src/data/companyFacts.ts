@@ -62,7 +62,7 @@ export const testimonials: Testimonial[] = [
     place: 'Ahmedabad, Gujarat',
     company: 'Apex EV Showroom',
     quote:
-      'The service and spare support from Amptron is reliable. Warranty claims move quickly, and customers like the ride quality of Amptron Storm.',
+      'The service and spare support from Amptron is reliable. Warranty claims move quickly, and customers like the straightforward ride of Amptron NIRA.',
     verified: false,
   },
   {
@@ -99,8 +99,8 @@ export const ownershipPoints = [
   {
     title: 'Spares',
     body: 'Parts supply is part of the product. Dealers stock kits; riders should not wait on a scooter that cannot be repaired.',
-    href: '/#contact',
-    cta: 'Stock Amptron',
+    href: '/support',
+    cta: 'Ask about parts',
   },
 ] as const
 

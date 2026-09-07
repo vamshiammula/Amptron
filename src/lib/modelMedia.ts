@@ -1,4 +1,3 @@
-import cutaway from '../assets/images/technical-cutaway.webp'
 import type { ModelStory, ScooterModel } from '../data/models'
 import type { ProductViewerConfig } from '../data/products/types'
 
@@ -15,6 +14,7 @@ const CHAPTER_PREFERENCES: Record<string, string[]> = {
   service: ['battery', 'exterior'],
 }
 
+const cutaway = ''
 const CUTAWAY_EYEBROWS = new Set(['charging', 'service', 'battery'])
 
 function galleryByExperience(viewer?: ProductViewerConfig) {
@@ -54,6 +54,9 @@ export function chapterImages(
         alt: chapter.imageAlt ?? chapter.title,
         ratio: '4 / 3',
       }
+    }
+    if (chapter.imageAlt) {
+      return { src: '', alt: chapter.imageAlt, ratio: '4 / 3' }
     }
     const key = chapter.eyebrow.toLowerCase()
     const preferred = CHAPTER_PREFERENCES[key] ?? ['exterior']

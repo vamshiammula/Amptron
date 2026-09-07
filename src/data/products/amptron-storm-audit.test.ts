@@ -23,7 +23,7 @@ const audit = JSON.parse(
   ),
 ) as AuditManifest
 
-describe('Amptron Storm media audit', () => {
+describe('Archived Amptron Storm media audit', () => {
   it('records every source file with a checksum and approval flag', () => {
     expect(audit.assets).toHaveLength(30)
     expect(audit.note).toMatch(/not a 360/i)
@@ -34,7 +34,11 @@ describe('Amptron Storm media audit', () => {
     expect(held.length).toBeGreaterThanOrEqual(8)
 
     for (const asset of audit.assets) {
-      const path = join(process.cwd(), 'public', asset.canonicalPath)
+      const path = join(
+        process.cwd(),
+        'reference/retired-media',
+        asset.canonicalPath,
+      )
       expect(existsSync(path), asset.canonicalPath).toBe(true)
       const bytes = readFileSync(path)
       expect(bytes.byteLength).toBe(asset.byteSize)

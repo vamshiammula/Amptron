@@ -46,9 +46,9 @@ export default function AdminProductMediaPanel({
   onError: (message: string) => void
 }>) {
   const [sets, setSets] = useState<AdminProductMediaSet[]>([])
-  const [modelSlug, setModelSlug] = useState('amptron-storm')
+  const [modelSlug, setModelSlug] = useState('amptron-nira')
   const [mode, setMode] = useState<(typeof PRODUCT_MEDIA_MODES)[number]>('exterior')
-  const [label, setLabel] = useState('Storm exterior')
+  const [label, setLabel] = useState('NIRA exterior')
   const [activeId, setActiveId] = useState<number | null>(null)
   const [files, setFiles] = useState<File[]>([])
   const [stateKey, setStateKey] = useState('front-left')
@@ -238,9 +238,9 @@ export default function AdminProductMediaPanel({
             value={modelSlug}
             onChange={(event) => setModelSlug(event.target.value)}
           >
-            <option value="amptron-storm">Amptron Storm</option>
-            <option value="amptron-volt">Amptron Volt</option>
+            <option value="amptron-nira">Amptron NIRA</option>
             <option value="amptron-cruise">Amptron Cruise</option>
+            <option value="amptron-storm">Amptron Storm (archived)</option>
           </select>
         </label>
         <label htmlFor="media-mode">

@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "engines": {
-    "node": ">=20.19"
+    "node": "22.x"
   },
   "scripts": {
     "dev": "concurrently --kill-others -n client,server -c cyan,magenta \"npm:dev:client\" \"npm:dev:server\"",
@@ -25,10 +25,11 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test",
+    "verify": "npm run check:lockfile && npm run format:check && npm run lint && npm run typecheck && npm run test",
     "brand:icons": "node scripts/generate-brand-icons.mjs",
     "predev": "node scripts/check-dev.mjs",
-    "preview:app": "node scripts/preview-app.mjs"
+    "preview:app": "node scripts/preview-app.mjs",
+    "check:lockfile": "npm ci --dry-run --ignore-scripts --no-audit --no-fund"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

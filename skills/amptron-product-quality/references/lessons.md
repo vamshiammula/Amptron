@@ -232,3 +232,10 @@
 - Impact: scooter details could be cropped or extend past the intended media frame.
 - Correction: size photos and video within positioned, clipped frames using centered contain fitting; remove card image zoom and let the 3D element follow its stage height without an independent minimum.
 - Check: inspect desktop and mobile feature photos, catalog cards, film and 3D views. Their media bounds must stay within the frame, including after hover and switching gallery angles.
+
+## Installed dependencies hid an outdated deployment lockfile
+
+- Trigger: the recovered package manifest included fonts and the 3D viewer, but the saved lockfile still described the older dependency set.
+- Impact: local build/tests passed using installed packages while Vercel's clean install failed before building.
+- Correction: regenerate the lockfile without existing node_modules, retain resolved versions of existing packages, and align the Node major version across local tooling, CI and Vercel. Add npm's dry-run lockfile validation to the standard verify command.
+- Check: prove the old lockfile is rejected by the guard; run a real clean install, verification and production build in an isolated source checkout. Preserve the working dependency directory and commit both package files together.

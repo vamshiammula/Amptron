@@ -1,3 +1,4 @@
+import Icon from '../components/ui/Icon'
 import { Link } from 'react-router-dom'
 import Numbers from '../components/Numbers'
 import Seo from '../components/Seo'
@@ -144,7 +145,7 @@ export default function AboutPage() {
                 <br />
                 {HEADQUARTERS.street}
                 <br />
-                Open in Maps ↗
+                Open in Maps <Icon name="arrow-up-right" />
               </span>
             </a>
           </div>

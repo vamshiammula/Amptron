@@ -1,3 +1,4 @@
+import Icon from './ui/Icon'
 import { Link } from 'react-router-dom'
 import { useSiteContent } from '../lib/siteContent'
 import HeroFilm from './HeroFilm'
@@ -21,7 +22,7 @@ export default function Hero() {
           </p>
           <div className="hero-actions">
             <Link className="btn btn-primary" to="/models">
-              Explore scooters ↗
+              Explore scooters <Icon name="arrow-right" />
             </Link>
             <Link className="btn btn-ghost-dark" to="/book-test-ride">
               Book a Test Ride

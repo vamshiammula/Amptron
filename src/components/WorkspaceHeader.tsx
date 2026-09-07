@@ -1,3 +1,4 @@
+import Icon from './ui/Icon'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
@@ -27,7 +28,9 @@ export default function WorkspaceHeader() {
       </Link>
       <span className="workspace-header-label">Partner workspace</span>
       <nav aria-label="Workspace links">
-        <Link to="/">View website ↗</Link>
+        <Link to="/">
+          View website <Icon name="arrow-right" />
+        </Link>
         {session && (
           <button disabled={busy} onClick={() => void signOut()}>
             {busy ? 'Signing out…' : 'Sign out'}

@@ -194,3 +194,22 @@ a {
     --nav-h: 88px;
   }
 }
+
+/* Shared monochrome icons; SVG masks keep asset colours out of the UI palette. */
+.ui-icon {
+  display: inline-block;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
+  vertical-align: -0.15em;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+}
+.ui-icon--arrow-up-right {
+  transform: rotate(-45deg);
+}

@@ -16,9 +16,7 @@ import {
 import { HEADQUARTERS } from '../data/headquarters'
 import { ApiError, submitApplication } from '../lib/api'
 import { mapsSearchUrl } from '../lib/maps'
-import mapPin from '../assets/icons/map-pin-light.svg'
-import phone from '../assets/icons/phone.svg'
-import mail from '../assets/icons/mail.svg'
+import Icon from './ui/Icon'
 import LocationMap from './LocationMap'
 
 const EMPTY_FORM: ApplicationInput = {
@@ -493,7 +491,7 @@ export default function Contact() {
           <h3>Corporate Headquarters</h3>
           <div className="hq-list">
             <div className="hq-item">
-              <img src={mapPin} alt="" width={18} height={18} />
+              <Icon name="map-pin" />
               <a
                 href={mapsSearchUrl(HEADQUARTERS.mapsQuery)}
                 target="_blank"
@@ -505,11 +503,11 @@ export default function Contact() {
               </a>
             </div>
             <div className="hq-item">
-              <img src={phone} alt="" width={18} height={18} />
+              <Icon name="phone" />
               <span>+91 124 556 7890 / 1800-EV-AMPTRON</span>
             </div>
             <div className="hq-item">
-              <img src={mail} alt="" width={18} height={18} />
+              <Icon name="mail" />
               <a href="mailto:dealer-relations@amptron.co.in">
                 dealer-relations@amptron.co.in
               </a>

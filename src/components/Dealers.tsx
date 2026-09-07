@@ -1,6 +1,4 @@
-import users from '../assets/icons/users.svg'
-import mapPin from '../assets/icons/map-pin.svg'
-import smile from '../assets/icons/smile.svg'
+import Icon, { type IconName } from './ui/Icon'
 import { dealerTrust } from '../data/companyFacts'
 import SectionHeader from './ui/SectionHeader'
 
@@ -27,7 +25,7 @@ const steps = [
   },
 ]
 
-const trustIcons = [users, mapPin, smile]
+const trustIcons: IconName[] = ['users', 'map-pin', 'smile']
 
 export default function Dealers() {
   return (
@@ -54,7 +52,7 @@ export default function Dealers() {
           <div className="trust">
             {dealerTrust.map((item, index) => (
               <div className="trust-item" key={item.id}>
-                <img src={trustIcons[index]} alt="" width={20} height={20} />
+                <Icon name={trustIcons[index]} />
                 {item.value} {item.label}
               </div>
             ))}

@@ -1,3 +1,4 @@
+import Icon from '../components/ui/Icon'
 import { Link } from 'react-router-dom'
 import Seo from '../components/Seo'
 import PageHero from '../components/ui/PageHero'
@@ -38,7 +39,9 @@ export default function SupportPage() {
                 visiting. Describe the issue and confirm the next step with the
                 team.
               </p>
-              <Link to="/dealers/locate">Find a showroom ↗</Link>
+              <Link to="/dealers/locate">
+                Find a showroom <Icon name="arrow-right" />
+              </Link>
             </article>
             <article className="support-card">
               <span className="eyebrow">02 / Coverage</span>
@@ -47,7 +50,9 @@ export default function SupportPage() {
                 Check the policy and your signed purchase documents for coverage.
                 Keep the invoice and vehicle details ready for a claim.
               </p>
-              <Link to="/warranty">Read warranty guidance ↗</Link>
+              <Link to="/warranty">
+                Read warranty guidance <Icon name="arrow-right" />
+              </Link>
             </article>
             <article className="support-card">
               <span className="eyebrow">03 / Parts</span>
@@ -57,7 +62,7 @@ export default function SupportPage() {
                 parts enquiries go through support.
               </p>
               <button type="button" onClick={openAmptronChat}>
-                Ask about parts ↗
+                Ask about parts <Icon name="arrow-right" />
               </button>
             </article>
           </div>

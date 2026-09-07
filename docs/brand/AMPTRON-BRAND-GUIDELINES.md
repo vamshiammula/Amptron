@@ -1,6 +1,6 @@
 # Amptron application brand guidelines
 
-Revision 5, September 2026. Typography and workspace system finalized. Supersedes v2's visual system following the founder's request to apply the new Amptron brand concept to the application. Historical platform text is preserved in `archive/AMPTRON-BRAND-GUIDELINES-v2.md`; historical claims are not newly verified by this revision.
+Revision 6, September 2026. Typography and workspace system finalized. Supersedes v2's visual system following the founder's request to apply the new Amptron brand concept to the application. Historical platform text is preserved in `archive/AMPTRON-BRAND-GUIDELINES-v2.md`; historical claims are not newly verified by this revision.
 
 ## Foundation
 
@@ -45,6 +45,12 @@ Use locally bundled Outfit Variable for brand/display headings and Geist Variabl
 Use paper for the workspace canvas, white for panels, graphite for text/selected tabs, and electric green for primary action fills. Supporting text uses slate `#56615C`; steel is decorative. Accent text on light surfaces uses `#456018`. Status colour pairs stay distinct: green `#047857/#D1FAE5`, amber `#B45309/#FEF3C7`, blue `#0369A1/#E0F2FE`, and red text `#B42318` on a pale error surface. Every status includes a written label.
 
 Controls have 6–8px corners and workspace panels 10px corners. Use 16–24px internal spacing, a 20px mobile gutter and a readable content width. Shared implementation is in `src/styles/workspace.css`; do not copy public hero typography into admin tables. Keep horizontal scrolling inside tables/tab navigation, never on the whole page.
+
+## Icons and accent discipline
+
+Use the shared `src/components/ui/Icon.tsx` for monochrome interface icons. It preserves the existing SVG silhouettes as masks and inherits `currentColor`, so embedded legacy asset colours cannot leak into the interface. Use a right arrow for internal navigation and an up-right arrow for external destinations. Do not use emoji-capable Unicode characters as interface icons; phones can render them as coloured emoji tiles. Decorative icons stay hidden from assistive technology, and the adjacent label names the action.
+
+Electric green is intentional on primary actions and selected highlights. Dark olive `--accent-text` is its readable companion for small labels on paper. Supporting navigation, dealer and contact icons use the surrounding graphite or light text colour. Turquoise from the former identity is not a decorative brand accent. Functional success colours and the calculator's forest-green data series retain their separate meanings.
 
 ## Voice and interaction
 

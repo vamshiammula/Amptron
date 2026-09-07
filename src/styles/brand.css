@@ -69,6 +69,7 @@
   text-underline-offset: 8px;
 }
 .nav-menu {
+  color: var(--graphite);
   width: 44px;
   height: 44px;
 }

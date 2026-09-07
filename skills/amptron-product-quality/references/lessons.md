@@ -239,3 +239,11 @@
 - Impact: local build/tests passed using installed packages while Vercel's clean install failed before building.
 - Correction: regenerate the lockfile without existing node_modules, retain resolved versions of existing packages, and align the Node major version across local tooling, CI and Vercel. Add npm's dry-run lockfile validation to the standard verify command.
 - Check: prove the old lockfile is rejected by the guard; run a real clean install, verification and production build in an isolated source checkout. Preserve the working dependency directory and commit both package files together.
+
+## Phone emoji and embedded SVG colours escaped the brand system
+
+- Trigger: iPhone screenshots showed blue emoji tiles after Explore and turquoise dealer/location icons alongside the approved lime palette.
+- Impact: navigation looked inconsistent across platforms, while an overlaid map pin and button obscured the repeated address in the headquarters card.
+- Cause: Unicode arrow glyphs used platform emoji rendering; external SVG image strokes bypassed CSS colour tokens; the map retained a photo-overlay layout after its background photo was retired.
+- Correction: use shared decorative SVG masks with currentColor, right arrows for internal navigation and diagonal arrows for external destinations. Keep supporting icons monochrome and present the Maps destination as a readable compact link.
+- Check: review hero and film CTAs, dealer details, headquarters and mobile menu in desktop Chromium and mobile WebKit. Icons must inherit readable colours, link labels must exclude decorative glyphs, and Maps text must not overlap.

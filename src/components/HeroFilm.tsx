@@ -1,3 +1,4 @@
+import Icon from './ui/Icon'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { ScooterModel } from '../data/models'
@@ -74,7 +75,8 @@ export default function HeroFilm({ model }: { model: ScooterModel }) {
           <strong>{model.name}</strong>
         </div>
         <Link className="btn btn-ghost-dark" to={`/models/${model.slug}`}>
-          Explore {model.name.replace('Amptron ', '')} ↗
+          Explore {model.name.replace('Amptron ', '')}
+          <Icon name="arrow-right" />
         </Link>
       </div>
       {failed && (

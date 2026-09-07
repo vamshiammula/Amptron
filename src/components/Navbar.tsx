@@ -2,7 +2,7 @@ import MediaPlaceholder from './MediaPlaceholder'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
-import menuIcon from '../assets/icons/menu.svg'
+import Icon from './ui/Icon'
 import { formatInr, monthlyEmi } from '../data/pricing'
 import { useSiteContent } from '../lib/siteContent'
 
@@ -138,7 +138,7 @@ export default function Navbar() {
         aria-controls={DRAWER_ID}
         onClick={() => setOpen((value) => !value)}
       >
-        <img src={menuIcon} alt="" width={20} height={20} />
+        <Icon name="menu" />
       </button>
       <nav
         id={DRAWER_ID}

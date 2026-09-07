@@ -1,4 +1,4 @@
-import mapPin from '../assets/icons/map-pin.svg'
+import Icon from './ui/Icon'
 import { HEADQUARTERS } from '../data/headquarters'
 import { mapsSearchUrl } from '../lib/maps'
 
@@ -12,11 +12,14 @@ export default function LocationMap() {
         rel="noopener noreferrer"
         aria-label="Open Amptron headquarters in Maps"
       >
-        <span className="location-address">{HEADQUARTERS.street}</span>
-        <span className="location-map-pin" aria-hidden="true">
-          <img src={mapPin} alt="" width={20} height={20} />
+        <span className="location-map-pin">
+          <Icon name="map-pin" />
         </span>
-        <span className="location-map-cta">Open in Maps</span>
+        <span className="location-map-copy">
+          <strong>Find our headquarters</strong>
+          <span>Open in Maps</span>
+        </span>
+        <Icon name="arrow-up-right" />
       </a>
     </figure>
   )

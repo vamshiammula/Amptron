@@ -1,3 +1,4 @@
+import Icon from '../components/ui/Icon'
 import '../styles/workspace.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useSearchParams } from 'react-router-dom'
@@ -497,7 +498,9 @@ export default function PortalPage() {
                     <div className="resource-list">
                       {filteredResources.map((r) => (
                         <a key={r.id} href={r.url} target="_blank" rel="noreferrer">
-                          <strong>{r.title} ↗</strong>
+                          <strong>
+                            {r.title} <Icon name="arrow-up-right" />
+                          </strong>
                           <small>
                             Updated {displayDate(r.createdAt)} · Opens in a new tab
                           </small>

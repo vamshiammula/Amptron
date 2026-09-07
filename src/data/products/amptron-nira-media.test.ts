@@ -11,8 +11,12 @@ describe('Amptron NIRA catalog media', () => {
     expect(nira?.model3d).toBe(niraMedia.model3d)
     expect(nira?.image).toBe(niraMedia.hero)
     expect(niraMedia.model3d).toBe(`${NIRA_MEDIA_BASE}/amptron-nira.glb`)
-    expect(niraMedia.hero).toMatch(/amptron-nira-pearl-ivory-front-left\.png$/)
-    expect(NIRA_MEDIA_BASE).toMatch(/\/storage\/v1\/object\/public\/site-media\/products\/amptron-nira$/)
+    expect(niraMedia.hero).toMatch(
+      /amptron-nira-pearl-ivory-front-left-image-[a-f0-9]+\.webp$/,
+    )
+    expect(NIRA_MEDIA_BASE).toMatch(
+      /\/storage\/v1\/object\/public\/site-media\/products\/amptron-nira$/,
+    )
   })
 
   it('keeps reserved lifestyle filenames for later photography', () => {

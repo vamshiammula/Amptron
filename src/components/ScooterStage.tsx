@@ -8,8 +8,9 @@ export default function ScooterStage({ model }: { model: ScooterModel }) {
   const photos = model.image
     ? model.slug === 'amptron-nira'
       ? niraPhotos
-      : [{ src: model.image, label: 'Overview' }]
+      : [{ src: model.image, thumbnail: model.image, label: 'Overview' }]
     : []
+  const [failed, setFailed] = useState(false)
   const [photoIndex, setPhotoIndex] = useState(0)
   const photo = photos[photoIndex % (photos.length || 1)]
   const selectPhoto = (index: number) => {
@@ -22,15 +23,16 @@ export default function ScooterStage({ model }: { model: ScooterModel }) {
       selectPhoto(photoIndex + (event.key === 'ArrowRight' ? 1 : -1))
     }
   }
-  const [mode, setMode] = useState<'3d' | 'photo' | 'video'>('3d')
+  const [mode, setMode] = useState<'3d' | 'photo' | 'video'>(
+    model.image ? 'photo' : '3d',
+  )
   const [ready, setReady] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const [failed, setFailed] = useState(false)
   const [attempt, setAttempt] = useState(0)
   const viewer = useRef<ModelViewerElement>(null)
   const frame = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (!model.model3d || mode !== '3d' || attempt < 0) return
+    if (!model.model3d || mode !== '3d') return
     let active = true
     import('@google/model-viewer')
       .then(() => {
@@ -42,10 +44,11 @@ export default function ScooterStage({ model }: { model: ScooterModel }) {
     return () => {
       active = false
     }
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- Retry must rerun a failed import even when the URL is unchanged.
   }, [model.model3d, mode, attempt])
   useLayoutEffect(() => {
     const node = viewer.current
-    if (!node || !ready || !model.model3d || mode !== '3d' || attempt < 0) return
+    if (!node || !ready || !model.model3d || mode !== '3d') return
     const deadline = window.setTimeout(() => setFailed(true), 15000)
     const load = () => {
       window.clearTimeout(deadline)
@@ -63,6 +66,7 @@ export default function ScooterStage({ model }: { model: ScooterModel }) {
       node.removeEventListener('load', load)
       node.removeEventListener('error', error)
     }
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- Retry replaces the keyed viewer; attach listeners to its new element.
   }, [ready, model.model3d, mode, attempt])
   const changeMode = (value: typeof mode) => {
     setMode(value)
@@ -199,7 +203,14 @@ export default function ScooterStage({ model }: { model: ScooterModel }) {
                 onKeyDown={navigatePhotos}
                 onClick={() => selectPhoto(index)}
               >
-                <img src={item.src} alt="" loading="lazy" />
+                <img
+                  src={item.thumbnail}
+                  alt=""
+                  width={76}
+                  height={58}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span>{item.label}</span>
               </button>
             ))}

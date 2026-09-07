@@ -7,11 +7,11 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "dev": "concurrently -n client,server -c cyan,magenta \"npm:dev:client\" \"npm:dev:server\"",
+    "dev": "concurrently --kill-others -n client,server -c cyan,magenta \"npm:dev:client\" \"npm:dev:server\"",
     "dev:client": "vite",
     "dev:server": "tsx watch server/src/index.ts",
     "build": "npm run build:client && npm run build:server",
-    "build:client": "vite build",
+    "build:client": "node scripts/build-client.mjs",
     "build:server": "tsc -p tsconfig.server.json",
     "start": "node dist-server/server/src/index.js",
     "preview": "vite preview",
@@ -26,7 +26,9 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test",
-    "brand:icons": "node scripts/generate-brand-icons.mjs"
+    "brand:icons": "node scripts/generate-brand-icons.mjs",
+    "predev": "node scripts/check-dev.mjs",
+    "preview:app": "node scripts/preview-app.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

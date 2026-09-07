@@ -1,3 +1,4 @@
+import '../styles/workspace.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useSearchParams } from 'react-router-dom'
 import Seo from '../components/Seo'
@@ -169,6 +170,7 @@ export default function AdminPage() {
   const [supportQueries, setSupportQueries] = useState<AdminSupportQuery[]>([])
   const [resources, setResources] = useState<DealerResource[]>([])
   const [announcements, setAnnouncements] = useState<DealerAnnouncement[]>([])
+  const [loadedSections, setLoadedSections] = useState<Record<string, boolean>>({})
   const [search, setSearch] = useState('')
   const [recordFilter, setRecordFilter] = useState('all')
   const [refreshing, setRefreshing] = useState(false)
@@ -206,7 +208,10 @@ export default function AdminPage() {
   const tabParam = searchParams.get('tab')
   const activeTab: AdminTab = isAdminTab(tabParam) ? tabParam : 'overview'
 
+  const [catalogVisited, setCatalogVisited] = useState(activeTab === 'catalog')
+
   const setActiveTab = (tab: AdminTab) => {
+    if (tab === 'catalog') setCatalogVisited(true)
     setSearch('')
     setRecordFilter('all')
     setPage(1)
@@ -223,6 +228,7 @@ export default function AdminPage() {
 
   const load = useCallback(async () => {
     setRefreshing(true)
+    setLoading(true)
     setError(null)
     try {
       const profilePayload = await fetchPortalProfile()
@@ -233,8 +239,20 @@ export default function AdminPage() {
       }
       const failures: string[] = []
       const read = async (name: string, action: () => Promise<void>) => {
+        const tabFor: Record<string, string> = {
+          'dealer network': 'dealers',
+          FAQs: 'faqs',
+          'support queries': 'queries',
+          resources: 'content',
+          announcements: 'content',
+        }
+        const needsAccounts =
+          name === 'accounts' &&
+          ['overview', 'orders', 'tickets'].includes(activeTab)
+        if ((tabFor[name] ?? name) !== activeTab && !needsAccounts) return
         try {
           await action()
+          setLoadedSections((previous) => ({ ...previous, [name]: true }))
         } catch {
           failures.push(name)
         }
@@ -278,7 +296,7 @@ export default function AdminPage() {
       setLoading(false)
       setRefreshing(false)
     }
-  }, [])
+  }, [activeTab])
 
   useEffect(() => {
     if (!session) return
@@ -388,14 +406,17 @@ export default function AdminPage() {
     accounts.find((account) => account.id === id)?.accountName ?? id ?? 'Unassigned'
 
   const tabCounts: Partial<Record<AdminTab, number>> = {
-    applications: applications?.count ?? applications?.applications.length ?? 0,
-    accounts: accounts.length,
-    dealers: dealers.length,
-    orders: orders.length,
-    tickets: tickets.length,
-    faqs: faqs.length,
-    queries: supportQueries.length,
-    content: resources.length + announcements.length,
+    applications: applications?.count ?? applications?.applications.length,
+    accounts: loadedSections.accounts ? accounts.length : undefined,
+    dealers: loadedSections['dealer network'] ? dealers.length : undefined,
+    orders: loadedSections.orders ? orders.length : undefined,
+    tickets: loadedSections.tickets ? tickets.length : undefined,
+    faqs: loadedSections.FAQs ? faqs.length : undefined,
+    queries: loadedSections['support queries'] ? supportQueries.length : undefined,
+    content:
+      loadedSections.resources && loadedSections.announcements
+        ? resources.length + announcements.length
+        : undefined,
   }
 
   const pipelineMax = Math.max(
@@ -1730,7 +1751,7 @@ export default function AdminPage() {
             </article>
           </section>
         ) : null}
-        {!loading && (
+        {(catalogVisited || activeTab === 'catalog') && (
           <div hidden={activeTab !== 'catalog'}>
             <AdminCatalogPanel />
           </div>

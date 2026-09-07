@@ -111,14 +111,23 @@ export function createAdminRoutes(
         return
       }
 
-      const { applications } = await listApplicationsSafe()
+      const statuses = ['new', 'contacted', 'approved', 'rejected'] as const
       const [
+        applicationCounts,
         dealerAccounts,
         openTickets,
         pendingOrders,
         recentOrders,
         recentTickets,
       ] = await Promise.all([
+        Promise.all(
+          statuses.map((status) =>
+            client
+              .from('dealer_applications')
+              .select('id', { count: 'exact', head: true })
+              .eq('status', status),
+          ),
+        ),
         client.from('dealer_accounts').select('id', { count: 'exact', head: true }),
         client
           .from('tickets')
@@ -140,21 +149,19 @@ export function createAdminRoutes(
           .limit(8),
       ])
 
-      const statuses: Array<'new' | 'contacted' | 'approved' | 'rejected'> = [
-        'new',
-        'contacted',
-        'approved',
-        'rejected',
-      ]
-      const pipeline = statuses.map((state) => ({
-        status: state,
-        count: applications.filter((application) => application.status === state)
-          .length,
+      for (const result of applicationCounts) {
+        if (result.error)
+          throw new Error(`Could not count applications: ${result.error.message}`)
+      }
+      const pipeline = statuses.map((status, index) => ({
+        status,
+        count: applicationCounts[index]?.count ?? 0,
       }))
+      const applicationTotal = pipeline.reduce((sum, item) => sum + item.count, 0)
 
       res.json({
         kpis: [
-          { label: 'Applications', value: String(applications.length) },
+          { label: 'Applications', value: String(applicationTotal) },
           { label: 'Dealer Accounts', value: String(dealerAccounts.count ?? 0) },
           { label: 'Open Tickets', value: String(openTickets.count ?? 0) },
           { label: 'Pending Orders', value: String(pendingOrders.count ?? 0) },

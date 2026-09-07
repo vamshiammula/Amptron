@@ -1,3 +1,4 @@
+import '../styles/workspace.css'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useSearchParams } from 'react-router-dom'
 import Seo from '../components/Seo'
@@ -71,6 +72,7 @@ export default function PortalPage() {
   }
   const load = useCallback(async () => {
     setRefreshing(true)
+    setLoading(true)
     setError('')
     try {
       const identity = await fetchPortalProfile()
@@ -78,6 +80,9 @@ export default function PortalPage() {
       if (identity.role === 'admin') return
       const failures: string[] = []
       async function read(name: string, task: () => Promise<void>) {
+        const tabFor: Record<string, string> = { updates: 'announcements' }
+        // The overview uses all four collections for its summary cards.
+        if (activeTab !== 'overview' && (tabFor[name] ?? name) !== activeTab) return
         try {
           await task()
         } catch {
@@ -107,7 +112,7 @@ export default function PortalPage() {
       setLoading(false)
       setRefreshing(false)
     }
-  }, [])
+  }, [activeTab])
   useEffect(() => {
     // Initial synchronization with the authenticated API.
     // oxlint-disable-next-line react/set-state-in-effect

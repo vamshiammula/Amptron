@@ -613,9 +613,9 @@ export function reRankByModel(
   }>,
   model: FaqModel,
 ): typeof ranked {
-  const otherModels: FaqModel[] = (
-    ['nira', 'cruise'] as FaqModel[]
-  ).filter((m) => m !== model)
+  const otherModels: FaqModel[] = (['nira', 'cruise'] as FaqModel[]).filter(
+    (m) => m !== model,
+  )
   return ranked
     .map((item) => {
       const slug = item.faq.slug

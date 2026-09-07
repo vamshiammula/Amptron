@@ -119,12 +119,12 @@ export default function DealerLocatorPage() {
               <p className="content-note" aria-live="polite">
                 {loading
                   ? 'Loading dealer network...'
-                  : error ??
+                  : (error ??
                     locatorCountCopy(
                       filteredDealers.length,
                       stateFilter,
                       cityFilter,
-                    )}
+                    ))}
               </p>
             </div>
           </div>

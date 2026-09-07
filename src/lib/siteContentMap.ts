@@ -1,3 +1,4 @@
+import { optimizedNiraImage } from '../data/products/amptron-nira-media'
 import type { BlogPost } from '../data/blogPosts'
 import type { ModelColour, ModelStory, ScooterModel } from '../data/models'
 import type { ProductViewerConfig } from '../data/products/types'
@@ -206,13 +207,16 @@ export function mergeLocalModel(
   return {
     ...local,
     ...remote,
-    image: remote.image || local.image,
+    image: optimizedNiraImage(remote.image || local.image),
     model3d: remote.model3d || local.model3d,
     batteryKwh: remote.batteryKwh || local.batteryKwh,
     certifiedRangeKm: remote.certifiedRangeKm || local.certifiedRangeKm,
     pricing: remote.pricing ?? local.pricing,
     colours: remote.colours ?? local.colours,
-    story: remote.story ?? local.story,
+    story: (remote.story ?? local.story)?.map((chapter) => ({
+      ...chapter,
+      image: chapter.image ? optimizedNiraImage(chapter.image) : undefined,
+    })),
     video: remote.video ?? local.video,
     badge: remote.badge ?? local.badge,
     specGroups: remote.specGroups ?? local.specGroups,

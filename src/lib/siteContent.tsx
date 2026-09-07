@@ -24,9 +24,7 @@ const LOCAL_MEDIA: SiteMediaMap = {
   techCutaway: '',
 }
 
-const PUBLIC_MODELS = scooterModels.filter(
-  (model) => model.slug !== 'amptron-volt',
-)
+const PUBLIC_MODELS = scooterModels.filter((model) => model.slug !== 'amptron-volt')
 
 const LOCAL_CONTENT: SiteContentValue = {
   catalogReady: true,
@@ -38,7 +36,7 @@ const LOCAL_CONTENT: SiteContentValue = {
 
 const SiteContentContext = createContext<SiteContentValue>(LOCAL_CONTENT)
 
-async function fetchSiteContent(): Promise<SiteContentValue | null> {
+async function readSiteContent(): Promise<SiteContentValue | null> {
   if (!hasSupabaseClient || !supabase) return null
 
   const [modelsResult, postsResult] = await Promise.all([
@@ -67,7 +65,8 @@ async function fetchSiteContent(): Promise<SiteContentValue | null> {
   const localOnly = LOCAL_CONTENT.models.filter(
     (model) => !remoteSlugs.has(model.slug),
   )
-  const replacedByNira = remoteSlugs.has('amptron-nira') || localBySlug.has('amptron-nira')
+  const replacedByNira =
+    remoteSlugs.has('amptron-nira') || localBySlug.has('amptron-nira')
   const models = [
     ...remoteModels.filter(
       (model) =>
@@ -95,6 +94,16 @@ async function fetchSiteContent(): Promise<SiteContentValue | null> {
     media: LOCAL_MEDIA,
     productViewers: {},
   }
+}
+
+let contentRequest: Promise<SiteContentValue | null> | null = null
+function fetchSiteContent() {
+  if (!contentRequest) {
+    contentRequest = readSiteContent().finally(() => {
+      contentRequest = null
+    })
+  }
+  return contentRequest
 }
 
 export function SiteContentProvider({ children }: Readonly<PropsWithChildren>) {

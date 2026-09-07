@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { scooterModels } from '../data/models'
 import ScooterStage from './ScooterStage'
+import { niraMedia } from '../data/products/amptron-nira-media'
 vi.mock('@google/model-viewer', () => ({}))
 
 describe('ScooterStage', () => {
@@ -19,6 +20,8 @@ describe('ScooterStage', () => {
     const { container } = render(
       <ScooterStage model={{ ...scooterModels[0]!, model3d: '/media/nira.glb' }} />,
     )
+    expect(container.querySelector('model-viewer')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: '3D view' }))
     await waitFor(() =>
       expect(container.querySelector('model-viewer')).not.toBeNull(),
     )
@@ -33,12 +36,22 @@ describe('ScooterStage', () => {
     const { container } = render(
       <ScooterStage model={{ ...scooterModels[0]!, model3d: '/missing.glb' }} />,
     )
+    expect(container.querySelector('model-viewer')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: '3D view' }))
     await waitFor(() =>
       expect(container.querySelector('model-viewer')).not.toBeNull(),
     )
     fireEvent(container.querySelector('model-viewer')!, new Event('error'))
     expect(screen.getByRole('alert')).toHaveTextContent('could not load')
     expect(screen.getByRole('button', { name: 'Try again' })).toBeEnabled()
+    const failedViewer = container.querySelector('model-viewer')!
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    await waitFor(() =>
+      expect(container.querySelector('model-viewer')).not.toBe(failedViewer),
+    )
+    fireEvent(container.querySelector('model-viewer')!, new Event('load'))
+    expect(screen.getByRole('button', { name: 'Zoom in' })).toBeEnabled()
+    expect(screen.queryByRole('alert')).toBeNull()
   })
 })
 
@@ -57,7 +70,7 @@ it('browses every NIRA photo, wraps and retains selection through media changes'
   fireEvent.click(screen.getByRole('button', { name: 'View rear' }))
   expect(screen.getByRole('img', { name: 'Amptron NIRA — Rear' })).toHaveAttribute(
     'src',
-    '/products/amptron-nira/amptron-nira-pearl-ivory-rear.png',
+    niraMedia.studio.rear,
   )
   fireEvent.click(screen.getByRole('button', { name: '3D view' }))
   fireEvent.click(screen.getByRole('button', { name: /Photos/ }))

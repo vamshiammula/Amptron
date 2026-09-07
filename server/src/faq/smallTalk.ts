@@ -138,9 +138,18 @@ function matchGreetingHeuristic(normalized: string): boolean {
   if (/^h+i+!*\.?$/.test(compact)) return true
   if (/^hallo+$/.test(compact)) return true
   if (
-    ['hallo', 'hola', 'helo', 'hiya', 'hello', 'hey', 'yo', 'sup', 'hai', 'namaste'].includes(
-      normalized,
-    )
+    [
+      'hallo',
+      'hola',
+      'helo',
+      'hiya',
+      'hello',
+      'hey',
+      'yo',
+      'sup',
+      'hai',
+      'namaste',
+    ].includes(normalized)
   ) {
     return true
   }

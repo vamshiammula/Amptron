@@ -77,12 +77,13 @@ function show(path = '/admin?tab=dealers') {
     </HelmetProvider>,
   )
 }
-it('loads available sections when FAQs fail and exposes retry', async () => {
+it('does not load unrelated sections or surface their errors', async () => {
   api.fetchAdminFaqs.mockRejectedValue(new Error('offline'))
   show()
   expect(await screen.findByText('Pune showroom')).toBeVisible()
-  expect(screen.getByRole('alert')).toHaveTextContent('FAQs')
-  expect(screen.getByRole('button', { name: 'Retry' })).toBeEnabled()
+  expect(api.fetchAdminFaqs).not.toHaveBeenCalled()
+  expect(api.fetchAdminOrders).not.toHaveBeenCalled()
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument()
 })
 it('edits an existing showroom using the update endpoint', async () => {
   api.updateDealerRecord.mockResolvedValue({ message: 'Saved' })
@@ -119,4 +120,40 @@ it('clears section search and preserves catalog edits across tabs', async () => 
       '0',
     ),
   ).not.toBeInTheDocument()
+})
+
+it('shows counts only after successful loading and keeps order account names searchable', async () => {
+  api.fetchAdminDealerAccounts.mockResolvedValue({
+    accounts: [
+      {
+        id: 'account-1',
+        accountName: 'Pune partner',
+        role: 'dealer',
+        territory: 'Pune',
+      },
+    ],
+  })
+  api.fetchAdminOrders.mockResolvedValue({
+    orders: [
+      {
+        id: 'order-1',
+        dealerAccountId: 'account-1',
+        model: 'Amptron NIRA',
+        quantity: 1,
+        status: 'pending',
+        createdAt: '2026-09-01',
+      },
+    ],
+  })
+  show('/admin?tab=orders')
+  expect(await screen.findByText('Pune partner')).toBeVisible()
+  expect(screen.getByRole('tab', { name: /^Orders\s*1$/ })).toBeVisible()
+  expect(screen.getByRole('tab', { name: 'FAQs' })).toBeVisible()
+  expect(screen.getByRole('tab', { name: 'Applications' })).toBeVisible()
+  const user = userEvent.setup()
+  await user.type(screen.getByLabelText('Search'), 'Pune partner')
+  expect(screen.getByText('Amptron NIRA')).toBeVisible()
+  await user.click(screen.getByRole('tab', { name: 'Tickets' }))
+  expect(await screen.findByRole('tab', { name: /^Tickets\s*0$/ })).toBeVisible()
+  expect(api.fetchAdminFaqs).not.toHaveBeenCalled()
 })

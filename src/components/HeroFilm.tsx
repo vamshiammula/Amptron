@@ -10,12 +10,30 @@ export default function HeroFilm({ model }: { model: ScooterModel }) {
     if (!model.video) return
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
     const syncMotion = () => {
-      if (preference.matches) player.current?.pause()
-      else void player.current?.play().catch(() => {})
+      const connection = (
+        navigator as Navigator & { connection?: { saveData?: boolean } }
+      ).connection
+      if (preference.matches || connection?.saveData) player.current?.pause()
+      else void player.current?.play()?.catch(() => {})
     }
     syncMotion()
     preference.addEventListener('change', syncMotion)
-    return () => preference.removeEventListener('change', syncMotion)
+    const pauseWhenHidden = () => {
+      if (document.hidden) player.current?.pause()
+    }
+    document.addEventListener('visibilitychange', pauseWhenHidden)
+    const observer =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry && !entry.isIntersecting) player.current?.pause()
+          })
+    if (player.current) observer?.observe(player.current)
+    return () => {
+      preference.removeEventListener('change', syncMotion)
+      document.removeEventListener('visibilitychange', pauseWhenHidden)
+      observer?.disconnect()
+    }
   }, [model.video])
 
   return (

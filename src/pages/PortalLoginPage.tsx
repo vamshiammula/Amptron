@@ -1,3 +1,4 @@
+import '../styles/workspace.css'
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import logo from '../assets/images/logo-light.svg'
 import { Navigate, useLocation } from 'react-router-dom'

@@ -1,6 +1,8 @@
+import webMedia from './nira-web-media.json'
 /**
  * Public NIRA media hosted in the `site-media` bucket.
- * Replace a file at the same object path to update the site.
+ * Web derivatives use content-hashed paths for long-lived caching; preserve originals.
+ * Run scripts/optimize-nira-media.mjs after approving replacement source photos.
  *
  * Studio stills currently on the page:
  *   amptron-nira-pearl-ivory-front.png
@@ -32,17 +34,17 @@ export const NIRA_MEDIA_BASE = `${SUPABASE_URL}/storage/v1/object/public/site-me
 export const niraMedia = {
   video: `${NIRA_MEDIA_BASE}/amptron-nira-film.mp4`,
   model3d: `${NIRA_MEDIA_BASE}/amptron-nira.glb`,
-  hero: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-front-left.png`,
+  hero: `${NIRA_MEDIA_BASE}/${webMedia['front-left'].image}`,
   studio: {
-    front: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-front.png`,
-    frontLeft: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-front-left.png`,
-    frontRight: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-front-right.png`,
-    left: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-left.png`,
-    side: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-side.png`,
-    rear: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-rear.png`,
-    rearLeft: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-rear-left.png`,
-    rearThreeQuarter: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-rear-three-quarter.png`,
-    top: `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-top.png`,
+    front: `${NIRA_MEDIA_BASE}/${webMedia['front'].image}`,
+    frontLeft: `${NIRA_MEDIA_BASE}/${webMedia['front-left'].image}`,
+    frontRight: `${NIRA_MEDIA_BASE}/${webMedia['front-right'].image}`,
+    left: `${NIRA_MEDIA_BASE}/${webMedia['left'].image}`,
+    side: `${NIRA_MEDIA_BASE}/${webMedia['side'].image}`,
+    rear: `${NIRA_MEDIA_BASE}/${webMedia['rear'].image}`,
+    rearLeft: `${NIRA_MEDIA_BASE}/${webMedia['rear-left'].image}`,
+    rearThreeQuarter: `${NIRA_MEDIA_BASE}/${webMedia['rear-three-quarter'].image}`,
+    top: `${NIRA_MEDIA_BASE}/${webMedia['top'].image}`,
   },
   chapters: {
     neighbourhood: `${NIRA_MEDIA_BASE}/amptron-nira-neighbourhood.jpg`,
@@ -55,14 +57,30 @@ export const niraMedia = {
 } as const
 
 /** Approved website gallery; ordering starts with the hero, then walks around NIRA. */
-export const niraPhotos = [
-  { src: niraMedia.studio.frontLeft, label: 'Front three-quarter' },
-  { src: niraMedia.studio.front, label: 'Front' },
-  { src: niraMedia.studio.frontRight, label: 'Opposite front angle' },
-  { src: niraMedia.studio.side, label: 'Side profile' },
-  { src: niraMedia.studio.rearThreeQuarter, label: 'Rear three-quarter' },
-  { src: niraMedia.studio.rear, label: 'Rear' },
-  { src: niraMedia.studio.rearLeft, label: 'Opposite rear angle' },
-  { src: niraMedia.studio.left, label: 'Opposite side profile' },
-  { src: niraMedia.studio.top, label: 'Top' },
-]
+const galleryViews = [
+  ['front-left', 'Front three-quarter'],
+  ['front', 'Front'],
+  ['front-right', 'Opposite front angle'],
+  ['side', 'Side profile'],
+  ['rear-three-quarter', 'Rear three-quarter'],
+  ['rear', 'Rear'],
+  ['rear-left', 'Opposite rear angle'],
+  ['left', 'Opposite side profile'],
+  ['top', 'Top'],
+] as const
+
+export const niraPhotos = galleryViews.map(([angle, label]) => ({
+  src: `${NIRA_MEDIA_BASE}/${webMedia[angle].image}`,
+  thumbnail: `${NIRA_MEDIA_BASE}/${webMedia[angle].thumbnail}`,
+  label,
+}))
+
+/** Only replace approved NIRA originals; unrelated catalog uploads pass through. */
+export function optimizedNiraImage(src: string): string {
+  for (const [angle, variants] of Object.entries(webMedia)) {
+    if (src === `${NIRA_MEDIA_BASE}/amptron-nira-pearl-ivory-${angle}.png`) {
+      return `${NIRA_MEDIA_BASE}/${variants.image}`
+    }
+  }
+  return src
+}

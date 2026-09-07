@@ -1,0 +1,38 @@
+{
+  "front": {
+    "image": "web/amptron-nira-pearl-ivory-front-image-1999ba0c1954.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-front-thumbnail-bbe218494669.webp"
+  },
+  "front-left": {
+    "image": "web/amptron-nira-pearl-ivory-front-left-image-aae25b07ebc3.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-front-left-thumbnail-63c75cc07a11.webp"
+  },
+  "front-right": {
+    "image": "web/amptron-nira-pearl-ivory-front-right-image-cadfe8096e79.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-front-right-thumbnail-15b30be122da.webp"
+  },
+  "left": {
+    "image": "web/amptron-nira-pearl-ivory-left-image-805b2cd3c98c.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-left-thumbnail-36b88939bf6a.webp"
+  },
+  "side": {
+    "image": "web/amptron-nira-pearl-ivory-side-image-324b1f27c5ac.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-side-thumbnail-26d5f336c543.webp"
+  },
+  "rear": {
+    "image": "web/amptron-nira-pearl-ivory-rear-image-531fb8b476e4.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-rear-thumbnail-fa12316ef16c.webp"
+  },
+  "rear-left": {
+    "image": "web/amptron-nira-pearl-ivory-rear-left-image-815b642e90e7.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-rear-left-thumbnail-b9a918576fe8.webp"
+  },
+  "rear-three-quarter": {
+    "image": "web/amptron-nira-pearl-ivory-rear-three-quarter-image-be8168209a27.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-rear-three-quarter-thumbnail-6f242b9f5966.webp"
+  },
+  "top": {
+    "image": "web/amptron-nira-pearl-ivory-top-image-42eb806c3d48.webp",
+    "thumbnail": "web/amptron-nira-pearl-ivory-top-thumbnail-189706ebd027.webp"
+  }
+}

@@ -196,9 +196,9 @@ describe('five-year ownership', () => {
     expect(stormOwnership({ amptronPurchaseInr: 0 }).amptronPurchaseInr).toBe(
       OWNERSHIP_LIMITS.minPetrolPurchaseInr,
     )
-    expect(
-      stormOwnership({ amptronPurchaseInr: 500000 }).amptronPurchaseInr,
-    ).toBe(OWNERSHIP_LIMITS.maxPetrolPurchaseInr)
+    expect(stormOwnership({ amptronPurchaseInr: 500000 }).amptronPurchaseInr).toBe(
+      OWNERSHIP_LIMITS.maxPetrolPurchaseInr,
+    )
     expect(OWNERSHIP_LIMITS.minPetrolPurchaseInr).toBe(20000)
     expect(OWNERSHIP_LIMITS.maxPetrolPurchaseInr).toBe(200000)
   })
@@ -248,7 +248,9 @@ describe('five-year ownership', () => {
   it('prices replacement and repair from pack capacity', () => {
     expect(batteryReplacementInr(2.65)).toBe(Math.round(2.65 * 18000))
     expect(batteryRepairInr(2.65)).toBe(
-      Math.round(batteryReplacementInr(2.65) * OWNERSHIP_DEFAULTS.batteryRepairShare),
+      Math.round(
+        batteryReplacementInr(2.65) * OWNERSHIP_DEFAULTS.batteryRepairShare,
+      ),
     )
   })
 })

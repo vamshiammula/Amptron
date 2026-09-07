@@ -62,13 +62,37 @@ test('empty media slots stay branded without old product images or videos', asyn
   expect(retiredRequests).toEqual([])
 })
 
-test('NIRA product page uses the 3D studio and named stills', async ({ page }) => {
+test('NIRA opens the nine-photo gallery without loading 3D until requested', async ({
+  page,
+}) => {
+  const heavyRequests: string[] = []
+  page.on('request', (request) => {
+    if (/\.glb(?:\?|$)|model-viewer.*\.js/.test(request.url()))
+      heavyRequests.push(request.url())
+  })
   await page.goto('/models/amptron-nira')
-  await expect(page.getByRole('heading', { level: 1, name: 'Amptron NIRA' })).toBeVisible()
-  await expect(page.getByText('Starting at')).toBeVisible()
-  await expect(page.getByText('Pearl Ivory · Sage Green · Matte Grey · Midnight Black')).toBeVisible()
-  await expect(page.getByRole('button', { name: '3D view' })).toBeVisible()
-  await expect(page.locator('img[src*="amptron-nira-pearl-ivory"]')).toHaveCount(6)
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Amptron NIRA' }),
+  ).toBeVisible()
+  await expect(page.getByText('Starting at', { exact: true })).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Photos', exact: true }),
+  ).toHaveAttribute('aria-pressed', 'true')
+  await expect(page.locator('.stage-thumbnails button')).toHaveCount(9)
+  await expect(page.locator('.stage-photo-navigation')).toContainText('1 / 9')
+  await page.getByRole('button', { name: 'Next photo' }).click()
+  await expect(page.locator('.stage-photo-navigation')).toContainText('2 / 9')
+  await page.getByRole('button', { name: 'Previous photo' }).click()
+  await expect(page.locator('.stage-photo-navigation')).toContainText('1 / 9')
+  await page.getByRole('button', { name: 'Next photo' }).press('ArrowRight')
+  await expect(page.locator('.stage-photo-navigation')).toContainText('2 / 9')
+  await page.locator('.stage-thumbnails button').last().click()
+  await expect(page.locator('.stage-photo-navigation')).toContainText('9 / 9')
+  await expect(page.locator('.stage-surface > img')).toHaveAttribute(
+    'src',
+    /\.webp$/,
+  )
+  expect(heavyRequests).toEqual([])
   await page.goto('/models/amptron-storm')
   await expect(page).toHaveURL(/\/models\/amptron-nira$/)
 })

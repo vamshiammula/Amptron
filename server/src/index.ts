@@ -43,11 +43,23 @@ function start(): void {
     }
   })
 
+  server.on('error', (error: NodeJS.ErrnoException) => {
+    console.error(
+      error.code === 'EADDRINUSE'
+        ? `[api] Port ${config.port} is already in use. Stop the other Amptron session and try again.`
+        : `[api] Could not start: ${error.message}`,
+    )
+    process.exit(1)
+  })
+
   const shutdown = (signal: string) => {
     console.log(`[api] ${signal} received, shutting down`)
     server.close(() => process.exit(0))
     // Force exit if connections refuse to drain.
-    setTimeout(() => process.exit(1), 10_000).unref()
+    setTimeout(
+      () => process.exit(1),
+      config.nodeEnv === 'development' ? 4000 : 10_000,
+    ).unref()
   }
 
   process.on('SIGTERM', () => shutdown('SIGTERM'))

@@ -14,10 +14,14 @@ test('generic EV comparison uses entered figures and retains the scenario', asyn
   await other.getByLabel('Purchase price (₹)', { exact: true }).fill('90000')
   await other.getByLabel('Battery capacity (kWh)', { exact: true }).fill('3')
   await other.getByLabel('Range per full charge (km)', { exact: true }).fill('100')
+  const own = page.getByRole('group', { name: 'Amptron NIRA', exact: true })
+  await own.getByLabel('Purchase price (₹)', { exact: true }).fill('100000')
+  await own.getByLabel('Battery capacity (kWh)', { exact: true }).fill('3')
+  await own.getByLabel('Range per full charge (km)', { exact: true }).fill('100')
   await expect(page.getByRole('table')).toBeVisible()
-  await expect(
-    page.getByText('₹16,071 more with Amptron', { exact: true }),
-  ).toBeVisible()
+  await expect(page.locator('.ev-difference')).toHaveText(
+    '₹10,000 more with Amptron',
+  )
   await page.getByRole('radio', { name: 'A petrol scooter', exact: true }).check()
   await page
     .getByRole('radio', { name: 'Another electric scooter', exact: true })

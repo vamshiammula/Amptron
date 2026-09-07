@@ -74,16 +74,20 @@ describe('Dealer locator', () => {
     )
 
     await screen.findByText('2 showrooms across India')
-    await user.click(screen.getByRole('button', { name: 'State: All States' }))
-    await user.click(screen.getByRole('option', { name: 'Gujarat' }))
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'State' }),
+      'Gujarat',
+    )
 
-    expect(screen.getByRole('button', { name: 'State: Gujarat' })).toBeVisible()
+    expect(screen.getByRole('combobox', { name: 'State' })).toHaveValue('Gujarat')
     expect(screen.getByText('1 showroom in Gujarat')).toBeVisible()
     expect(screen.getByText('Greenline EV Hub')).toBeVisible()
     expect(screen.queryByText('Coastal Amptron')).toBeNull()
 
-    await user.click(screen.getByRole('button', { name: 'City: All Cities' }))
-    await user.click(screen.getByRole('option', { name: 'Ahmedabad' }))
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'City' }),
+      'Ahmedabad',
+    )
     expect(screen.getByText('1 showroom in Ahmedabad')).toBeVisible()
   })
 
@@ -98,10 +102,12 @@ describe('Dealer locator', () => {
     )
 
     await screen.findByText('2 showrooms across India')
-    await user.click(screen.getByRole('button', { name: 'City: All Cities' }))
-    await user.click(screen.getByRole('option', { name: 'Kochi' }))
+    await user.selectOptions(
+      screen.getByRole('combobox', { name: 'City' }),
+      'Kochi',
+    )
 
-    expect(screen.getByRole('button', { name: 'State: All States' })).toBeVisible()
+    expect(screen.getByRole('combobox', { name: 'State' })).toHaveValue('')
     expect(screen.getByText('1 showroom in Kochi')).toBeVisible()
     expect(screen.queryByText('1 showroom across India')).toBeNull()
     expect(screen.queryByText('Greenline EV Hub')).toBeNull()

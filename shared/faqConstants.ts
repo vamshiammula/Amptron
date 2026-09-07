@@ -31,7 +31,7 @@ export const SMALLTALK_REPLIES = {
   unhelpful:
     'Sorry that missed the mark. Ask about range, price, charging, test rides, or finding a showroom. If you need a person, leave your details below and Amptron will follow up.',
   capabilities:
-    'I am Amptron\'s FAQ assistant. I answer published questions about NIRA and Cruise: range, speed, charging, price, buying, test rides, showrooms, warranty, and service. Ask in English, Hindi, or Telugu-style phrasing. If I do not have an answer, leave your details and Amptron will follow up.',
+    "I am Amptron's FAQ assistant. I answer published questions about NIRA and Cruise: range, speed, charging, price, buying, test rides, showrooms, warranty, and service. Ask in English, Hindi, or Telugu-style phrasing. If I do not have an answer, leave your details and Amptron will follow up.",
 } as const
 
 export type FaqAudience = (typeof FAQ_AUDIENCES)[number]

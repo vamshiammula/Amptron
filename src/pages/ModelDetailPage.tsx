@@ -164,7 +164,8 @@ export default function ModelDetailPage() {
             <div className="model-hero-copy">
               <div className="eyebrow">
                 <span className="eyebrow-bar" />
-                {model.badge ?? (model.featured ? 'Most Popular' : 'Amptron scooter')}
+                {model.badge ??
+                  (model.featured ? 'Most Popular' : 'Amptron scooter')}
               </div>
               <h1>{model.name}</h1>
               <p className="model-hero-tagline">{model.tagline}</p>

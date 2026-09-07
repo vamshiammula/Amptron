@@ -29,16 +29,14 @@ test.describe('dealer application', () => {
     await page.goto('/')
 
     await expect(
-      page.getByRole('heading', { level: 1, name: /powering india's/i }),
+      page.getByRole('heading', { level: 1, name: /built to move forward/i }),
     ).toBeVisible()
     await expect(
       page.getByRole('heading', { name: 'Choose your Amptron' }),
     ).toBeVisible()
+    await expect(page.locator('.hero-film')).toBeVisible()
     await expect(
-      page.getByLabel('Amptron electric scooter product showcase'),
-    ).toBeVisible()
-    await expect(
-      page.getByRole('img', { name: /electric scooter/i }).first(),
+      page.locator('.hero-film').getByRole('link', { name: /Explore NIRA/ }),
     ).toBeVisible()
   })
 
@@ -58,7 +56,9 @@ test.describe('dealer application', () => {
     ])
 
     expect(response.status()).toBe(201)
-    await expect(page.getByRole('status')).toContainText(/2 business days/i)
+    await expect(page.locator('#contact .form-success')).toContainText(
+      /2 business days/i,
+    )
     await expect(
       page.getByRole('button', { name: /submit another application/i }),
     ).toBeVisible()
@@ -89,7 +89,7 @@ test.describe('dealer application', () => {
     await page.goto('/#contact')
     await fillApplication(page, email)
     await page.getByRole('button', { name: /submit b2b application/i }).click()
-    await expect(page.getByRole('status')).toBeVisible()
+    await expect(page.locator('#contact .form-success')).toBeVisible()
 
     await page.getByRole('button', { name: /submit another application/i }).click()
     await fillApplication(page, email)

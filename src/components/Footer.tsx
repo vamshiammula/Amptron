@@ -17,9 +17,7 @@ export default function Footer() {
       <div className="wrap footer-top">
         <div className="footer-brand">
           <img src={logo} alt="Amptron" width={400} height={80} loading="lazy" />
-          <p>
-            Built to move forward. Electric scooters for your everyday.
-          </p>
+          <p>Built to move forward. Electric scooters for your everyday.</p>
         </div>
         <div className="footer-cols">
           <div className="footer-col">

@@ -117,7 +117,9 @@ export function batteryReplacementInr(batteryKwh: number): number {
 
 export function batteryRepairInr(batteryKwh: number): number {
   return clamp(
-    Math.round(batteryReplacementInr(batteryKwh) * OWNERSHIP_DEFAULTS.batteryRepairShare),
+    Math.round(
+      batteryReplacementInr(batteryKwh) * OWNERSHIP_DEFAULTS.batteryRepairShare,
+    ),
     OWNERSHIP_LIMITS.minBatteryRepairInr,
     OWNERSHIP_LIMITS.maxBatteryRepairInr,
   )

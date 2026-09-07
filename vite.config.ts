@@ -12,7 +12,9 @@ export default defineConfig({
     },
   },
   server: {
+    host: '127.0.0.1',
     port: 5173,
+    strictPort: true,
     // Keeps the browser on a single origin in dev, so no CORS is needed.
     proxy: {
       '/api': {
@@ -23,7 +25,7 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    sourcemap: false,
     reportCompressedSize: false,
   },
 })

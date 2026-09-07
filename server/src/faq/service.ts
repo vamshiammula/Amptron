@@ -253,7 +253,11 @@ function logMatch(
     )
   } else {
     console.log(
-      JSON.stringify({ event: 'faq_unmatched', reason: result.reason, qlen: query.length }),
+      JSON.stringify({
+        event: 'faq_unmatched',
+        reason: result.reason,
+        qlen: query.length,
+      }),
     )
   }
 }
@@ -324,7 +328,12 @@ export function createFaqService(
   async function writeDbCache(hash: string, faqId: string | null): Promise<void> {
     if (!client) return
     await client.from('faq_match_cache').upsert(
-      { query_hash: hash, faq_id: faqId, hit_count: 1, last_hit_at: new Date().toISOString() },
+      {
+        query_hash: hash,
+        faq_id: faqId,
+        hit_count: 1,
+        last_hit_at: new Date().toISOString(),
+      },
       { onConflict: 'query_hash' },
     )
   }
@@ -343,13 +352,13 @@ export function createFaqService(
 
   async function matchByEmbedding(
     query: string,
-    faqs: FaqRecord[],
   ): Promise<{ result: MatchResult; faqId: string | null; score?: number }> {
     if (!embeddings) {
       return { result: { matched: false, reason: 'unmatched' }, faqId: null }
     }
     const [vector] = await embeddings.embed([query])
-    if (!vector) return { result: { matched: false, reason: 'unmatched' }, faqId: null }
+    if (!vector)
+      return { result: { matched: false, reason: 'unmatched' }, faqId: null }
 
     const db = requireClient()
     const { data, error } = await db.rpc('match_faq_entries', {
@@ -363,9 +372,26 @@ export function createFaqService(
 
     let ranked = (data ?? []).map(
       (row: {
-        id: string; slug: string; question: string; answer: string
-        audience: string; category: string; cta: string | null; similarity: number
-      }) => ({ faq: { id: row.id, slug: row.slug, question: row.question, answer: row.answer, audience: row.audience, category: row.category, cta: row.cta }, score: Number(row.similarity) }),
+        id: string
+        slug: string
+        question: string
+        answer: string
+        audience: string
+        category: string
+        cta: string | null
+        similarity: number
+      }) => ({
+        faq: {
+          id: row.id,
+          slug: row.slug,
+          question: row.question,
+          answer: row.answer,
+          audience: row.audience,
+          category: row.category,
+          cta: row.cta,
+        },
+        score: Number(row.similarity),
+      }),
     )
 
     // Model-aware re-rank on embedding results too
@@ -398,8 +424,10 @@ export function createFaqService(
       const intent = matchSmallTalk(query)
       if (intent) {
         const result: MatchResult = {
-          matched: true, source: 'smalltalk',
-          answer: smallTalkReply(intent), via: 'smalltalk',
+          matched: true,
+          source: 'smalltalk',
+          answer: smallTalkReply(intent),
+          via: 'smalltalk',
         }
         logMatch(query, result, 'smalltalk')
         return result
@@ -422,9 +450,13 @@ export function createFaqService(
         const found = faqs.find((f) => f.id === lruEntry.faqId)
         if (found) {
           const result: MatchResult = {
-            matched: true, source: 'faq',
-            answer: found.answer, faqId: found.id,
-            question: found.question, cta: asCta(found.cta), via: 'cache',
+            matched: true,
+            source: 'faq',
+            answer: found.answer,
+            faqId: found.id,
+            question: found.question,
+            cta: asCta(found.cta),
+            via: 'cache',
           }
           logMatch(query, result, 'cache', found.slug)
           return result
@@ -444,9 +476,13 @@ export function createFaqService(
         const found = faqs.find((f) => f.id === dbHit)
         if (found) {
           const result: MatchResult = {
-            matched: true, source: 'faq',
-            answer: found.answer, faqId: found.id,
-            question: found.question, cta: asCta(found.cta), via: 'cache',
+            matched: true,
+            source: 'faq',
+            answer: found.answer,
+            faqId: found.id,
+            question: found.question,
+            cta: asCta(found.cta),
+            via: 'cache',
           }
           logMatch(query, result, 'cache', found.slug)
           return result
@@ -460,17 +496,22 @@ export function createFaqService(
       if (lexical) {
         const via = lexical.via === 'resolver' ? 'resolver' : 'lexical'
         const result: MatchResult = {
-          matched: true, source: 'faq',
-          answer: lexical.faq.answer, faqId: lexical.faq.id,
-          question: lexical.faq.question, cta: asCta(lexical.faq.cta), via,
+          matched: true,
+          source: 'faq',
+          answer: lexical.faq.answer,
+          faqId: lexical.faq.id,
+          question: lexical.faq.question,
+          cta: asCta(lexical.faq.cta),
+          via,
         }
+        lru.set(hash, lexical.faq.id)
         logMatch(query, result, via, lexical.faq.slug, lexical.score)
         return result
       }
 
       // 5. Embedding fallback (costs neurons)
       try {
-        const { result, faqId, score } = await matchByEmbedding(query, faqs)
+        const { result, faqId, score } = await matchByEmbedding(query)
         // Cache embedding results to avoid repeat calls
         lru.set(hash, faqId)
         await writeDbCache(hash, faqId)
@@ -478,7 +519,11 @@ export function createFaqService(
         return result
       } catch (error) {
         if (error instanceof EmbeddingQuotaError) {
-          return { matched: false, reason: 'quota', message: QUOTA_UNAVAILABLE_MESSAGE }
+          return {
+            matched: false,
+            reason: 'quota',
+            message: QUOTA_UNAVAILABLE_MESSAGE,
+          }
         }
         if (error instanceof EmbeddingUnavailableError) {
           return { matched: false, reason: 'unmatched' }
@@ -502,7 +547,8 @@ export function createFaqService(
         })
         .select('id')
         .single()
-      if (error || !data) throw new Error(error?.message ?? 'Could not store your details.')
+      if (error || !data)
+        throw new Error(error?.message ?? 'Could not store your details.')
       return { id: String(data.id) }
     },
 
@@ -516,8 +562,11 @@ export function createFaqService(
         .eq('is_active', true)
         .order('updated_at', { ascending: false })
         .limit(6)
-      if (error) return FAQ_SEED.slice(0, 6).map((item) => ({ question: item.question }))
-      const questions = (data ?? []).map((row) => String(row.question ?? '')).filter(Boolean)
+      if (error)
+        return FAQ_SEED.slice(0, 6).map((item) => ({ question: item.question }))
+      const questions = (data ?? [])
+        .map((row) => String(row.question ?? ''))
+        .filter(Boolean)
       return questions.length > 0
         ? questions.map((question) => ({ question }))
         : FAQ_SEED.slice(0, 6).map((item) => ({ question: item.question }))
@@ -594,7 +643,8 @@ export function createFaqService(
       const row = data as FaqRowWithEmbedding
       lru.invalidate(row.id)
       await invalidateDbCache(row.id)
-      const shouldReembed = input.question !== undefined || input.aliases !== undefined
+      const shouldReembed =
+        input.question !== undefined || input.aliases !== undefined
       if (shouldReembed) {
         try {
           await embedAndStore(
@@ -634,8 +684,16 @@ export function createFaqService(
       const { data: existing } = await db
         .from('faq_entries')
         .select('slug, question, aliases, embedding')
-      const existingMap = new Map<string, { question: string; aliases: string[]; hasEmbedding: boolean }>()
-      for (const row of (existing ?? []) as Array<{ slug: string; question: string; aliases: string[] | null; embedding: unknown }>) {
+      const existingMap = new Map<
+        string,
+        { question: string; aliases: string[]; hasEmbedding: boolean }
+      >()
+      for (const row of (existing ?? []) as Array<{
+        slug: string
+        question: string
+        aliases: string[] | null
+        embedding: unknown
+      }>) {
         existingMap.set(row.slug, {
           question: row.question,
           aliases: row.aliases ?? [],
@@ -665,7 +723,8 @@ export function createFaqService(
           )
           .select('id, question, aliases')
           .single()
-        if (error || !data) throw new Error(error?.message ?? `Could not seed ${item.slug}.`)
+        if (error || !data)
+          throw new Error(error?.message ?? `Could not seed ${item.slug}.`)
         upserted++
 
         const prior = existingMap.get(item.slug)
@@ -744,7 +803,8 @@ export function createFaqService(
           'id, question, name, phone, email, preferred_language, reason, status, notes, created_at, updated_at',
         )
         .single()
-      if (error || !data) throw new Error(error?.message ?? 'Could not update query.')
+      if (error || !data)
+        throw new Error(error?.message ?? 'Could not update query.')
       return {
         id: String(data.id),
         question: String(data.question),
@@ -776,16 +836,30 @@ export function createMemoryFaqService(): FaqService {
     async match(query) {
       const intent = matchSmallTalk(query)
       if (intent) {
-        return { matched: true, source: 'smalltalk', answer: smallTalkReply(intent), via: 'smalltalk' }
+        return {
+          matched: true,
+          source: 'smalltalk',
+          answer: smallTalkReply(intent),
+          via: 'smalltalk',
+        }
       }
       // Check memory cache
       const hash = queryHash(query)
       if (memCache.has(hash)) {
         const faqId = memCache.get(hash)!
-        if (faqId === '__unmatched__') return { matched: false, reason: 'unmatched' }
+        if (faqId === '__unmatched__')
+          return { matched: false, reason: 'unmatched' }
         const found = faqs.find((f) => f.id === faqId)
         if (found) {
-          return { matched: true, source: 'faq', answer: found.answer, faqId: found.id, question: found.question, cta: asCta(found.cta), via: 'cache' }
+          return {
+            matched: true,
+            source: 'faq',
+            answer: found.answer,
+            faqId: found.id,
+            question: found.question,
+            cta: asCta(found.cta),
+            via: 'cache',
+          }
         }
       }
       const lexical = pickLexicalMatch(query, faqs)
@@ -795,9 +869,13 @@ export function createMemoryFaqService(): FaqService {
       }
       const via: MatchVia = lexical.via === 'resolver' ? 'resolver' : 'lexical'
       return {
-        matched: true, source: 'faq',
-        answer: lexical.faq.answer, faqId: lexical.faq.id,
-        question: lexical.faq.question, cta: asCta(lexical.faq.cta), via,
+        matched: true,
+        source: 'faq',
+        answer: lexical.faq.answer,
+        faqId: lexical.faq.id,
+        question: lexical.faq.question,
+        cta: asCta(lexical.faq.cta),
+        via,
       }
     },
     async submitSupport(input) {
@@ -830,12 +908,18 @@ export function createMemoryFaqService(): FaqService {
         return existing
       }
       const created: FaqRecord = {
-        id: randomUUID(), slug: input.slug,
-        question: input.question, answer: input.answer,
-        audience: input.audience, category: input.category,
-        aliases: input.aliases, cta: input.cta,
-        isActive: input.isActive, isSeed: false,
-        hasEmbedding: false, createdAt: new Date().toISOString(),
+        id: randomUUID(),
+        slug: input.slug,
+        question: input.question,
+        answer: input.answer,
+        audience: input.audience,
+        category: input.category,
+        aliases: input.aliases,
+        cta: input.cta,
+        isActive: input.isActive,
+        isSeed: false,
+        hasEmbedding: false,
+        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
       faqs.unshift(created)
@@ -876,7 +960,12 @@ export class FaqStoreUnavailableError extends Error {
 }
 
 function asCta(value: string | null): FaqCta | null {
-  if (value === 'buy' || value === 'test_ride' || value === 'showroom' || value === 'stock') {
+  if (
+    value === 'buy' ||
+    value === 'test_ride' ||
+    value === 'showroom' ||
+    value === 'stock'
+  ) {
     return value
   }
   return null

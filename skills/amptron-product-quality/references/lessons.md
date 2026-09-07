@@ -170,9 +170,65 @@
 - Trigger: nine approved NIRA stills existed in public assets but Photos rendered only model.image.
 - Impact: visitors could not browse other angles in Explore.
 - Correction: connect the ordered NIRA gallery to the shared studio with thumbnails, labelled previous/next controls, a live counter, keyboard navigation and selection retention across modes.
-- Check: ScooterStage tests cover first/last wrapping, thumbnail selection, arrow keys and returning from 3D. Keep originals in NIRA and served copies in public/products/amptron-nira.
+- Check: ScooterStage tests cover first/last wrapping, thumbnail selection, arrow keys and returning from 3D. Media is now hosted in Supabase. Keep originals there and serve the content-hashed web derivatives from the gallery manifest; do not require retired local copies.
 
 ## Homepage film and detailed exploration
 
 - Changed invariant: the homepage introduces the featured model with its supplied film and a direct Explore link. Keep interactive 3D and the full photo gallery on the model detail page.
 - Check: film controls remain available, reduced motion prevents automatic playback, and a failed film falls back to a still. HeroFilm tests cover these behaviors.
+
+## Production output included development runtimes
+
+- Trigger: a build inherited NODE_ENV=development before Vite loaded.
+- Impact: the main bundle contained unnecessary React development code.
+- Correction: set production environment before importing Vite; reject development React runtime modules during bundling.
+- Check: use the guarded build:client script and measure all initial preload chunks, not only the main file.
+
+## Hosted photo originals were reused as thumbnails
+
+- Trigger: a gallery thumbnail referenced the same large PNG as its full photo; remote catalog rows could override optimized local defaults.
+- Impact: browsing loaded far more media than required.
+- Correction: upload content-hashed WebP derivatives and small thumbnails without overwriting originals; normalize known NIRA URLs when merging remote catalog content.
+- Check: verify all hosted URLs, image appearance and actual GET cache headers. Load the 3D renderer only after choosing 3D.
+
+## Section loading must preserve catalog drafts
+
+- Trigger: reducing portal requests to the active section introduced section loading transitions.
+- Impact: conditionally unmounting Catalog Studio would discard unsaved edits.
+- Correction: mount catalog on first visit, then keep it mounted and hidden during other sections and refreshes.
+- Check: test tab-specific request isolation and draft retention together.
+
+## Cloud-only source files caused development restart loops
+
+- Trigger: macOS offloaded source files in synced Documents; downloads then emitted file-change events, while duplicate development sessions competed for ports.
+- Impact: tests blocked in filesystem reads, Vite restarted repeatedly and the API watcher force-killed shutdowns.
+- Correction: use an independent local checkout outside cloud sync, initialize zsh completion before Angular completion, check source availability and ports before startup, and stop both development services when either exits.
+- Check: run from the local checkout, verify a fresh interactive shell, one listener per configured port, clean startup and full validation. Preserve the original checkout and keep Supabase media hosted. Never interpret a cloud-file read stall as a test assertion failure.
+
+## Recovery must preserve the latest source and Git history
+
+- Trigger: an older GitHub checkout was substituted while newer source remained only in iCloud.
+- Impact: the newer calculator, portal styling, and approved branding were absent even though the older checkout could start.
+- Correction: pause concurrent recovery tasks, preserve both copies, recover exact originals against the saved index hashes, and restore missing Git objects without overwriting working edits.
+- Check: verify the current commit tree and Git connectivity, then run application and browser suites from the complete local project. A successful older build does not prove recovery of the latest work.
+
+## Eyebrow labels inherited the accent fill color on paper
+
+- Trigger: the shared label rule used the electric-green fill alias even on the light studio hero.
+- Impact: small labels became difficult to read.
+- Correction: use the contextual `--accent-text` token for label text; dark sections already supply its light variant.
+- Check: visually inspect labels on both paper and graphite surfaces after changing the hero or brand styles.
+
+## On-demand admin sections must distinguish unknown from empty
+
+- Trigger: section-specific loading left unopened arrays empty and skipped account data needed to label orders and tickets.
+- Impact: tab badges falsely showed zero, while shipment and ticket owners appeared as raw IDs and could not be found by account name.
+- Correction: show counts only after a successful read; fetch account names alongside overview, orders and tickets. Keep unrelated sections deferred.
+- Check: admin tests verify unknown badges are absent, a confirmed empty section shows zero, and orders remain searchable by account name.
+
+## Product media must follow the frame dimensions
+
+- Trigger: feature images used crop-to-fill, card hover scaling escaped the photo area, and the 3D viewer retained a 360px minimum inside a 310px mobile stage.
+- Impact: scooter details could be cropped or extend past the intended media frame.
+- Correction: size photos and video within positioned, clipped frames using centered contain fitting; remove card image zoom and let the 3D element follow its stage height without an independent minimum.
+- Check: inspect desktop and mobile feature photos, catalog cards, film and 3D views. Their media bounds must stay within the frame, including after hover and switching gallery angles.

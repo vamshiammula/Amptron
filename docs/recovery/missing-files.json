@@ -1,0 +1,189 @@
+{
+  "revision": "7c90bcabd8cfa631de25847f47d65f20aae3c2de",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "gitBlob": "fdf37b9d6bdabfee97567230b351176f90ea5618"
+    },
+    {
+      "path": "docs/brand/AMPTRON-BRAND-GUIDELINES.md",
+      "gitBlob": "a95b76820930f7e36a0ff5d40322f263ea57895e"
+    },
+    {
+      "path": "docs/brand/APPLICATION-REFRESH.md",
+      "gitBlob": "334093e4c94d70c1a0bf3ae254c156e6bcb45333"
+    },
+    {
+      "path": "docs/brand/CATALOG-STUDIO.md",
+      "gitBlob": "9cb34725b8b80cb4cd35006dcc990336d02779f7"
+    },
+    {
+      "path": "docs/brand/WORKSPACE-HANDOFF.md",
+      "gitBlob": "e044196c275dc94cde081b640ec40ec399ef1301"
+    },
+    {
+      "path": "e2e/electric-comparison.spec.ts",
+      "gitBlob": "2aae5c33183759add083c001f02242b8245ecd44"
+    },
+    {
+      "path": "e2e/responsive.spec.ts",
+      "gitBlob": "50fbdc084fe19e09ac26de85310abf11001d5e49"
+    },
+    {
+      "path": "playwright.config.ts",
+      "gitBlob": "45d126be0e0107acbf6ebf1556b48142bba005f4"
+    },
+    {
+      "path": "public/og-cover.svg",
+      "gitBlob": "5700f9dfbdd6420bb5b1871a4ea0049677b0c929"
+    },
+    {
+      "path": "reference/approved-brand/amptron-symbol.png",
+      "gitBlob": "bc2edea368bbf97edb13aa65e504d6ecd2eea373"
+    },
+    {
+      "path": "reference/approved-brand/amptron-wordmark.svg",
+      "gitBlob": "b861697486ffbfc3e741c5b6d2719fd76b2b602c"
+    },
+    {
+      "path": "shared/catalog.ts",
+      "gitBlob": "54ef514541f5e7f518d5a9469b985380f94fec5f"
+    },
+    {
+      "path": "shared/evComparison.ts",
+      "gitBlob": "9e8e01be31cddefb9c7f8fddbf5dd795719e8e93"
+    },
+    {
+      "path": "skills/amptron-product-quality/SKILL.md",
+      "gitBlob": "561a00c3351df5d54ca1c8a2259c8a2853c0f035"
+    },
+    {
+      "path": "skills/amptron-product-quality/references/design-references.md",
+      "gitBlob": "ce5ac5038935ab9b3a781468e46ad784eeac3893"
+    },
+    {
+      "path": "src/assets/icons/arrow-right.svg",
+      "gitBlob": "94fce3754a46fef696b720a23d5d5f63f5629785"
+    },
+    {
+      "path": "src/assets/icons/ellipse.svg",
+      "gitBlob": "2d5ce19dd4756c6173d578c5d04968d2263f140b"
+    },
+    {
+      "path": "src/assets/icons/mail.svg",
+      "gitBlob": "e74cbcc37154a863e4601e127b70c8ab1ec90660"
+    },
+    {
+      "path": "src/assets/icons/phone.svg",
+      "gitBlob": "fc40aa3e36bb4e2b0c4014348de66dcc24676f25"
+    },
+    {
+      "path": "src/assets/images/logo-light.svg",
+      "gitBlob": "031b33bbebe4c29fc6c211a797b51f4915cc678b"
+    },
+    {
+      "path": "src/components/ElectricComparison.test.tsx",
+      "gitBlob": "956c40dee43e6c34e5644161ed5f19f57241e557"
+    },
+    {
+      "path": "src/components/ElectricComparison.tsx",
+      "gitBlob": "f1ea71dbc5e2476e64dc9cac8cf9a82e84a9bff2"
+    },
+    {
+      "path": "src/components/LocationMap.tsx",
+      "gitBlob": "cda835464271f8a106e7edbbd73513ad84f56e77"
+    },
+    {
+      "path": "src/components/MediaPlaceholder.tsx",
+      "gitBlob": "05c4a2d854192e8c094f6106dea96f9c3f26f3fb"
+    },
+    {
+      "path": "src/components/ModelRail.tsx",
+      "gitBlob": "0e481a052c8b0730ce27aa78514b003dc52eae7b"
+    },
+    {
+      "path": "src/components/Navbar.test.tsx",
+      "gitBlob": "667070aacbcbd5ef5cbe893b3f3b53d395eeeeda"
+    },
+    {
+      "path": "src/components/Navbar.tsx",
+      "gitBlob": "2bebacafc39979dd63b91e3d101714417f62abaf"
+    },
+    {
+      "path": "src/components/SavingsCalculator.tsx",
+      "gitBlob": "da919e61add50ede0ccf4e30a1a35133086056fa"
+    },
+    {
+      "path": "src/components/WorkspaceHeader.tsx",
+      "gitBlob": "05c56162b8ebe5c7996b4f29ecc4a6fcddf61d6b"
+    },
+    {
+      "path": "src/components/WorkspaceStatus.tsx",
+      "gitBlob": "3360a36b2ed43e33b81cb72870bac9db4c1e9833"
+    },
+    {
+      "path": "src/components/WorkspaceTabs.tsx",
+      "gitBlob": "cf7479577c886b7e2dd6fbb42ce7d643bbb9d4ab"
+    },
+    {
+      "path": "src/index.css",
+      "gitBlob": "92074439884174420e641de663cafc0f78e9dbda"
+    },
+    {
+      "path": "src/lib/openChat.test.ts",
+      "gitBlob": "14cedfabea03aee79b6a8dd61aeb48b919319ab9"
+    },
+    {
+      "path": "src/lib/openChat.ts",
+      "gitBlob": "911a9654bc6076f448ab5720e2de441597e4063f"
+    },
+    {
+      "path": "src/lib/portalApi.ts",
+      "gitBlob": "7f09570a11ccb5bad039c76b6ba18cf225142e31"
+    },
+    {
+      "path": "src/lib/usePrefersReducedMotion.ts",
+      "gitBlob": "d56f4e3688136bd927670b6aa7a182b58d044150"
+    },
+    {
+      "path": "src/lib/workspace.test.ts",
+      "gitBlob": "ad2126f953dfb4ffc789d639974e613ae4ca5667"
+    },
+    {
+      "path": "src/lib/workspace.ts",
+      "gitBlob": "4ceae1464b682be6f969238cd287e0fdde02968f"
+    },
+    {
+      "path": "src/main.tsx",
+      "gitBlob": "60da8c7884e3536e63ccaa90cd65feaa29aa51be"
+    },
+    {
+      "path": "src/pages/OwnershipCalculatorPage.test.tsx",
+      "gitBlob": "031ec90870388d0f57c0bbe0337663f73d7519fd"
+    },
+    {
+      "path": "src/pages/OwnershipCalculatorPage.tsx",
+      "gitBlob": "58be48f79f0a7ed1d637eb7665260f10bddbf1e5"
+    },
+    {
+      "path": "src/pages/PortalLoginPage.test.tsx",
+      "gitBlob": "76f7e00b8cfeed028ef6f48bfdffbd693f720d5a"
+    },
+    {
+      "path": "src/pages/admin/AdminCatalogPanel.test.tsx",
+      "gitBlob": "777b2a24ffee5a58bd5374d07de62728e10350d9"
+    },
+    {
+      "path": "src/pages/admin/AdminCatalogPanel.tsx",
+      "gitBlob": "f301d84672801d9b8c9caf01ad94e86cb878b00d"
+    },
+    {
+      "path": "src/styles/workspace.css",
+      "gitBlob": "38f2c627d79196f8d3b05cf7271c6a521719c1a9"
+    },
+    {
+      "path": "src/types/model-viewer.d.ts",
+      "gitBlob": "74f5b7fc528441749b1684e2306dbb3a32f151fe"
+    }
+  ]
+}

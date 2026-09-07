@@ -13,10 +13,7 @@ describe('homepage product film', () => {
       </MemoryRouter>,
     )
     const video = container.querySelector('video')!
-    expect(video).toHaveAttribute(
-      'src',
-      '/products/amptron-nira/amptron-nira-film.mp4',
-    )
+    expect(video).toHaveAttribute('src', scooterModels[0]!.video)
     expect(video).toHaveAttribute('controls')
     expect(video.muted).toBe(true)
     expect(screen.getByRole('link', { name: /Explore NIRA/ })).toHaveAttribute(

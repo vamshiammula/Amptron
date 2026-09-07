@@ -149,7 +149,7 @@ export default function ChatWidget() {
   const nearLimit = remainingChars <= QUERY_NEAR_LIMIT
 
   useEffect(() => {
-    if (hidden) return
+    if (hidden || !open) return
     let cancelled = false
     void fetch('/api/faq/suggestions')
       .then((response) => (response.ok ? response.json() : null))
@@ -163,7 +163,7 @@ export default function ChatWidget() {
     return () => {
       cancelled = true
     }
-  }, [hidden])
+  }, [hidden, open])
 
   useEffect(() => {
     if (!open) return

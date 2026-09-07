@@ -80,7 +80,10 @@ for (const [name, size] of [
   ['web-app-manifest-192x192.png', 192],
   ['web-app-manifest-512x512.png', 512],
 ])
-  await writeFile(new URL(`../public/${name}`, import.meta.url), await opaqueIcon(size))
+  await writeFile(
+    new URL(`../public/${name}`, import.meta.url),
+    await opaqueIcon(size),
+  )
 
 const png = await transparentIcon(32)
 const header = Buffer.alloc(22)
